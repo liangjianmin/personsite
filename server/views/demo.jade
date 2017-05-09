@@ -1,0 +1,51 @@
+doctype html
+html(lang="en")
+    meta(charset="UTF-8")
+    title #{title}
+    meta(content='width=device-width, initial-scale=1, maximum-scale=1, users-scalable=no' name='viewport')
+    head
+        link(type="text/css" rel="stylesheet" href="dist/css/mysqlDB.css")
+    body
+        .mysql_row
+            ul.table.mn1#usertable
+                li
+                    ul.thead
+                        li #id
+                        li username
+                        li password
+                        li age
+                        li info
+                        li operation
+                - for user in data
+                    li
+                        ul.tabrow(data-id="#{user.id}")
+                            li #{user.id}
+                            li #{user.username}
+                            li #{user.password}
+                            li #{user.age}
+                            li #{user.info}
+                            li
+                                a(href="#").update 修改
+                                | &nbsp;|&nbsp;
+                                a(href="#").delete 删除
+        .mysql_row
+            span.nw1 用户名:
+            input(type="text" value="哈哈哈")#username
+            br
+            br
+            span.nw1 密码:
+            input(type="text" value="我我我我我")#password
+            br
+            br
+            span.nw1 年龄:
+            input(type="number" value="12")#age
+            br
+            br
+            span.nw1 介绍:
+            input(type="text" value="啪啪啪啪")#info
+        .mysql_row
+            button#update.ele_none 修改
+            |&nbsp;&nbsp;&nbsp;
+            button#add 添加
+        script(type="text/javascript" src="lib/jQuery-2.1.4.min.js")
+        script(type="text/javascript" src="dist/js/mysqlDB.js")

@@ -1,0 +1,36 @@
+@charset "utf-8";
+@import "base";
+body{
+  background: #FCFCFC;
+}
+.page {
+  display: flex;
+}
+.section-left{
+  background: #eef1f6;
+  min-height: 700px;
+}
+.section-right{
+  padding: 30px 30px 30px 20px;
+  min-height: 700px;
+}
+.el-notification{
+  left:0;
+  right:0;
+  margin:0 auto;
+}
+.el-breadcrumb{
+  padding: 20px 0;
+}
+.el-menu-nav{
+  padding-right: 20px;
+  >li{
+    float: right !important;
+    .el-submenu__title{
+      border: none !important;
+    }
+    .el-menu{
+      top:60px !important;
+    }
+  }
+}

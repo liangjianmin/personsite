@@ -1,0 +1,20 @@
+{
+  "name": "mysql",
+  "version": "0.0.1",
+  "dependencies": {
+    "connect-flash": "^0.1.1",
+    "cors": "^2.8.3",
+    "express": "^4.10.6",
+    "express-session": "^1.15.2",
+    "moment": "^2.18.1",
+    "mysql": "^2.5.4"
+  },
+  "description": "增删改查链接数据库",
+  "main": "app.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mrxie",
+  "license": "ISC"
+}
