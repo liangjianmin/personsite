@@ -27,7 +27,7 @@
 <style scoped>
 
 </style>
-<script>
+<script type="es6">
   import {mapState} from 'vuex'
 
   export default {

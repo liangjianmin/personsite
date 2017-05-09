@@ -48,6 +48,9 @@ module.exports = function (app) {
         })
     });
 
+    /**
+     * 登录session设置
+     */
     app.post('/session', function (req, res, next) {
         user.getUsers(function (data) {
             for (let i = 0; i < data.data.length; i++) {
@@ -96,6 +99,9 @@ module.exports = function (app) {
         })
     });
 
+    /**
+     * 发布活动
+     */
     app.post('/publish', function (req, res, next) {
         user.publish({
             data: {
@@ -114,7 +120,11 @@ module.exports = function (app) {
         });
     });
 
+    /**
+     * 上传图片
+     */
     app.post('/fileUpload', function (req, res) {
-        console.log(res, files)
+        var _files = req.files;
+        console.log(_files)
     });
 };

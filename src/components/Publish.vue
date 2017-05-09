@@ -41,7 +41,7 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="上传图片">
-        <el-upload :multiple="true" action="fileUpload" list-type="picture-card" :on-success="handleAvatarSuccess" :on-preview="handlePictureCardPreview" :on-remove="handleRemove">
+        <el-upload name="pic" action="fileUpload"  list-type="picture-card" :on-preview="handlePictureCardPreview" :on-remove="handleRemove">
           <i class="el-icon-plus"></i>
         </el-upload>
         <el-dialog v-model="dialogVisible" size="tiny">
@@ -55,8 +55,11 @@
         <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
         <el-button @click="resetForm('ruleForm')">重置</el-button>
       </el-form-item>
-
     </el-form>
+    <form action="fileUpload" method="post" enctype ="multipart/form-data">
+      <input type="file" name="pics"/>
+      <input type="submit" value="提交" />
+    </form>
   </el-col>
 </template>
 <style scoped>
@@ -156,7 +159,7 @@
         this.dialogVisible = true;
       },
       handleAvatarSuccess(res, file) {
-        this.dialogImageUrl = URL.createObjectURL(file.raw);
+
       }
     }
   }
