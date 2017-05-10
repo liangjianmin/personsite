@@ -1,7 +1,9 @@
 var action_user = require("../action/user.js");
 var conn_user = require("../models/user.js");
 module.exports = function (app) {
-
+    /**
+     * 获取用户
+     */
     app.get('/page', function (req, res) {
         conn_user.getUsers(function (data) {
             if (data.status) {
@@ -12,6 +14,9 @@ module.exports = function (app) {
         });
     });
 
+    /**
+     * 获取id用户
+     */
     app.get('/getuser', function (req, res) {
         conn_user.getUsers(function (data) {
             var id = req.query.id;
@@ -27,6 +32,9 @@ module.exports = function (app) {
         });
     });
 
+    /**
+     * 获取用户分页显示
+     */
     app.get('/pages', function (req, res) {
         var p = req.query.p;
         var limit = 10;
@@ -48,8 +56,10 @@ module.exports = function (app) {
         });
 
     });
+
     app.get('/', function (req, res) {
         res.redirect('index.html')
     });
+
     action_user(app);
 };

@@ -1,6 +1,11 @@
 <template>
   <div class="home">
-    <h2>welcome</h2>
+     <div v-if="user !=''">
+       <p>欢迎用户:  {{user.session}}</p>
+     </div>
+    <div v-else>
+      欢迎
+    </div>
   </div>
 </template>
 <style scoped>
@@ -11,11 +16,15 @@
   }
 </style>
 <script>
-  export default {
-    name: 'home',
-    data() {
-      return {};
-    },
-    methods: {}
-  }
+    import {mapState} from 'vuex'
+    export default {
+        name: 'home',
+        data() {
+            return {};
+        },
+        computed: mapState({
+            user: state => state.user.sessiondata
+        }),
+        methods: {}
+    }
 </script>

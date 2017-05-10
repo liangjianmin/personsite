@@ -1,8 +1,6 @@
 var user = require("../models/user.js");
-var moment = require('moment');
-
-//文件操作模块
-var multiparty = require('multiparty');
+var moment = require('moment'); //时间
+var multiparty = require('multiparty'); //文件操作模块
 var util = require('util');
 var fs = require('fs');
 
@@ -46,7 +44,7 @@ module.exports = function (app) {
             if (data.status) {
                 for (let i = 0; i < data.data.length; i++) {
                     if (req.body.username == data.data[i].username && req.body.password == data.data[i].password) {
-                        /*发送session用户*/
+                        /*发送session*/
                         req.session.user = req.body.username;
                         res.send({status: true});
                         loginflag = false;
@@ -62,7 +60,7 @@ module.exports = function (app) {
     });
 
     /**
-     * 判断session
+     * 获取session
      */
     app.post('/session', function (req, res, next) {
         user.getUsers(function (data) {
@@ -77,7 +75,7 @@ module.exports = function (app) {
     });
 
     /**
-     * *退出系统
+     * 清除session退出系统
      */
     app.post('/exit', function (req, res, next) {
         req.session.user = '';

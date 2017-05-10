@@ -7,7 +7,7 @@
           <el-menu-item index="/home"><i class="el-icon-menu"></i>主页</el-menu-item>
           <el-menu-item v-if="user.role == 0" index="/adduser"><i class="el-icon-menu"></i>增加用户</el-menu-item>
           <el-menu-item v-if="user.role == 0 || user.role == 1" index="/userlist"><i class="el-icon-setting"></i>用户管理</el-menu-item>
-          <el-menu-item index="/publish"><i class="el-icon-setting"></i>发布活动</el-menu-item>
+          <el-menu-item v-if="user.role == 0 || user.role == 1 || user.role == 2" index="/publish"><i class="el-icon-setting"></i>发布活动</el-menu-item>
         </el-menu>
       </el-col>
       <el-col :span="21" class="section-right" v-if="headShow">
