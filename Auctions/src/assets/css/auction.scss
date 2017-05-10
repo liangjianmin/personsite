@@ -1,0 +1,10 @@
+@charset "utf-8";
+@import "base";
+.nav{
+  width: 100%;
+  background: #324157;
+  >ul{
+    width: 1200px;
+    margin: 0 auto 0;
+  }
+}
