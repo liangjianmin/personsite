@@ -1,8 +1,15 @@
 var user = require("../models/user.js");
 var moment = require('moment');
 
+//文件操作模块
+var multiparty = require('multiparty');
+var util = require('util');
+var fs = require('fs');
 
 module.exports = function (app) {
+    /**
+     * 用户更新
+     */
     app.post('/updateUsers', function (req, res, next) {
         user.updateUsers({
             sql: "update user SET username=?,password=?,sex=?,role=?,time=? WHERE id = ?",
@@ -19,6 +26,9 @@ module.exports = function (app) {
         });
     });
 
+    /**
+     * 删除用户
+     */
     app.post('/deleteUsers', function (req, res, next) {
         user.deleteUsers({
             sql: "DELETE FROM user WHERE id = " + req.body.id
@@ -27,6 +37,9 @@ module.exports = function (app) {
         });
     });
 
+    /**
+     * 登录session设置
+     */
     app.post('/login', function (req, res, next) {
         var loginflag = true;
         user.getUsers(function (data) {
@@ -49,7 +62,7 @@ module.exports = function (app) {
     });
 
     /**
-     * 登录session设置
+     * 判断session
      */
     app.post('/session', function (req, res, next) {
         user.getUsers(function (data) {
@@ -63,12 +76,18 @@ module.exports = function (app) {
         })
     });
 
+    /**
+     * *退出系统
+     */
     app.post('/exit', function (req, res, next) {
         req.session.user = '';
         res.send({session: req.session.user, status: false});
         res.end();
     });
 
+    /**
+     * 注册并且判断用户是否已经注册
+     */
     app.post('/addUsers', function (req, res, next) {
         var userfalg = true;
         user.getUsers(function (data) {
@@ -110,7 +129,8 @@ module.exports = function (app) {
                 starttime: moment(req.body.starttime).format("YYYY-MM-DD"),
                 endtime: moment(req.body.endtime).format("HH:mm:ss"),
                 delivery: req.body.delivery,
-                type: req.body.type.join(','),
+                type: req.body.type,
+                imageUrl:req.body.imageUrl,
                 desc: req.body.desc,
                 time: moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
             },
@@ -121,10 +141,30 @@ module.exports = function (app) {
     });
 
     /**
-     * 上传图片
+     *  上传文件
      */
-    app.post('/fileUpload', function (req, res) {
-        var _files = req.files;
-        console.log(_files)
+    app.post('/fileUpload', function (req, res, next) {
+        //生成multiparty对象，并配置上传目标路径
+        var form = new multiparty.Form({uploadDir: '../src/upload/files/'});
+        //上传完成后处理
+        form.parse(req, function (err, fields, files) {
+            var filesTmp = JSON.stringify(files, null, 2);
+            if (err) {
+                console.log('parse error: ' + err);
+            } else {
+                var inputFile = files.inputFile[0];
+                var uploadedPath = inputFile.path;
+                var dstPath = '../src/upload/files/' + inputFile.originalFilename;
+                //重命名为真实文件名
+                fs.rename(uploadedPath, dstPath, function (err) {
+                    if (err) {
+                        console.log('rename error: ' + err);
+                    } else {
+                        console.log('upload ok');
+                    }
+                });
+            }
+            res.send(filesTmp)
+        });
     });
 };

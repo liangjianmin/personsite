@@ -41,7 +41,7 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="上传图片">
-        <el-upload name="pic" action="fileUpload"  list-type="picture-card" :on-preview="handlePictureCardPreview" :on-remove="handleRemove">
+        <el-upload :multiple="true" name="inputFile" action="fileUpload"  list-type="picture-card" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" :on-success="handleAvatarSuccess">
           <i class="el-icon-plus"></i>
         </el-upload>
         <el-dialog v-model="dialogVisible" size="tiny">
@@ -56,111 +56,116 @@
         <el-button @click="resetForm('ruleForm')">重置</el-button>
       </el-form-item>
     </el-form>
-    <form action="fileUpload" method="post" enctype ="multipart/form-data">
-      <input type="file" name="pics"/>
-      <input type="submit" value="提交" />
-    </form>
   </el-col>
 </template>
 <style scoped>
 
 </style>
 <script>
-  export default {
-    name:'publish',
-    data() {
-      return {
-        dialogImageUrl: '',
-        dialogVisible: false,
-        ruleForm: {
-          name: '',
-          region: '',
-          starttime: '',
-          endtime: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: ''
+    export default {
+        name: 'publish',
+        data() {
+            return {
+                imageUrl:[],
+                dialogImageUrl: '',
+                dialogVisible: false,
+                ruleForm: {
+                    name: '',
+                    region: '',
+                    starttime: '',
+                    endtime: '',
+                    delivery: false,
+                    type: [],
+                    resource: '',
+                    desc: ''
+                },
+                rules: {
+                    name: [
+                        {required: true, message: '请输入活动名称', trigger: 'change'},
+                        {min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'change'}
+                    ],
+                    region: [
+                        {required: true, message: '请选择活动区域', trigger: 'change'}
+                    ],
+                    starttime: [
+                        {type: 'date', required: true, message: '请选择日期', trigger: 'change'}
+                    ],
+                    endtime: [
+                        {type: 'date', required: true, message: '请选择时间', trigger: 'change'}
+                    ],
+                    type: [
+                        {type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change'}
+                    ],
+                    resource: [
+                        {required: true, message: '请选择活动资源', trigger: 'change'}
+                    ]
+                }
+            };
         },
-        rules: {
-          name: [
-            {required: true, message: '请输入活动名称', trigger: 'change'},
-            {min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'change'}
-          ],
-          region: [
-            {required: true, message: '请选择活动区域', trigger: 'change'}
-          ],
-          starttime: [
-            {type: 'date', required: true, message: '请选择日期', trigger: 'change'}
-          ],
-          endtime: [
-            {type: 'date', required: true, message: '请选择时间', trigger: 'change'}
-          ],
-          type: [
-            {type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change'}
-          ],
-          resource: [
-            {required: true, message: '请选择活动资源', trigger: 'change'}
-          ]
+        mounted(){
+
+        },
+        methods: {
+            submitForm(formName) {
+                var self = this;
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        this.$http.post('publish', {
+                            name: this.ruleForm.name,
+                            region: this.ruleForm.region,
+                            starttime: this.ruleForm.starttime,
+                            endtime: this.ruleForm.endtime,
+                            type: this.ruleForm.type.join(','),
+                            imageUrl:this.imageUrl.join(','),
+                            delivery: this.ruleForm.delivery,
+                            resource: this.ruleForm.resource,
+                            desc: this.ruleForm.desc
+                        }).then(res => {
+                            if (res.data.status) {
+                                this.$message({
+                                    type: 'success',
+                                    message: '发布成功',
+                                    duration: 1000,
+                                    onClose: function () {
+                                        self.$router.push({path: '/home'});
+                                    }
+                                });
+                            } else {
+                                this.$message({
+                                    type: 'error',
+                                    message: '发布失败',
+                                    duration: 1000,
+                                    onClose: function () {
+
+                                    }
+                                });
+                            }
+                        }, error => {
+                            console.log('请启动node server')
+                        });
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            },
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            },
+            handleRemove(file, fileList) {
+                console.log(file, fileList);
+            },
+            handlePictureCardPreview(file) {
+                this.dialogImageUrl = file.url;
+                this.dialogVisible = true;
+            },
+            handleAvatarSuccess(res, file,fileList) {
+                var arr=[];
+                for(let i in fileList){
+                    arr.push(fileList[i].name);
+                }
+                this.imageUrl=arr;
+            }
         }
-      };
-    },
-    methods: {
-      submitForm(formName) {
-        var self = this;
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.$http.post('publish', {
-              name: this.ruleForm.name,
-              region: this.ruleForm.region,
-              starttime: this.ruleForm.starttime,
-              endtime: this.ruleForm.endtime,
-              type: this.ruleForm.type,
-              delivery: this.ruleForm.delivery,
-              resource: this.ruleForm.resource,
-              desc: this.ruleForm.desc
-            }).then(res => {
-              if (res.data.status) {
-                this.$message({
-                  type: 'success',
-                  message: '发布成功',
-                  duration: 1000,
-                  onClose: function () {
-                    self.$router.push({path: '/home'});
-                  }
-                });
-              } else {
-                this.$message({
-                  type: 'error',
-                  message: '发布失败',
-                  duration: 1000,
-                  onClose: function () {
-
-                  }
-                });
-              }
-            }, error => {
-              console.log('请启动node server')
-            });
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-      },
-      handleRemove(file, fileList) {
-        console.log(file, fileList);
-      },
-      handlePictureCardPreview(file) {
-        this.dialogImageUrl = file.url;
-        this.dialogVisible = true;
-      },
-      handleAvatarSuccess(res, file) {
-
-      }
     }
-  }
 </script>

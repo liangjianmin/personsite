@@ -8,9 +8,6 @@ var bodyParser = require('body-parser');
 var mysql = require("mysql");
 var jade = require('jade');
 var routes = require('./routes/index');
-// 文件操作的模板
-var flash = require('connect-flash');
-var fs = require('fs');
 
 var app = express();
 
@@ -20,6 +17,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 //调用工具
 app.use(logger('dev'));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
@@ -30,7 +28,7 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
 }));
-app.use(flash());
+
 app.use(express.static(path.join(__dirname, '../dist')));
 
 //设置跨域
