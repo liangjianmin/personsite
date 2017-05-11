@@ -1,0 +1,10 @@
+sql：
+
+left连接
+SELECT imgid,price,stocknum,price,`desc` FROM `shop` as u LEFT JOIN `pics` a on u.id = a.id;
+
+内连接
+SELECT a.*,b.* FROM shop a JOIN pics b on a.imgid=b.imgid;
+
+具体查询一条数据
+SELECT a.*,b.* FROM shop a JOIN pics b on a.imgid=b.imgid WHERE a.id=21;
