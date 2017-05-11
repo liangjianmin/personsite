@@ -20,13 +20,37 @@
             </el-form>
         </el-col>
         <el-col :span="18" class="page-home">
-            <div class="block">
+            <el-col :span="24">
                 <el-carousel trigger="click" height="265px">
                     <el-carousel-item v-for="item in 4" :key="item">
                         <h3>{{ item }}</h3>
                     </el-carousel-item>
                 </el-carousel>
-            </div>
+            </el-col>
+            <el-col :span="24" class="content">
+                <el-col :span="8" v-for="(o, index) in 6" :key="o" class="list">
+                    <el-card :body-style="{ padding: '0px' }">
+                       <a href="javascript:;" class="pic"> <img src="../assets/images/hamburger.50e4091.jpg" class="image"></a>
+                        <div class="shop clr">
+                            <div class="clr">
+                                <span class="fl shop-t1">商品  {{index}}</span>
+                                <span class="fr shop-t2">1.99元</span>
+                            </div>
+                            <p class="shop-txt">
+                                这是第一个商品这是第一个商品这是第一个商品这是第一个商品这是第一个商品这是第一个商品
+                            </p>
+                            <div class="bottom clr">
+                                <el-col>
+                                    <el-rate v-model="value" disabled show-text text-color="#ff9900" text-template="{value}"></el-rate>
+                                </el-col>
+                                <el-col>
+                                    <el-button type="text" class="button">购买</el-button>
+                                </el-col>
+                            </div>
+                        </div>
+                    </el-card>
+                </el-col>
+            </el-col>
         </el-col>
     </div>
 </template>
@@ -60,12 +84,63 @@
     .home .page-home{
         padding:25px;
     }
+    .home .time {
+        font-size: 13px;
+        color: #999;
+    }
+
+    .home .bottom {
+        margin-top: 13px;
+        line-height: 12px;
+    }
+
+    .home .button {
+        padding: 0;
+        float: right;
+    }
+
+    .home .image {
+        width: 100%;
+        display: block;
+    }
+    .home .shop{
+        padding:15px;
+    }
+    .home .shop .shop-t1{
+        color:#337ab7;
+    }
+
+    .home .content{
+        padding:10px 5px 0 5px;
+        box-sizing: border-box;
+    }
+    .home .content .list{
+        box-sizing: border-box;
+        padding:10px;
+    }
+    .home .content .list .pic{
+        display: block;
+    }
+    .home .shop-txt{
+        padding:8px 0 5px 0;
+        font-size: 14px;
+        color: #838487;
+        white-space: normal;
+        display: -webkit-box;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        margin-bottom: 10px;
+        line-height: 22px;
+    }
 </style>
 <script>
     export default{
         name: 'home',
         data() {
             return {
+                value: 3,
                 ruleForm: {
                     name: '',
                     price:'',
