@@ -55,7 +55,6 @@ module.exports = function (app) {
                     res.send(500);
                 }
             });
-
         });
 
     });
@@ -64,8 +63,23 @@ module.exports = function (app) {
      * 获取商品列表
      */
     app.get('/shoplist', function (req, res) {
-        shop_view.getshops(function (data) {
-            res.send(data)
+
+        var p = req.query.p;
+        var limit = 2;
+        var count;
+        var totalPages;
+        shop_view.getShopCount(function (data) {
+            if (data) {
+                count=data.data[0].count;
+                totalPages = Math.ceil(data.data[0].count/limit);
+            }
+            shop_view.getshops((p-1)*limit, limit, function (data) {
+                if (data.status) {
+                    res.send({list:data,maxPage:totalPages,currage:p,count:count,limit:limit});
+                } else {
+                    res.send(500);
+                }
+            });
         })  
     });
 
