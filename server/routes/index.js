@@ -1,4 +1,6 @@
 var action_user = require("../action/user.js");
+var shop = require("../action/shop.js");
+
 var conn_user = require("../models/user.js");
 module.exports = function (app) {
     /**
@@ -65,4 +67,5 @@ module.exports = function (app) {
     });
 
     action_user(app);
+    shop(app);
 };

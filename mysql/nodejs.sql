@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : vae
+Source Server         : node
 Source Server Version : 50717
 Source Host           : localhost:3306
 Source Database       : nodejs
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-05-11 20:30:58
+Date: 2017-05-12 12:54:26
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -25,16 +25,16 @@ CREATE TABLE `pics` (
   `fromname` varchar(255) NOT NULL COMMENT '插入者',
   `time` varchar(255) NOT NULL COMMENT '插入时间',
   `imgid` int(11) DEFAULT NULL COMMENT '关联imgid',
+  `desc` varchar(255) DEFAULT NULL COMMENT '信息',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=144 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of pics
 -- ----------------------------
-INSERT INTO `pics` VALUES ('1', 'ss.jpm', 'admin', '2017-8-9', '212');
-INSERT INTO `pics` VALUES ('2', 'swq.jpg', '212', '2017-8-0', '21');
-INSERT INTO `pics` VALUES ('3', 'bg.jpg', 'liangjianmin', '2017-5-11', '0');
-INSERT INTO `pics` VALUES ('4', 'ssdd.jpg', 'wo', '2017-5-9', null);
+INSERT INTO `pics` VALUES ('141', '52832b1b79dfa5b76e0e585acc27591b.png', 'admin', '2017-05-12 12:45:09', null, 'shop table use');
+INSERT INTO `pics` VALUES ('142', '365792f64b20865ae852694feadb3142.jpg', 'vae', '2017-05-12 12:51:49', null, 'shop table use');
+INSERT INTO `pics` VALUES ('143', '365792f64b20865ae852694feadb3142.jpg', 'admin', '2017-05-12 12:52:15', null, 'shop table use');
 
 -- ----------------------------
 -- Table structure for `publish`
@@ -66,21 +66,23 @@ INSERT INTO `publish` VALUES ('00000000023', '21', 'beijing', '2017-05-15', '12:
 -- ----------------------------
 DROP TABLE IF EXISTS `shop`;
 CREATE TABLE `shop` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `shopname` varchar(255) NOT NULL COMMENT '商品名称',
   `price` int(11) NOT NULL COMMENT '商品价格',
   `desc` varchar(255) NOT NULL COMMENT '商品描述',
   `evaluate` int(11) NOT NULL COMMENT '评价',
   `imgid` int(11) NOT NULL COMMENT '记录pics表的id',
   `stocknum` int(11) NOT NULL COMMENT '库存数量',
+  `time` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=224 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of shop
 -- ----------------------------
-INSERT INTO `shop` VALUES ('21', '衣服2', '11', '打我', '2', '21', '1');
-INSERT INTO `shop` VALUES ('212', '衣服1', '888', '这是一件衣服', '3', '212', '12');
+INSERT INTO `shop` VALUES ('220', 'iPhone', '4800', '这是商品描述', '0', '114', '100', '2017-05-12 12:17:01');
+INSERT INTO `shop` VALUES ('221', 'ipad', '212', '21212', '0', '141', '21', '2017-05-12 12:45:15');
+INSERT INTO `shop` VALUES ('222', 'c8650', '21', '华为手机', '0', '142', '11', '2017-05-12 12:51:50');
 
 -- ----------------------------
 -- Table structure for `stock`
