@@ -38,6 +38,11 @@ const Shoplist = resolve => {
         resolve(require('./components/Shoplist.vue'))
     })
 }
+const Banner = resolve => {
+    require.ensure(['./components/Banner.vue'], () => {
+        resolve(require('./components/Banner.vue'))
+    })
+}
 export  default[
     {
         path: '/home',
@@ -84,6 +89,16 @@ export  default[
         path: '/login',
         component: Login,
         name: '登录',
+        meta: {auth: false}
+    },
+  /*
+  * 添加轮播图
+  * luo
+  * */
+    {
+        path: '/Banner',
+        component: Banner,
+        name: '设置图片',
         meta: {auth: false}
     },
     {

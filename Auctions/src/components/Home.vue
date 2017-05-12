@@ -73,11 +73,9 @@
         line-height: 150px;
         margin: 0;
     }
-
     .home .el-carousel__item:nth-child(2n) {
         background-color: #99a9bf;
     }
-
     .home .el-carousel__item:nth-child(2n+1) {
         background-color: #d3dce6;
     }
@@ -88,12 +86,10 @@
         font-size: 13px;
         color: #999;
     }
-
     .home .bottom {
         margin-top: 13px;
         line-height: 12px;
     }
-
     .home .button {
         padding: 0;
         float: right;
