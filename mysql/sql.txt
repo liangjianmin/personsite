@@ -8,3 +8,10 @@ SELECT a.*,b.* FROM shop a JOIN pics b on a.imgid=b.imgid;
 
 具体查询一条数据
 SELECT a.*,b.* FROM shop a JOIN pics b on a.imgid=b.imgid WHERE a.id=21;
+
+
+<span>{{couponInfo || employ}}</span>
+
+Vue.filter('employ',function(str){
+   console.log(str)
+})

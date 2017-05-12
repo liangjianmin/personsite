@@ -37,6 +37,7 @@
     }
 </style>
 <script>
+    import {mapState} from 'vuex'
     export default {
         name: 'shopsave',
         data() {
@@ -63,6 +64,9 @@
                 }
             };
         },
+        computed: mapState({
+            user: state => state.user.sessiondata
+        }),
         mounted(){
 
         },
@@ -71,42 +75,50 @@
                 var self = this;
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        if(this.ruleForm.imgid == 0){
+                        if(this.$store.state.user.sessiondata !=''){
+                            if(this.ruleForm.imgid == 0){
+                                this.$message({
+                                    type: 'error',
+                                    message: '请至少上传一张图片',
+                                    duration: 1000
+                                });
+                            }else{
+                                this.$http.post('shopsave', {
+                                    shopname: this.ruleForm.shopname,
+                                    price: this.ruleForm.price,
+                                    desc: this.ruleForm.desc,
+                                    evaluate: this.ruleForm.evaluate,
+                                    stocknum: this.ruleForm.stocknum,
+                                    imgid: this.ruleForm.imgid
+                                }).then(res => {
+                                    if (res.data.status) {
+                                        this.$message({
+                                            type: 'success',
+                                            message: '商品添加成功',
+                                            duration: 1000,
+                                            onClose: function () {
+                                                self.$router.push({path: '/shoplist'});
+                                            }
+                                        });
+                                    } else {
+                                        this.$message({
+                                            type: 'error',
+                                            message: '发布失败',
+                                            duration: 1000,
+                                            onClose: function () {
+
+                                            }
+                                        });
+                                    }
+                                }, error => {
+                                    console.log('请启动node server')
+                                });
+                            }
+                        }else{
                             this.$message({
                                 type: 'error',
-                                message: '请至少上传一张图片',
+                                message: '未登录',
                                 duration: 1000
-                            });
-                        }else{
-                            this.$http.post('shopsave', {
-                                shopname: this.ruleForm.shopname,
-                                price: this.ruleForm.price,
-                                desc: this.ruleForm.desc,
-                                evaluate: this.ruleForm.evaluate,
-                                stocknum: this.ruleForm.stocknum,
-                                imgid: this.ruleForm.imgid
-                            }).then(res => {
-                                if (res.data.status) {
-                                    this.$message({
-                                        type: 'success',
-                                        message: '商品添加成功',
-                                        duration: 1000,
-                                        onClose: function () {
-                                           self.$router.push({path: '/shoplist'});
-                                        }
-                                    });
-                                } else {
-                                    this.$message({
-                                        type: 'error',
-                                        message: '发布失败',
-                                        duration: 1000,
-                                        onClose: function () {
-
-                                        }
-                                    });
-                                }
-                            }, error => {
-                                console.log('请启动node server')
                             });
                         }
                     } else {

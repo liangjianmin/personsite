@@ -2,6 +2,7 @@ var action_user = require("../action/user.js");
 var shop = require("../action/shop.js");
 
 var conn_user = require("../models/user.js");
+var shop_view = require("../models/shop.js");
 module.exports = function (app) {
     /**
      * 获取用户
@@ -57,6 +58,15 @@ module.exports = function (app) {
 
         });
 
+    });
+
+    /**
+     * 获取商品列表
+     */
+    app.get('/shoplist', function (req, res) {
+        shop_view.getshops(function (data) {
+            res.send(data)
+        })  
     });
 
     /**
