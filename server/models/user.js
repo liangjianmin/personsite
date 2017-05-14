@@ -5,6 +5,9 @@ module.exports = {
         sql = "select * from user";
         mysqlDB.getTableAllInfo({sql: sql}, callback);
     },
+    Banner:function(callback){
+      mysqlDB.luoganTest( callback)
+    },
     getTableCount:function (callback) {
         sql='select count(1) count from user';
         mysqlDB.getTableAllInfo({sql:sql},callback);

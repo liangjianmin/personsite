@@ -34,6 +34,16 @@ module.exports = function (app) {
         });
     });
 
+    app.get('/Banner',function (req, res) {
+      conn_user.Banner(function (data) {
+        console.log('111')
+        if (data.status) {
+          res.send(data);
+        } else {
+          res.send(500);
+        }
+      })
+    })
     /**
      * 获取用户分页显示
      */

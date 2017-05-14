@@ -17,6 +17,17 @@ function closeConnection() {
 }
 
 module.exports = {
+    luoganTest(callback){
+      var data = {data: null, status: false};
+      connection.query('select * from pics',function (err, rows) {
+        if(!err){
+          data.data = rows;
+          data.status = true;
+          callback && callback(data);
+        }
+      })
+    },
+
     /**
      * @param options
      * options

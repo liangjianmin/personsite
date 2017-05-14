@@ -44,48 +44,16 @@
     mounted(){
 
     },
-    methods: {
+    methods:{
       submitFrom(){
-          this.$http.post('publish',{ imageUrl:this.imageUrl.join(','),}).then(res => {
-              if (res.data.status) {
-                this.$message({
-                  type: 'success',
-                  message: '发布成功',
-                  duration: 1000,
-                  onClose: function () {
-                    self.$router.push({path: '/home'});
-                  }
-                });
-              } else {
-                this.$message({
-                  type: 'error',
-                  message: '发布失败',
-                  duration: 1000,
-                  onClose: function () {
-
-                  }
-                });
-              }
-      },
-      handleAvatarSuccess(res, file,fileList) {
-        var arr=[];
-        for(let i in fileList){
-          arr.push(fileList[i].name);
-        }
-        this.imageUrl=arr;
-      },
-      submitUpload() {
-        this.$refs.upload.submit();
-      },
-      handleRemove(file, fileList) {
-        console.log('handleRemove')
-        console.log(file, fileList);
-      },
-      handlePreview(file) {
-        console.log('handlePreview')
-        console.log(file);
+        this.$http.get('Banner',function (res) {
+          console.log(res)
+        })
       }
     }
+
+
+
   }
 </script>
 
