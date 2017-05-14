@@ -63,9 +63,8 @@ module.exports = function (app) {
      * 获取商品列表
      */
     app.get('/shoplist', function (req, res) {
-
         var p = req.query.p;
-        var limit = 2;
+        var limit = 5;
         var count;
         var totalPages;
         shop_view.getShopCount(function (data) {
@@ -80,8 +79,22 @@ module.exports = function (app) {
                     res.send(500);
                 }
             });
-        })  
+        })
     });
+
+    /**
+     * 获取id商品
+     */
+    app.get('/getshop', function (req, res) {
+    var p = req.query.id;
+    shop_view.getshop(p, function (data) {
+      if (data.status) {
+        res.send(data);
+      } else {
+        res.send(500);
+      }
+    });
+  });
 
     /**
      * 重定向

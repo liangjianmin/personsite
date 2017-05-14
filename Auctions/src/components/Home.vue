@@ -23,6 +23,7 @@
             <el-col :span="24">
                 <el-carousel trigger="click" height="265px">
                     <el-carousel-item v-for="item in 4" :key="item">
+                      <img src="../../static/s.jpg" alt="">
                         <h3>{{ item }}</h3>
                     </el-carousel-item>
                 </el-carousel>

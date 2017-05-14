@@ -32,7 +32,25 @@ module.exports = {
      * @param callback
      */
     getshops: function (p,limit,callback) {
-        sql = "SELECT a.*,b.* FROM shop a JOIN pics b on a.imgid=b.id limit "+p+","+limit;
+        sql = "select  shop.*, pics.url, pics.`from`  from shop, pics WHERE shop.imgid = pics.id limit "+p+","+limit;
         mysqlDB.getTableAllInfo({sql: sql}, callback);
     },
+    /**
+     * 查询单个商品
+     * @param p
+     * @param limit
+     * @param callback
+     */
+    getshop: function (id,callback) {
+      sql = "select  shop.*, pics.url, pics.`from`  from shop, pics WHERE shop.imgid = pics.id AND shop.id = "+id;
+      mysqlDB.getTableAllInfo({sql: sql}, callback);
+    },
+    /**
+     * 删除商品id
+     * @param data
+     * @param callback
+   */
+    deleteShops: function (data, callback) {
+      mysqlDB.deleteTable(data, callback);
+    }
 };
