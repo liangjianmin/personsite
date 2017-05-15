@@ -10,7 +10,7 @@
           <el-menu-item v-if="user.role == 0 || user.role == 1 || user.role == 2" index="/publish"><i class="el-icon-setting"></i>发布活动</el-menu-item>
           <el-menu-item v-if="user.role == 0 || user.role == 1 || user.role == 2" index="/shopsave"><i class="el-icon-setting"></i>商品添加</el-menu-item>
           <el-menu-item v-if="user.role == 0 || user.role == 1 || user.role == 2" index="/shoplist"><i class="el-icon-setting"></i>商品管理</el-menu-item>
-          <el-menu-item v-if="user.role == 0 || user.role == 1 || user.role == 2" index="/Banner"><i class="el-icon-setting"></i>添加图片</el-menu-item>
+          <el-menu-item v-if="user.role == 0 || user.role == 1" index=""><i class="el-icon-setting"></i>库存管理</el-menu-item>
         </el-menu>
       </el-col>
       <el-col :span="21" class="section-right" v-if="headShow">

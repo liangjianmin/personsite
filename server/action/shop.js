@@ -13,7 +13,7 @@ module.exports = function (app) {
             data: {
                 shopname: req.body.shopname,
                 price: req.body.price,
-                desc: req.body.desc,
+                describe: req.body.describe,
                 evaluate: req.body.evaluate,
                 stocknum: req.body.stocknum,
                 imgid: req.body.imgid,
@@ -29,7 +29,7 @@ module.exports = function (app) {
      */
     app.post('/shopupload', function (req, res, next) {
         //生成multiparty对象，并配置上传目标路径
-        var form = new multiparty.Form({uploadDir: '../src/upload/shop/'});
+        var form = new multiparty.Form({uploadDir: '../dist/static/upload/shop/'});
         //上传完成后处理
         form.parse(req, function (err, fields, files) {
             var filesTmp = JSON.stringify(files, null, 2);
@@ -38,7 +38,7 @@ module.exports = function (app) {
             } else {
                 var inputFile = files.inputFile[0];
                 var uploadedPath = inputFile.path;
-                var dstPath = '../src/upload/shop/' + inputFile.originalFilename;
+                var dstPath = '../dist/static/upload/shop/' + inputFile.originalFilename;
                 //重命名为真实文件名
                 fs.rename(uploadedPath, dstPath, function (err) {
                     if (err) {
@@ -52,7 +52,7 @@ module.exports = function (app) {
                             shop.addPic({
                                 data: {
                                     url: inputFile.originalFilename,
-                                    fromname: req.session.user,
+                                    from: req.session.user,
                                     desc:"shop table use",
                                     time: moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
                                 },
@@ -67,5 +67,15 @@ module.exports = function (app) {
                 });
             }
         });
+    });
+    /**
+     * 删除商品
+     */
+    app.post('/deleteShop', function (req, res, next) {
+     shop.deleteShops({
+        sql: "DELETE FROM shop WHERE id = " + req.body.id
+      }, function (data) {
+        res.send(data);
+      });
     });
 };

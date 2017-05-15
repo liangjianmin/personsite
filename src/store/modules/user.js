@@ -38,7 +38,7 @@ const mutations = {
 
 const actions = {
     user({commit}, payload){
-        axios.get('pages?p=' + payload.queryStr, {}).then(res => {
+        axios.get('pages?p=' + payload.queryStr).then(res => {
             commit({
                 type: 'user',
                 res: res.data

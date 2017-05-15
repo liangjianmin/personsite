@@ -2,6 +2,7 @@ var action_user = require("../action/user.js");
 var shop = require("../action/shop.js");
 
 var conn_user = require("../models/user.js");
+var shop_view = require("../models/shop.js");
 module.exports = function (app) {
     /**
      * 获取用户
@@ -64,10 +65,46 @@ module.exports = function (app) {
                     res.send(500);
                 }
             });
-
         });
 
     });
+
+    /**
+     * 获取商品列表
+     */
+    app.get('/shoplist', function (req, res) {
+        var p = req.query.p;
+        var limit = 5;
+        var count;
+        var totalPages;
+        shop_view.getShopCount(function (data) {
+            if (data) {
+                count=data.data[0].count;
+                totalPages = Math.ceil(data.data[0].count/limit);
+            }
+            shop_view.getshops((p-1)*limit, limit, function (data) {
+                if (data.status) {
+                    res.send({list:data,maxPage:totalPages,currage:p,count:count,limit:limit});
+                } else {
+                    res.send(500);
+                }
+            });
+        })
+    });
+
+    /**
+     * 获取id商品
+     */
+    app.get('/getshop', function (req, res) {
+    var p = req.query.id;
+    shop_view.getshop(p, function (data) {
+      if (data.status) {
+        res.send(data);
+      } else {
+        res.send(500);
+      }
+    });
+  });
 
     /**
      * 重定向

@@ -38,10 +38,10 @@ const Shoplist = resolve => {
         resolve(require('./components/Shoplist.vue'))
     })
 }
-const Banner = resolve => {
-    require.ensure(['./components/Banner.vue'], () => {
-        resolve(require('./components/Banner.vue'))
-    })
+const EditShop = resolve => {
+  require.ensure(['./components/EditShop.vue'], () => {
+    resolve(require('./components/EditShop.vue'))
+  })
 }
 export  default[
     {
@@ -70,43 +70,41 @@ export  default[
         name: '发布'
     },
     {
-        /**
-         * ljm
-         */
-        path: '/shopsave',
-        component: ShopSave,
-        name: '商品添加'
-    },
-    {
-        /**
-         * ljm
-         */
-        path: '/shoplist',
-        component: Shoplist,
-        name: '商品管理'
-    },
-    {
-        path: '/login',
-        component: Login,
-        name: '登录',
-        meta: {auth: false}
-    },
-  /*
-  * 添加轮播图
-  * luo
-  * */
-    {
-        path: '/Banner',
-        component: Banner,
-        name: '设置图片',
-        meta: {auth: false}
-    },
-    {
-        path: '/',
-        redirect: '/home'
-    },
-    {
-        path: '*',
-        redirect: '/home'
-    }
+      /**
+       * ljm
+       */
+        path: '/editshop',
+        component: EditShop,
+        name: '商品编辑'
+      },
+      {
+          /**
+           * ljm
+           */
+          path: '/shopsave',
+          component: ShopSave,
+          name: '商品添加'
+      },
+      {
+          /**
+           * ljm
+           */
+          path: '/shoplist',
+          component: Shoplist,
+          name: '商品管理'
+      },
+      {
+          path: '/login',
+          component: Login,
+          name: '登录',
+          meta: {auth: false}
+      },
+      {
+          path: '/',
+          redirect: '/home'
+      },
+      {
+          path: '*',
+          redirect: '/home'
+      }
 ];

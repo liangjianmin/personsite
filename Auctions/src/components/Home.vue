@@ -23,6 +23,7 @@
             <el-col :span="24">
                 <el-carousel trigger="click" height="265px">
                     <el-carousel-item v-for="item in 4" :key="item">
+                      <img src="../../static/s.jpg" alt="">
                         <h3>{{ item }}</h3>
                     </el-carousel-item>
                 </el-carousel>
@@ -73,9 +74,11 @@
         line-height: 150px;
         margin: 0;
     }
+
     .home .el-carousel__item:nth-child(2n) {
         background-color: #99a9bf;
     }
+
     .home .el-carousel__item:nth-child(2n+1) {
         background-color: #d3dce6;
     }
@@ -86,10 +89,12 @@
         font-size: 13px;
         color: #999;
     }
+
     .home .bottom {
         margin-top: 13px;
         line-height: 12px;
     }
+
     .home .button {
         padding: 0;
         float: right;

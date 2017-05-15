@@ -13,8 +13,8 @@
             <el-form-item label="评分：" prop="evaluate">
                 <el-rate v-model="ruleForm.evaluate" disabled   text-template="{value}"></el-rate>
             </el-form-item>
-            <el-form-item label="商品描述：" prop="desc">
-                <el-input type="textarea" v-model="ruleForm.desc"></el-input>
+            <el-form-item label="商品描述：" prop="describe">
+                <el-input type="textarea" v-model="ruleForm.describe"></el-input>
             </el-form-item>
             <el-form-item label="上传图片：">
                 <el-upload  name="inputFile"  action="shopupload"  list-type="picture-card" :before-upload="handlePictureBefore" :on-change="handlePictureChange" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" :on-success="handleAvatarSuccess">
@@ -37,6 +37,7 @@
     }
 </style>
 <script>
+    import {mapState} from 'vuex'
     export default {
         name: 'shopsave',
         data() {
@@ -49,7 +50,7 @@
                     price: 0,
                     stocknum: 0,
                     evaluate: 0,
-                    desc: '',
+                    describe: '',
                     imgid: 0,
                 },
                 rules: {
@@ -57,12 +58,15 @@
                         {required: true, message: '请输入商品名称', trigger: 'change'},
                         {min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'change'}
                     ],
-                    desc: [
+                    describe: [
                         {required: true, message: '请输入商品描述', trigger: 'change'}
                     ]
                 }
             };
         },
+        computed: mapState({
+            user: state => state.user.sessiondata
+        }),
         mounted(){
 
         },
@@ -71,42 +75,50 @@
                 var self = this;
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        if(this.ruleForm.imgid == 0){
+                        if(this.$store.state.user.sessiondata !=''){
+                            if(this.ruleForm.imgid == 0){
+                                this.$message({
+                                    type: 'error',
+                                    message: '请至少上传一张图片',
+                                    duration: 1000
+                                });
+                            }else{
+                                this.$http.post('shopsave', {
+                                    shopname: this.ruleForm.shopname,
+                                    price: this.ruleForm.price,
+                                    describe: this.ruleForm.describe,
+                                    evaluate: this.ruleForm.evaluate,
+                                    stocknum: this.ruleForm.stocknum,
+                                    imgid: this.ruleForm.imgid
+                                }).then(res => {
+                                    if (res.data.status) {
+                                        this.$message({
+                                            type: 'success',
+                                            message: '商品添加成功',
+                                            duration: 1000,
+                                            onClose: function () {
+                                                self.$router.push({path: '/shoplist'});
+                                            }
+                                        });
+                                    } else {
+                                        this.$message({
+                                            type: 'error',
+                                            message: '发布失败',
+                                            duration: 1000,
+                                            onClose: function () {
+
+                                            }
+                                        });
+                                    }
+                                }, error => {
+                                    console.log('请启动node server')
+                                });
+                            }
+                        }else{
                             this.$message({
                                 type: 'error',
-                                message: '请至少上传一张图片',
+                                message: '未登录',
                                 duration: 1000
-                            });
-                        }else{
-                            this.$http.post('shopsave', {
-                                shopname: this.ruleForm.shopname,
-                                price: this.ruleForm.price,
-                                desc: this.ruleForm.desc,
-                                evaluate: this.ruleForm.evaluate,
-                                stocknum: this.ruleForm.stocknum,
-                                imgid: this.ruleForm.imgid
-                            }).then(res => {
-                                if (res.data.status) {
-                                    this.$message({
-                                        type: 'success',
-                                        message: '商品添加成功',
-                                        duration: 1000,
-                                        onClose: function () {
-                                           self.$router.push({path: '/shoplist'});
-                                        }
-                                    });
-                                } else {
-                                    this.$message({
-                                        type: 'error',
-                                        message: '发布失败',
-                                        duration: 1000,
-                                        onClose: function () {
-
-                                        }
-                                    });
-                                }
-                            }, error => {
-                                console.log('请启动node server')
                             });
                         }
                     } else {
