@@ -3,14 +3,43 @@
     <NavHeader v-if="headShow"></NavHeader>
     <section class="page">
       <el-col :span="3" class="section-left" v-if="headShow">
-        <el-menu class="el-menu-vertical-demo" :router="true">
+        <el-menu class="el-menu-vertical-demo" :router="true" default-active="/home">
           <el-menu-item index="/home"><i class="el-icon-menu"></i>主页</el-menu-item>
+          <el-submenu index="1" v-if="user.role == 0 || user.role == 1">
+            <template slot="title"><i class="el-icon-message"></i>用户管理</template>
+            <el-menu-item-group>
+              <el-menu-item v-if="user.role == 0" index="/adduser">增加用户</el-menu-item>
+              <el-menu-item v-if="user.role == 0 || user.role == 1" index="/userlist">用户操作</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+          <el-submenu index="2">
+            <template slot="title"><i class="el-icon-message"></i>商品管理</template>
+            <el-menu-item-group>
+              <el-menu-item v-if="user.role == 0 || user.role == 1 || user.role == 2" index="/shopsave">商品添加</el-menu-item>
+              <el-menu-item v-if="user.role == 0 || user.role == 1 || user.role == 2" index="/shoplist">商品操作</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+          <el-submenu index="3" v-if="user.role == 0 || user.role == 1">
+            <template slot="title"><i class="el-icon-message"></i>库存管理</template>
+            <el-menu-item-group>
+              <el-menu-item v-if="user.role == 0 || user.role == 1" index="">库存操作</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+          <el-submenu index="4">
+            <template slot="title"><i class="el-icon-message"></i>图片管理</template>
+            <el-menu-item-group>
+              <el-menu-item v-if="user.role == 0 || user.role == 1" index="">添加图片</el-menu-item>
+              <el-menu-item v-if="user.role == 0 || user.role == 1 || user.role == 2" index="">图片列表</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+       <!--
           <el-menu-item v-if="user.role == 0" index="/adduser"><i class="el-icon-menu"></i>增加用户</el-menu-item>
           <el-menu-item v-if="user.role == 0 || user.role == 1" index="/userlist"><i class="el-icon-setting"></i>用户管理</el-menu-item>
           <el-menu-item v-if="user.role == 0 || user.role == 1 || user.role == 2" index="/publish"><i class="el-icon-setting"></i>发布活动</el-menu-item>
           <el-menu-item v-if="user.role == 0 || user.role == 1 || user.role == 2" index="/shopsave"><i class="el-icon-setting"></i>商品添加</el-menu-item>
           <el-menu-item v-if="user.role == 0 || user.role == 1 || user.role == 2" index="/shoplist"><i class="el-icon-setting"></i>商品管理</el-menu-item>
           <el-menu-item v-if="user.role == 0 || user.role == 1" index=""><i class="el-icon-setting"></i>库存管理</el-menu-item>
+          -->
         </el-menu>
       </el-col>
       <el-col :span="21" class="section-right" v-if="headShow">
