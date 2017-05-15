@@ -6,7 +6,7 @@ var fs = require('fs');
 
 module.exports = function (app) {
     /**
-     * 商品添加
+     * shop表添加商品信息且记录库存，同时更新stock表的库存统计
      */
     app.post('/shopsave', function (req, res, next) {
         shop.addShop({
@@ -17,11 +17,22 @@ module.exports = function (app) {
                 evaluate: req.body.evaluate,
                 stocknum: req.body.stocknum,
                 imgid: req.body.imgid,
-                time: moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
+                type: req.body.type,
+                shopnumber: req.body.shopnumber,
+                storagetime: moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
             },
             sql: "INSERT INTO shop SET ?"
         }, function (data) {
-            res.send(data);
+            if (data.status) {
+                shop.updateStock({
+                    sql: `UPDATE stock SET total = (SELECT SUM(stocknum) FROM shop), 
+                    typecostume = (SELECT SUM(stocknum) FROM shop s WHERE s.type = 0),
+                    typeelectrical = (SELECT SUM(stocknum) FROM shop s WHERE s.type = 1),
+                    typedigital = (SELECT SUM(stocknum) FROM shop s WHERE s.type = 2)`
+                }, function (data) {
+                })
+                res.send(data);
+            }
         });
     });
     /**
@@ -48,20 +59,20 @@ module.exports = function (app) {
                          * 记录用户name
                          * callback id关联其他表
                          */
-                        if(req.session.user){
+                        if (req.session.user) {
                             shop.addPic({
                                 data: {
                                     url: inputFile.originalFilename,
                                     from: req.session.user,
-                                    desc:"shop table use",
+                                    desc: "shop table use",
                                     time: moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
                                 },
                                 sql: "INSERT INTO pics SET ?"
                             }, function (data) {
                                 res.send(data);
                             })
-                        }else{
-                            res.send({staus:false,msg:'请登录'});
+                        } else {
+                            res.send({staus: false, msg: '请登录'});
                         }
                     }
                 });
@@ -72,10 +83,10 @@ module.exports = function (app) {
      * 删除商品
      */
     app.post('/deleteShop', function (req, res, next) {
-     shop.deleteShops({
-        sql: "DELETE FROM shop WHERE id = " + req.body.id
-      }, function (data) {
-        res.send(data);
-      });
+        shop.deleteShops({
+            sql: "DELETE FROM shop WHERE id = " + req.body.id
+        }, function (data) {
+            res.send(data);
+        });
     });
 };

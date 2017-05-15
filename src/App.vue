@@ -22,7 +22,7 @@
           <el-submenu index="3" v-if="user.role == 0 || user.role == 1">
             <template slot="title"><i class="el-icon-message"></i>库存管理</template>
             <el-menu-item-group>
-              <el-menu-item v-if="user.role == 0 || user.role == 1" index="">库存操作</el-menu-item>
+              <el-menu-item v-if="user.role == 0 || user.role == 1" index="/stock">库存容量</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
           <el-submenu index="4">

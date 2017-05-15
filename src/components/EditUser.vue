@@ -10,8 +10,7 @@
       </el-form-item>
       <el-form-item label="权限">
         <el-select v-model="ruleForm.role" clearable placeholder="请选择">
-          <el-option v-for="item in rolesoption" :key="item.id" :label="item.label" :value="item.value"
-                     :disabled="item.disabled"></el-option>
+          <el-option v-for="item in rolesoption" :key="item.id" :label="item.label" :value="item.value" :disabled="item.disabled"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="密码" prop="password">

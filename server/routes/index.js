@@ -23,12 +23,12 @@ module.exports = function (app) {
     app.get('/getuser', function (req, res) {
         conn_user.getUsers(function (data) {
             var id = req.query.id;
-            var userdata={};
+            var userdata = {};
             if (data.status) {
-                userdata=data.data.filter(function (value) {
-                    return value['id']==id;
+                userdata = data.data.filter(function (value) {
+                    return value['id'] == id;
                 })
-                res.send({data:userdata});
+                res.send({data: userdata});
             } else {
                 res.send(500);
             }
@@ -45,12 +45,12 @@ module.exports = function (app) {
         var totalPages;
         conn_user.getTableCount(function (data) {
             if (data) {
-                count=data.data[0].count;
-                totalPages = Math.ceil(data.data[0].count/limit);
+                count = data.data[0].count;
+                totalPages = Math.ceil(data.data[0].count / limit);
             }
-            conn_user.getUserpage((p-1)*limit, limit, function (data) {
+            conn_user.getUserpage((p - 1) * limit, limit, function (data) {
                 if (data.status) {
-                    res.send({list:data,maxPage:totalPages,currage:p,count:count,limit:limit});
+                    res.send({list: data, maxPage: totalPages, currage: p, count: count, limit: limit});
                 } else {
                     res.send(500);
                 }
@@ -69,12 +69,12 @@ module.exports = function (app) {
         var totalPages;
         shop_view.getShopCount(function (data) {
             if (data) {
-                count=data.data[0].count;
-                totalPages = Math.ceil(data.data[0].count/limit);
+                count = data.data[0].count;
+                totalPages = Math.ceil(data.data[0].count / limit);
             }
-            shop_view.getshops((p-1)*limit, limit, function (data) {
+            shop_view.getshops((p - 1) * limit, limit, function (data) {
                 if (data.status) {
-                    res.send({list:data,maxPage:totalPages,currage:p,count:count,limit:limit});
+                    res.send({list: data, maxPage: totalPages, currage: p, count: count, limit: limit});
                 } else {
                     res.send(500);
                 }
@@ -86,15 +86,28 @@ module.exports = function (app) {
      * 获取id商品
      */
     app.get('/getshop', function (req, res) {
-    var p = req.query.id;
-    shop_view.getshop(p, function (data) {
-      if (data.status) {
-        res.send(data);
-      } else {
-        res.send(500);
-      }
+        var p = req.query.id;
+        shop_view.getshop(p, function (data) {
+            if (data.status) {
+                res.send(data);
+            } else {
+                res.send(500);
+            }
+        });
     });
-  });
+
+    /**
+     * 查询库存数量
+     */
+    app.get('/stock', function (req, res) {
+        shop_view.getStock(function (data) {
+            if (data.status) {
+                res.send(data);
+            } else {
+                res.send(500);
+            }
+        });
+    });
 
     /**
      * 重定向

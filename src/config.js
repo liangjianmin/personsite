@@ -39,9 +39,14 @@ const Shoplist = resolve => {
     })
 }
 const EditShop = resolve => {
-  require.ensure(['./components/EditShop.vue'], () => {
-    resolve(require('./components/EditShop.vue'))
-  })
+    require.ensure(['./components/EditShop.vue'], () => {
+        resolve(require('./components/EditShop.vue'))
+    })
+}
+const Stock = resolve => {
+    require.ensure(['./components/Stock.vue'], () => {
+        resolve(require('./components/Stock.vue'))
+    })
 }
 export  default[
     {
@@ -70,41 +75,49 @@ export  default[
         name: '发布'
     },
     {
-      /**
-       * ljm
-       */
+        /**
+         * ljm
+         */
         path: '/editshop',
         component: EditShop,
         name: '商品编辑'
-      },
-      {
-          /**
-           * ljm
-           */
-          path: '/shopsave',
-          component: ShopSave,
-          name: '商品添加'
-      },
-      {
-          /**
-           * ljm
-           */
-          path: '/shoplist',
-          component: Shoplist,
-          name: '商品管理'
-      },
-      {
-          path: '/login',
-          component: Login,
-          name: '登录',
-          meta: {auth: false}
-      },
-      {
-          path: '/',
-          redirect: '/home'
-      },
-      {
-          path: '*',
-          redirect: '/home'
-      }
+    },
+    {
+        /**
+         * ljm
+         */
+        path: '/shopsave',
+        component: ShopSave,
+        name: '商品添加'
+    },
+    {
+        /**
+         * ljm
+         */
+        path: '/shoplist',
+        component: Shoplist,
+        name: '商品管理'
+    },
+    {
+        /**
+         * ljm
+         */
+        path: '/stock',
+        component: Stock,
+        name: '库存容量'
+    },
+    {
+        path: '/login',
+        component: Login,
+        name: '登录',
+        meta: {auth: false}
+    },
+    {
+        path: '/',
+        redirect: '/home'
+    },
+    {
+        path: '*',
+        redirect: '/home'
+    }
 ];

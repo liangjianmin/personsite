@@ -4,6 +4,14 @@
             <el-form-item label="商品名称：" prop="shopname">
                 <el-input v-model="ruleForm.shopname"></el-input>
             </el-form-item>
+            <el-form-item label="商品编号：" prop="shopnumber">
+                <el-input v-model="ruleForm.shopnumber"></el-input>
+            </el-form-item>
+            <el-form-item label="商品类别">
+                <el-select v-model="ruleForm.type" clearable placeholder="请选择">
+                    <el-option v-for="item in rolesoption" :key="item.id" :label="item.label" :value="item.value"></el-option>
+                </el-select>
+            </el-form-item>
             <el-form-item label="价格：" prop="price">
                 <el-input-number v-model="ruleForm.price" :min="0" :max="10000"></el-input-number>
             </el-form-item>
@@ -48,11 +56,24 @@
                 ruleForm: {
                     shopname: '',
                     price: 0,
+                    shopnumber:'',
                     stocknum: 0,
                     evaluate: 0,
                     describe: '',
                     imgid: 0,
+                    type:''
                 },
+                rolesoption: [{
+                    value: '0',
+                    label: '服饰美妆'
+                }, {
+                    value: '1',
+                    label: '家用电器'
+                }, {
+                    value: '2',
+                    label: '电脑数码',
+                    disabled: true
+                }],
                 rules: {
                     shopname: [
                         {required: true, message: '请输入商品名称', trigger: 'change'},
@@ -88,8 +109,10 @@
                                     price: this.ruleForm.price,
                                     describe: this.ruleForm.describe,
                                     evaluate: this.ruleForm.evaluate,
+                                    imgid: this.ruleForm.imgid,
                                     stocknum: this.ruleForm.stocknum,
-                                    imgid: this.ruleForm.imgid
+                                    shopnumber:this.ruleForm.shopnumber,
+                                    type:this.ruleForm.type
                                 }).then(res => {
                                     if (res.data.status) {
                                         this.$message({
