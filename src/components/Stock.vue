@@ -1,6 +1,11 @@
 <template>
     <div>
-        {{stock}}
+        <div v-for="item in stock">
+          <p> total：{{item.total}}</p>
+          <p> typecostume：{{item.typecostume}}</p>
+          <p>typeelectrical：{{item.typeelectrical}}</p>
+          <p>typedigital：{{item.typedigital}}</p>
+        </div>
     </div>
 </template>
 
@@ -19,10 +24,10 @@
         },
         computed: mapState({
             stock (state) {
-                var obj = Object.assign(state.shop.stock);
-                if (obj.hasOwnProperty('data')) {
-                    return obj.data[0];
-                }
+              var obj=Object.assign(state.shop.stock);
+              if(obj.hasOwnProperty('data')){
+                  return obj.data;
+              }
             }
         }),
         mounted(){
