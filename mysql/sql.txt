@@ -30,3 +30,5 @@ UPDATE stock SET total = (SELECT SUM(stocknum) FROM shop),
 		typecostume = (SELECT SUM(stocknum) FROM shop s WHERE s.type = 0), 
 		typeelectrical = (SELECT SUM(stocknum) FROM shop s WHERE s.type = 1), 
 		typedigital = (SELECT SUM(stocknum) FROM shop s WHERE s.type = 2);
+		
+		
