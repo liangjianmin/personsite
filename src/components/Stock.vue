@@ -20,7 +20,9 @@
     export default {
         name: 'stock',
         data() {
-            return {}
+            return {
+
+            }
         },
         computed: mapState({
             stock (state) {
