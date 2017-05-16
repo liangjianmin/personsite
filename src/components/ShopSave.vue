@@ -9,7 +9,7 @@
             </el-form-item>
             <el-form-item label="商品类别">
                 <el-select v-model="ruleForm.type" clearable placeholder="请选择">
-                    <el-option v-for="item in rolesoption" :key="item.id" :label="item.label" :value="item.value"></el-option>
+                    <el-option v-for="item in rolesoption" :key="item.id" :label="item.label" :value="item.value" :disabled="item.disabled"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="价格：" prop="price">
@@ -71,8 +71,7 @@
                     label: '家用电器'
                 }, {
                     value: '2',
-                    label: '电脑数码',
-                    disabled: true
+                    label: '电脑数码'
                 }],
                 rules: {
                     shopname: [

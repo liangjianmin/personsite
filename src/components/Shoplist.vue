@@ -22,17 +22,13 @@
             </el-table-column>
             <el-table-column label="操作">
                 <template scope="scope">
-                    <el-button size="small" @click="handleEdit(scope.$index, scope.row)"
-                               :disabled="scope.row.role == '超级管理员' ? user.role == 1 || user.role == 2 : false">编辑
-                    </el-button>
-                    <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)"
-                               :disabled="scope.row.role == '超级管理员' ? user.role == 1 || user.role == 2 : false">删除
-                    </el-button>
+                    <el-button size="small" @click="handleEdit(scope.$index, scope.row)" :disabled="scope.row.role == '超级管理员' ? user.role == 1 || user.role == 2 : false">编辑</el-button>
+                    <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)" :disabled="scope.row.role == '超级管理员' ? user.role == 1 || user.role == 2 : false">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
         <div class="page-block">
-
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage"  :page-size="page.limit" layout="total,prev, pager, next, jumper" :total="page.count"></el-pagination>
         </div>
     </el-col>
 </template>
@@ -64,6 +60,7 @@
         },
         computed: mapState({
             user: state => state.user.sessiondata,
+            page:state => state.shop.shoplist,
             pagelist (state) {
                 var obj = Object.assign(state.shop.shoplist);
                 if (obj.hasOwnProperty('list')) {
@@ -93,7 +90,6 @@
                 this.$router.push({path: '/editshop', query: {id: row.id}});
             },
             handleDelete(index, row){
-                alert()
                 var self = this;
                 this.$confirm('确定删除该用户嘛', '提示', {
                     confirmButtonText: '确定',
@@ -119,7 +115,11 @@
                 console.log(`每页 ${val} 条`);
             },
             handleCurrentChange(val) {
-
+                this.currentPage=val;
+                this.$store.dispatch({
+                    type: 'shop',
+                    queryStr: this.currentPage
+                });
             }
         }
     }

@@ -64,7 +64,7 @@ module.exports = function (app) {
      */
     app.get('/shoplist', function (req, res) {
         var p = req.query.p;
-        var limit = 10;
+        var limit = 5;
         var count;
         var totalPages;
         shop_view.getShopCount(function (data) {
