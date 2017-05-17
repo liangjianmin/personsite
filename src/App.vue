@@ -54,8 +54,8 @@
 </style>
 <script>
     import Vue from 'vue'
-    import Home from './components/Home.vue'
-    import NavHeader from './components/Nav.vue'
+    import Home from './views/home/Home.vue'
+    import NavHeader from './views/common/Nav.vue'
     import {mapGetters} from 'vuex'
     import {mapState} from 'vuex'
     export default {

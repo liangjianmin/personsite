@@ -1,53 +1,14 @@
-const Home = resolve => {
-    require.ensure(['./components/Home.vue'], () => {
-        resolve(require('./components/Home.vue'))
-    })
-}
-const Adduser = resolve => {
-    require.ensure(['./components/User.vue'], () => {
-        resolve(require('./components/User.vue'))
-    })
-}
-const Userlist = resolve => {
-    require.ensure(['./components/Userlist.vue'], () => {
-        resolve(require('./components/Userlist.vue'))
-    })
-}
-const EditUser = resolve => {
-    require.ensure(['./components/EditUser.vue'], () => {
-        resolve(require('./components/EditUser.vue'))
-    })
-}
-const Login = resolve => {
-    require.ensure(['./components/Login.vue'], () => {
-        resolve(require('./components/Login.vue'))
-    })
-}
-const Publish = resolve => {
-    require.ensure(['./components/Publish.vue'], () => {
-        resolve(require('./components/Publish.vue'))
-    })
-}
-const ShopSave = resolve => {
-    require.ensure(['./components/ShopSave.vue'], () => {
-        resolve(require('./components/ShopSave.vue'))
-    })
-}
-const Shoplist = resolve => {
-    require.ensure(['./components/Shoplist.vue'], () => {
-        resolve(require('./components/Shoplist.vue'))
-    })
-}
-const EditShop = resolve => {
-    require.ensure(['./components/EditShop.vue'], () => {
-        resolve(require('./components/EditShop.vue'))
-    })
-}
-const Stock = resolve => {
-    require.ensure(['./components/Stock.vue'], () => {
-        resolve(require('./components/Stock.vue'))
-    })
-}
+const Home = resolve => require(['./views/home/Home.vue'], resolve)  //ljm
+const Adduser = resolve => require(['./views/user/User.vue'], resolve)//ljm
+const Userlist = resolve => require(['./views/user/UserList.vue'], resolve)//ljm
+const EditUser = resolve => require(['./views/user/EditUser.vue'], resolve)//ljm
+const Login = resolve => require(['./views/user/Login.vue'], resolve)//ljm
+const Publish = resolve => require(['./views/home/Publish.vue'], resolve)//ljm
+const ShopSave = resolve => require(['./views/shop/ShopSave.vue'], resolve)//ljm
+const Shoplist = resolve => require(['./views/shop/Shoplist.vue'], resolve)//ljm
+const EditShop = resolve => require(['./views/shop/EditShop.vue'], resolve)//ljm
+const Stock = resolve => require(['./views/stock/Stock.vue'], resolve)//ljm
+
 export  default[
     {
         path: '/home',
@@ -75,33 +36,21 @@ export  default[
         name: '发布'
     },
     {
-        /**
-         * ljm
-         */
         path: '/editshop',
         component: EditShop,
         name: '商品编辑'
     },
     {
-        /**
-         * ljm
-         */
         path: '/shopsave',
         component: ShopSave,
         name: '商品添加'
     },
     {
-        /**
-         * ljm
-         */
         path: '/shoplist',
         component: Shoplist,
         name: '商品管理'
     },
     {
-        /**
-         * ljm
-         */
         path: '/stock',
         component: Stock,
         name: '库存容量'

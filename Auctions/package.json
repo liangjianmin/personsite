@@ -1,7 +1,7 @@
 {
-  "name": "vuedola",
+  "name": "website",
   "version": "1.0.0",
-  "description": "A Vue.js project",
+  "description": "Client",
   "author": "liangjianmin",
   "private": true,
   "scripts": {
