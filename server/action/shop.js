@@ -13,7 +13,7 @@ module.exports = function (app) {
             data: {
                 shopname: req.body.shopname,
                 price: req.body.price,
-                describe: req.body.describe,
+                describes: req.body.describes,
                 evaluate: req.body.evaluate,
                 stocknum: req.body.stocknum,
                 imgid: req.body.imgid,
@@ -87,6 +87,39 @@ module.exports = function (app) {
             sql: "DELETE FROM shop WHERE id = " + req.body.id
         }, function (data) {
             res.send(data);
+        });
+    });
+
+    /**
+     * 更新商品列表&更新库存表
+     */
+    app.post('/shopupdate', function (req, res, next) {
+        console.log(req.body)
+        shop.updateShop({
+            sql: "update shop SET shopname=?,price=?,describes=?,evaluate=?,imgid=?,stocknum=?,shopnumber=?,type=?,storagetime=? WHERE id = ?",
+            params: [
+                req.body.shopname,
+                req.body.price,
+                req.body.describes,
+                req.body.evaluate,
+                req.body.imgid,
+                req.body.stocknum,
+                req.body.shopnumber,
+                req.body.type,
+                moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+                req.body.id
+            ]
+        }, function (data) {
+            if (data.status) {
+                shop.updateStock({
+                    sql: `UPDATE stock SET total = (SELECT SUM(stocknum) FROM shop), 
+                    typecostume = (SELECT SUM(stocknum) FROM shop s WHERE s.type = 0),
+                    typeelectrical = (SELECT SUM(stocknum) FROM shop s WHERE s.type = 1),
+                    typedigital = (SELECT SUM(stocknum) FROM shop s WHERE s.type = 2)`
+                }, function (data) {
+                })
+                res.send(data);
+            }
         });
     });
 };

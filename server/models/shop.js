@@ -18,6 +18,14 @@ module.exports = {
         mysqlDB.updateTable(data, callback)
     },
     /**
+     * 更新商品表
+     * @param data
+     * @param callback
+     */
+    updateShop: function (data, callback) {
+        mysqlDB.updateTable(data, callback)
+    },
+    /**
      * 返回商品总个数
      * @param callback
      */

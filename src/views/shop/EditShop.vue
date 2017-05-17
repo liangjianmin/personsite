@@ -19,10 +19,18 @@
                 <el-input-number v-model="ruleForm.stocknum" :min="0" :max="500"></el-input-number>
             </el-form-item>
             <el-form-item label="评分：" prop="evaluate">
-                <el-rate v-model="ruleForm.evaluate" text-template="{value}"></el-rate>
+                <el-rate  disabled show-text v-model="ruleForm.evaluate" text-template="{value}" text-color="#ff9900"></el-rate>
             </el-form-item>
-            <el-form-item label="商品描述：" prop="describe">
-                <el-input type="textarea" v-model="ruleForm.describe"></el-input>
+            <el-form-item label="商品描述：" prop="describes">
+                <el-input type="textarea" v-model="ruleForm.describes"></el-input>
+            </el-form-item>
+            <el-form-item label="上传图片：">
+                <el-upload  :file-list="fileList" name="inputFile"  action="shopupload"  list-type="picture-card" :before-upload="handlePictureBefore" :on-change="handlePictureChange" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" :on-success="handleAvatarSuccess">
+                    <i class="el-icon-plus"></i>
+                </el-upload>
+                <el-dialog v-model="dialogVisible" size="tiny">
+                    <img width="100%" :src="dialogImageUrl" alt="">
+                </el-dialog>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="submitForm('ruleForm')">确定</el-button>
@@ -35,6 +43,9 @@
     .el-rate {
         line-height: 2;
     }
+    .el-form-item .el-form-item__content{
+        white-space: nowrap !important;
+    }
 </style>
 <script type="es6">
     import {mapState} from 'vuex'
@@ -43,13 +54,20 @@
         name: 'editshop',
         data() {
             return {
+                uploadFlag: false,
+                dialogImageUrl: '',
+                dialogVisible: false,
+                fileList: [{url: ''}],
                 ruleForm: {
                     shopname: '',
                     price: 0,
+                    shopnumber:'',
                     stocknum: 0,
                     evaluate: 0,
-                    describe: '',
-                    type:''
+                    describes: '',
+                    imgid: 0,
+                    type:0,
+                    id:0
                 },
                 rules: {},
                 rolesoption: [{
@@ -82,6 +100,8 @@
             getshop(path){
                 this.$http.get('getshop?id=' + path).then(res => {
                     this.ruleForm = res.data.data[0];
+                    /*设置图片地址*/
+                    this.fileList[0].url='/static/upload/shop/'+res.data.data[0].url;
                     if(this.ruleForm.type == 0){
                         this.ruleForm.type='服饰美妆';
                     } else if(this.ruleForm.type == 1){
@@ -97,7 +117,28 @@
                 var self = this;
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-
+                        this.$http.post('shopupdate', {
+                            shopname: this.ruleForm.shopname,
+                            price: this.ruleForm.price,
+                            describes: this.ruleForm.describes,
+                            evaluate: this.ruleForm.evaluate,
+                            imgid: this.ruleForm.imgid,
+                            stocknum: this.ruleForm.stocknum,
+                            shopnumber:this.ruleForm.shopnumber,
+                            type:this.ruleForm.type,
+                            id: this.ruleForm.id
+                        }).then(res => {
+                            this.$message({
+                                type: 'success',
+                                message: '修改商品成功',
+                                duration: 1000,
+                                onClose: function () {
+                                    self.$router.push({path: '/shoplist'});
+                                }
+                            });
+                        }, error => {
+                            console.log('请启动node server')
+                        });
                     } else {
                         console.log('error submit!!');
                         return false;
@@ -106,6 +147,33 @@
             },
             resetForm(formName) {
                 this.$refs[formName].resetFields();
+            },
+            handleRemove(file, fileList) {
+                this.uploadFlag = false;
+            },
+            handlePictureCardPreview(file) {
+                this.dialogImageUrl = file.url;
+                this.dialogVisible = true;
+            },
+            handleAvatarSuccess(res, file, fileList) {
+                if (res.status) {
+                    this.ruleForm.imgid = res.id;
+                }
+            },
+            handlePictureBefore(file){
+                if (this.uploadFlag) {
+                    return false;
+                }
+            },
+            handlePictureChange(file, fileList){
+                if (fileList.length > 1) {
+                    this.uploadFlag = true;
+                    this.$message({
+                        type: 'error',
+                        message: '亲，只能上传一张图片',
+                        duration: 1000
+                    });
+                }
             }
         }
     }

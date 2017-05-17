@@ -20,9 +20,10 @@
             </el-form-item>
             <el-form-item label="评分：" prop="evaluate">
                 <el-rate v-model="ruleForm.evaluate" disabled   text-template="{value}"></el-rate>
+                <span class="text">（客户端选择）</span>
             </el-form-item>
-            <el-form-item label="商品描述：" prop="describe">
-                <el-input type="textarea" v-model="ruleForm.describe"></el-input>
+            <el-form-item label="商品描述：" prop="describes">
+                <el-input type="textarea" v-model="ruleForm.describes"></el-input>
             </el-form-item>
             <el-form-item label="上传图片：">
                 <el-upload  name="inputFile"  action="shopupload"  list-type="picture-card" :before-upload="handlePictureBefore" :on-change="handlePictureChange" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" :on-success="handleAvatarSuccess">
@@ -43,6 +44,15 @@
     .el-rate{
         line-height: 2;
     }
+    .el-form-item{
+        position: relative;
+    }
+    .text{
+        position: absolute;
+        left: 129px;
+        top: 1px;
+        color: #999;
+    }
 </style>
 <script>
     import {mapState} from 'vuex'
@@ -59,7 +69,7 @@
                     shopnumber:'',
                     stocknum: 0,
                     evaluate: 0,
-                    describe: '',
+                    describes: '',
                     imgid: 0,
                     type:''
                 },
@@ -78,7 +88,7 @@
                         {required: true, message: '请输入商品名称', trigger: 'change'},
                         {min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'change'}
                     ],
-                    describe: [
+                    describes: [
                         {required: true, message: '请输入商品描述', trigger: 'change'}
                     ]
                 }
@@ -106,7 +116,7 @@
                                 this.$http.post('shopsave', {
                                     shopname: this.ruleForm.shopname,
                                     price: this.ruleForm.price,
-                                    describe: this.ruleForm.describe,
+                                    describes: this.ruleForm.describes,
                                     evaluate: this.ruleForm.evaluate,
                                     imgid: this.ruleForm.imgid,
                                     stocknum: this.ruleForm.stocknum,

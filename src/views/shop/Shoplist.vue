@@ -7,7 +7,7 @@
             <el-table-column prop="price" label="价格（元）"></el-table-column>
             <el-table-column property="stocknum" label="库存（件，个）"></el-table-column>
             <el-table-column prop="evaluate" label="评分"></el-table-column>
-            <el-table-column prop="describe" label="商品描述"></el-table-column>
+            <el-table-column prop="describes" label="商品描述"></el-table-column>
             <el-table-column prop="type" label="商品类别">
                 <template scope="scope">
                     <el-tag type="success"  close-transition v-if="scope.row.type == 0">{{scope.row.type == 0 ? '服饰美妆':''}}</el-tag>
