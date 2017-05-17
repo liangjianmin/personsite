@@ -101,7 +101,7 @@
                 this.$http.get('getshop?id=' + path).then(res => {
                     this.ruleForm = res.data.data[0];
                     /*设置图片地址*/
-                    this.fileList[0].url='/static/upload/shop/'+res.data.data[0].url;
+                    this.fileList[0].url='http://127.0.0.1:3838/static/upload/shop/'+res.data.data[0].url;
                     if(this.ruleForm.type == 0){
                         this.ruleForm.type='服饰美妆';
                     } else if(this.ruleForm.type == 1){

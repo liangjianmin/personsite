@@ -1,8 +1,4 @@
-const Home = resolve => {
-    require.ensure(['./components/Home.vue'], () => {
-        resolve(require('./components/Home.vue'))
-    })
-}
+const Home = resolve => require(['./views/home/Home.vue'], resolve)
 export  default[
     {
         path: '/home',

@@ -17,7 +17,7 @@
             </el-table-column>
             <el-table-column prop="url" label="图片" width="100">
                 <template scope="scope">
-                    <img class="pic" :src="'/static/upload/shop/'+scope.row.url">
+                    <img class="pic" :src="'http://127.0.0.1:3838/static/upload/shop/'+scope.row.url">
                 </template>
             </el-table-column>
             <el-table-column label="操作">

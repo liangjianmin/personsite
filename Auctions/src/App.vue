@@ -9,8 +9,8 @@
 
 </style>
 <script>
-    import NavHeader from './components/Nav.vue'
-    import footerCopy from './components/Footer.vue'
+    import NavHeader from './views/common/Nav.vue'
+    import footerCopy from './views/common/Footer.vue'
     export default{
         name: 'app',
         components:{
