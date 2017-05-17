@@ -19,7 +19,7 @@
                         <template slot="title"><i class="el-icon-message"></i>库存管理</template>
                         <el-menu-item v-if="user.role == 0 || user.role == 1" index="/stock">库存容量</el-menu-item>
                     </el-submenu>
-                    <el-submenu index="4">
+                    <el-submenu index="4" v-if="user.role == 0 || user.role == 1 || user.role ==2">
                         <template slot="title"><i class="el-icon-message"></i>图片管理</template>
                         <el-menu-item v-if="user.role == 0 || user.role == 1" index="">添加图片</el-menu-item>
                         <el-menu-item v-if="user.role == 0 || user.role == 1 || user.role == 2" index="">图片列表</el-menu-item>
