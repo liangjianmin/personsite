@@ -1,11 +1,11 @@
 var mysql = require("mysql");
 
 var connection = mysql.createConnection({
-    host: '5915527c385d9.gz.cdb.myqcloud.com',
+    host: 'ljmvae123.mysql.rds.aliyuncs.com',
     user: 'root',
-    password: '15270622429ljm',
+    password: 'LJMljm@1234',
     database: 'auction',
-    port:'5766'
+    port:'3306'
 });
 
 function openConnection() {
