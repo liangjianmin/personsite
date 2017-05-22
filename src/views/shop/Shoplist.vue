@@ -1,26 +1,31 @@
 <template>
     <el-col :span="24">
-        <el-table :data="pagelist" border v-loading="pagelist == undefined " element-loading-text="拼命加载中">
-            <el-table-column property="id" label="ID"></el-table-column>
+        <el-table :data="pagelist" border v-loading="pagelist == undefined " element-loading-text="拼命加载中" style="width: 100%">
+            <el-table-column property="id" label="ID" width="80"></el-table-column>
             <el-table-column prop="shopname" label="商品名称"></el-table-column>
-            <el-table-column prop="shopnumber" label="商品编号"></el-table-column>
-            <el-table-column prop="price" label="价格（元）"></el-table-column>
-            <el-table-column property="stocknum" label="库存（件，个）"></el-table-column>
-            <el-table-column prop="evaluate" label="评分"></el-table-column>
-            <el-table-column prop="describes" label="商品描述"></el-table-column>
-            <el-table-column prop="type" label="商品类别">
+            <el-table-column prop="shopnumber" label="商品编号" width="100"></el-table-column>
+            <el-table-column prop="price"  label="价格" width="70"></el-table-column>
+            <el-table-column property="stocknum" label="库存" width="70"></el-table-column>
+            <el-table-column prop="evaluate" label="评分" width="70"></el-table-column>
+            <el-table-column prop="type" label="商品类别" width="100">
                 <template scope="scope">
                     <el-tag type="success"  close-transition v-if="scope.row.type == 0">{{scope.row.type == 0 ? '服饰美妆':''}}</el-tag>
                     <el-tag type="primary"  close-transition v-else-if="scope.row.type == 1">{{scope.row.type == 1 ? '家用电器':''}}</el-tag>
                     <el-tag type="danger"  close-transition v-else-if="scope.row.type == 2">{{scope.row.type == 2 ? '电脑数码':''}}</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column prop="url" label="图片" width="100">
+            <el-table-column prop="describes" label="商品描述">
+                <template scope="scope">
+                    <p  class="destext">{{scope.row.describes}}</p>
+                </template>
+            </el-table-column>
+            <el-table-column prop="storagetime" label="入库时间"  width="180"></el-table-column>
+            <el-table-column prop="url" label="图片" width="80">
                 <template scope="scope">
                     <img class="pic" :src="'http://127.0.0.1:3838/static/upload/shop/'+scope.row.url">
                 </template>
             </el-table-column>
-            <el-table-column label="操作">
+            <el-table-column label="操作" align="center" width="150">
                 <template scope="scope">
                     <el-button size="small" @click="handleEdit(scope.$index, scope.row)" :disabled="scope.row.role == '超级管理员' ? user.role == 1 || user.role == 2 : false">编辑</el-button>
                     <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)" :disabled="scope.row.role == '超级管理员' ? user.role == 1 || user.role == 2 : false">删除</el-button>
@@ -47,6 +52,14 @@
         box-sizing: border-box;
         display: block;
         margin: 0 auto;
+    }
+    .destext{
+        white-space: normal;
+        display: -webkit-box;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
 </style>
 <script>

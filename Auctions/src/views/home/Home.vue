@@ -1,56 +1,58 @@
-<script src="../../../../x.static.com/app.js"></script>
 <template>
     <div class="home clr">
-        <el-col :span="6">
-            <el-form label-position="top" :model="ruleForm" :rules="rules" ref="ruleForm">
-                <el-form-item label="商品名称:" prop="name">
-                    <el-input v-model="ruleForm.name"  placeholder="商品名称"></el-input>
-                </el-form-item>
-                <el-form-item label="商品价格:" prop="price">
-                    <el-input v-model="ruleForm.price"  placeholder="商品价格"></el-input>
-                </el-form-item>
-                <el-form-item label="商品类别:">
-                    <el-select v-model="ruleForm.category" placeholder="请选择商品类别">
-                        <el-option label="区域一" value="shanghai"></el-option>
-                        <el-option label="区域二" value="beijing"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item>
-                    <el-button size="large" icon="search" type="primary" @click="submitForm('ruleForm')">搜索</el-button>
-                </el-form-item>
-            </el-form>
-        </el-col>
-        <el-col :span="18" class="page-home">
-            <el-col :span="24">
-                <el-carousel trigger="click" height="265px">
-                    <el-carousel-item v-for="item in 4" :key="item">
-                    <!--  <img src="../../../static/s.jpg" alt="">-->
-                        <h3>{{ item }}</h3>
-                    </el-carousel-item>
-                </el-carousel>
+        <el-col :span="24">
+            <el-col :span="6">
+                <el-form label-position="top" :model="ruleForm" :rules="rules" ref="ruleForm">
+                    <el-form-item label="商品名称:" prop="name">
+                        <el-input v-model="ruleForm.name" placeholder="商品名称"></el-input>
+                    </el-form-item>
+                    <el-form-item label="商品价格:" prop="price">
+                        <el-input v-model="ruleForm.price" placeholder="商品价格"></el-input>
+                    </el-form-item>
+                    <el-form-item label="商品类别:">
+                        <el-select v-model="ruleForm.category" placeholder="请选择商品类别">
+                            <el-option label="区域一" value="shanghai"></el-option>
+                            <el-option label="区域二" value="beijing"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button size="large" icon="search" type="primary" @click="submitForm('ruleForm')">搜索</el-button>
+                    </el-form-item>
+                </el-form>
             </el-col>
-            <el-col :span="24" class="content">
-                <el-col :span="8" v-for="(item, index) in pagelist" :key="item" class="list">
-                    <el-card>
-                       <a href="javascript:;" class="pic">
-                           <img class="image" :src="'http://127.0.0.1:3838/static/upload/shop/'+item.url">
-                       </a>
-                        <div class="shop clr">
-                            <div class="clr">
-                                <span class="fl shop-t1">{{item.shopname}}</span>
-                                <span class="fr shop-t2">{{item.price}}元</span>
-                            </div>
-                            <p class="shop-txt">{{item.describes}}</p>
-                            <div class="bottom clr">
-                                <el-col>
-                                    <el-rate v-model="item.evaluate" disabled show-text text-color="#ff9900" text-template="{value}"></el-rate>
-                                </el-col>
-                                <el-col>
-                                    <el-button type="text" class="button">购买</el-button>
-                                </el-col>
-                            </div>
-                        </div>
-                    </el-card>
+            <el-col :span="18" class="page-home">
+                <el-col :span="24">
+                    <el-carousel trigger="click" height="265px">
+                        <el-carousel-item v-for="item in 4" :key="item">
+                            <h3>{{ item }}</h3>
+                        </el-carousel-item>
+                    </el-carousel>
+                </el-col>
+                <el-col :span="24" class="content">
+                    <el-col :span="8" v-for="(item, index) in pagelist" :key="item" class="list">
+                        <el-card>
+                            <router-link :to="'/details/'+item.id">
+                                <div href="javascript:;" class="pic">
+                                    <img class="image" :src="'http://127.0.0.1:3838/static/upload/shop/'+item.url">
+                                </div>
+                                <div class="shop clr">
+                                    <div class="clr">
+                                        <span class="fl shop-t1">{{item.shopname}}</span>
+                                        <span class="fr shop-t2">{{item.price}}元</span>
+                                    </div>
+                                    <p class="shop-txt">{{item.describes}}</p>
+                                    <div class="bottom clr">
+                                        <el-col>
+                                            <el-rate v-model="item.evaluate" disabled show-text text-color="#ff9900" text-template="{value}"></el-rate>
+                                        </el-col>
+                                        <el-col>
+                                            <el-button type="text" class="button">购买</el-button>
+                                        </el-col>
+                                    </div>
+                                </div>
+                            </router-link>
+                        </el-card>
+                    </el-col>
                 </el-col>
             </el-col>
         </el-col>
@@ -61,13 +63,16 @@
         width: 1200px;
         margin: 20px auto 0;
     }
-    .home .el-form-item .el-select{
+
+    .home .el-form-item .el-select {
         display: block;
     }
-    .home .el-form-item .el-button{
+
+    .home .el-form-item .el-button {
         width: 100%;
         display: block;
     }
+
     .home .el-carousel__item h3 {
         color: #475669;
         font-size: 14px;
@@ -83,9 +88,11 @@
     .home .el-carousel__item:nth-child(2n+1) {
         background-color: #d3dce6;
     }
-    .home .page-home{
-        padding:25px;
+
+    .home .page-home {
+        padding: 25px;
     }
+
     .home .time {
         font-size: 13px;
         color: #999;
@@ -106,32 +113,37 @@
         height: 100%;
         display: block;
     }
-    .home .shop{
-        padding:15px;
-    }
-    .home .shop .shop-t1{
-        color:#337ab7;
+
+    .home .shop {
+        padding: 15px;
     }
 
-    .home .content{
-        padding:10px 5px 0 5px;
+    .home .shop .shop-t1 {
+        color: #337ab7;
+    }
+
+    .home .content {
+        padding: 10px 5px 0 5px;
         box-sizing: border-box;
     }
-    .home .content .list{
+
+    .home .content .list {
         box-sizing: border-box;
-        padding:10px;
+        padding: 10px;
     }
-    .home .content .list .pic{
+
+    .home .content .list .pic {
         display: block;
         width: 218px;
         height: 193px;
         overflow: hidden;
     }
-    .home .shop-txt{
-        padding:8px 0 5px 0;
+
+    .home .shop-txt {
+        padding: 8px 0 5px 0;
         font-size: 14px;
         color: #838487;
-        min-height:42px;
+        min-height: 42px;
         white-space: normal;
         display: -webkit-box;
         text-overflow: ellipsis;
@@ -151,8 +163,8 @@
                 value: 3,
                 ruleForm: {
                     name: '',
-                    price:'',
-                    category:''
+                    price: '',
+                    category: ''
                 },
                 rules: {
                     name: [
@@ -181,7 +193,7 @@
                 }
             }
         },
-        methods:{
+        methods: {
             getlist(){
                 this.$store.dispatch({
                     type: 'shop'

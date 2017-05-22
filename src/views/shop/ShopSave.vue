@@ -4,8 +4,8 @@
             <el-form-item label="商品名称：" prop="shopname">
                 <el-input v-model="ruleForm.shopname"></el-input>
             </el-form-item>
-            <el-form-item label="商品编号：" prop="shopnumber">
-                <el-input v-model="ruleForm.shopnumber"></el-input>
+            <el-form-item label="商品编号：" prop="shopnumber" >
+                <el-input v-model="ruleForm.shopnumber" type="number" max="5"></el-input>
             </el-form-item>
             <el-form-item label="商品类别">
                 <el-select v-model="ruleForm.type" clearable placeholder="请选择">
@@ -87,6 +87,9 @@
                     shopname: [
                         {required: true, message: '请输入商品名称', trigger: 'change'},
                         {min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'change'}
+                    ],
+                    shopnumber:[
+
                     ],
                     describes: [
                         {required: true, message: '请输入商品描述', trigger: 'change'}
