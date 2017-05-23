@@ -22,26 +22,19 @@
                     </el-col>
                 </div>
                 <div class="clr comment">
-                    <el-button  @click="onSubmit">发表评论</el-button>
+                    <el-button  @click="onSubmitCommentBtn">发表评论</el-button>
                     <div class="comm-textarae" v-if="visibile">
                         <el-input type="textarea" v-model="desc" class="textdesc"></el-input>
-                        <el-rate show-text></el-rate>
-                        <el-button  type="primary" @click="onSubmitComm" class="btnfa">提交</el-button>
+                        <el-rate v-model="evaluate" show-text></el-rate>
+                        <el-button  type="primary" @click="onSubmitComment" class="btnfa">提交</el-button>
                     </div>
-                    <ul>
+                    <ul v-for="(item,index) in comment">
                         <li>
                             <div class="time clr">
-                                <span class="fl">小马：2017年05月17日 23:23</span>
-                                <div class="fl time-rate"><el-rate disabled></el-rate></div>
+                                <span class="fl">{{item.user}}：{{item.time}}</span>
+                                <div class="fl time-rate"><el-rate v-model="item.evaluate" disabled ></el-rate></div>
                             </div>
-                            <p class="txt">宝贝超级漂亮，就是我比较胖，穿起来显得胸部这一块好大，适合瘦瘦的小姐妹穿，只穿过一次，先想转，需要的聊。</p>
-                        </li>
-                        <li>
-                            <div class="time clr">
-                                <span class="fl">小莉：2017年05月17日 23:23</span>
-                                <div class="fl time-rate"><el-rate disabled></el-rate></div>
-                            </div>
-                            <p class="txt">第一次在安妮家买衣衣，客户体验很好，白兔糖已经被我吃掉啦，哈哈~~然后衣服嘛…反正我炒鸡喜欢~最近迷上长裙，就一起买了俩上衣搭~结果家里没裹胸，然后另外那件荷叶袖的又正面略单调又太透，于是突发奇想套在一起~居然还不错~~就是略热，但对我这种怕冷的人，夏天空调房里应该刚好~~发现自己超认真评价呀，估计吃了大白兔~~2333333</p>
+                            <p class="txt">{{item.desc}}</p>
                         </li>
                     </ul>
                 </div>
@@ -172,6 +165,8 @@
                 visibile:false,
                 num:1,
                 desc:'',
+                descview:'',
+                evaluate:0,
                 comment:[
 
                 ],
@@ -198,14 +193,62 @@
         methods:{
             getDetails(path){
                 this.$http.get('getshop?id=' + path).then(res => {
-                    this.ruleForm = res.data.data[0];
-                    this.ruleForm.url='http://127.0.0.1:3838/static/upload/shop/'+res.data.data[0].url;
+                    this.comment=res.data.data.comment;
+                    this.ruleForm = res.data.data.shop[0];
+                    this.ruleForm.url='http://127.0.0.1:3838/static/upload/shop/'+res.data.data.shop[0].url;
                 }, error => {
                     console.log('请启动node server')
                 });
             },
             onSubmit(){
+                this.$router.push({path: '/cart'});
+            },
+            onSubmitComment(){
+                var self = this;
+                if(this.desc == ''){
+                    this.$message({
+                        type: 'error',
+                        duration: 1000,
+                        message: '亲，请输入您的评语'
+                    });
+                }else if(this.evaluate == ''){
+                    this.$message({
+                        type: 'error',
+                        duration: 1000,
+                        message: '亲，请选择评分'
+                    });
+                }else{
+                    this.visibile=false;
+                    this.$http.post('savecomment', {
+                        desc: this.desc,
+                        evaluate: this.evaluate,
+                        shopid: this.ruleForm.id
+                    }).then(res => {
+                        if (res.data.status) {
+                            this.$message({
+                                type: 'success',
+                                message: '评论成功',
+                                duration: 1000,
+                                onClose: function () {
+                                    self.getDetails(self.ruleForm.id);
+                                }
+                            });
+                        } else {
+                            this.$message({
+                                type: 'error',
+                                message: '评论失败',
+                                duration: 1000
+                            });
+                        }
+                    }, error => {
+                        console.log('请启动node server')
+                    });
+                }
+            },
+            onSubmitCommentBtn(){
+                //重置
                 this.desc='';
+                this.evaluate=0;
                 this.visibile=!this.visibile;
             },
             handleChange(value){

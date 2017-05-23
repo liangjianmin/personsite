@@ -43,10 +43,8 @@
                                     <p class="shop-txt">{{item.describes}}</p>
                                     <div class="bottom clr">
                                         <el-col>
-                                            <el-rate v-model="item.evaluate" disabled show-text text-color="#ff9900" text-template="{value}"></el-rate>
-                                        </el-col>
-                                        <el-col>
-                                            <el-button type="text" class="button">购买</el-button>
+                                            <span class="evaulate">好评度：</span>
+                                            <el-rate v-model="item.evaluate" disabled  text-color="#ff9900" text-template="{value}"></el-rate>
                                         </el-col>
                                     </div>
                                 </div>
@@ -59,6 +57,15 @@
     </div>
 </template>
 <style scoped>
+    .evaulate{
+        font-size: 13px;
+        vertical-align: middle;
+        color:#838487;
+    }
+    .el-rate{
+        display: inline-block;
+        vertical-align: middle;
+    }
     .home {
         width: 1200px;
         margin: 20px auto 0;
@@ -119,9 +126,11 @@
     }
 
     .home .shop .shop-t1 {
-        color: #337ab7;
+        color: #303030;
     }
-
+    .home .shop .shop-t2 {
+        color: #F40;
+    }
     .home .content {
         padding: 10px 5px 0 5px;
         box-sizing: border-box;
@@ -141,7 +150,7 @@
 
     .home .shop-txt {
         padding: 8px 0 5px 0;
-        font-size: 14px;
+        font-size: 13px;
         color: #838487;
         min-height: 42px;
         white-space: normal;

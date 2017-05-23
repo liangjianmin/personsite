@@ -94,7 +94,6 @@ module.exports = function (app) {
      * 更新商品列表&更新库存表
      */
     app.post('/shopupdate', function (req, res, next) {
-        console.log(req.body)
         shop.updateShop({
             sql: "update shop SET shopname=?,price=?,describes=?,evaluate=?,imgid=?,stocknum=?,shopnumber=?,type=?,storagetime=? WHERE id = ?",
             params: [
