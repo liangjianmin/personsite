@@ -8,7 +8,8 @@ const ShopSave = resolve => require(['./views/shop/ShopSave.vue'], resolve)//ljm
 const Shoplist = resolve => require(['./views/shop/Shoplist.vue'], resolve)//ljm
 const EditShop = resolve => require(['./views/shop/EditShop.vue'], resolve)//ljm
 const Stock = resolve => require(['./views/stock/Stock.vue'], resolve)//ljm
-
+const BannerAdd = resolve => require(['./views/banner/addimg'], resolve)//gan
+const BannerList = resolve => require(['./views/banner/imglist'], resolve)//gan
 export  default[
     {
         path: '/home',
@@ -55,6 +56,17 @@ export  default[
         component: Stock,
         name: '库存容量'
     },
+    {
+        path: '/banneradd',
+        component: BannerAdd,
+        name: '添加轮播图片'
+    },
+    {
+        path: '/bannerlist',
+        component: BannerList,
+        name: '轮播图片列表'
+    },
+
     {
         path: '/login',
         component: Login,

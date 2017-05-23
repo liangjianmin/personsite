@@ -58,6 +58,19 @@ module.exports = function (app) {
         });
 
     });
+    /**
+     * 获取图片列表
+     * gan
+     */
+    app.get('/getimglist', function (req,res) {
+        var p=req.query.p-1;
+        var limit=10;
+        shop_view.getimgs(p,limit,function (data) {
+            res.send(data)
+        })
+
+
+    });
 
     /**
      * 获取商品列表
