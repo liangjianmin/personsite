@@ -101,4 +101,20 @@ body {
     width: 1200px;
     margin: 0 auto 0; }
 
+.cart .cart-th span {
+  display: inline-block;
+  color: #3c3c3c;
+  line-height: 50px;
+  font-size: 12px; }
+.cart .cart-th .cart-th-1 {
+  width: 40%; }
+.cart .cart-th .cart-th-2 {
+  width: 15%; }
+.cart .cart-th .cart-th-3 {
+  width: 15%; }
+.cart .cart-th .cart-th-4 {
+  width: 15%; }
+.cart .cart-th .cart-th-5 {
+  width: 15%; }
+
 /*# sourceMappingURL=auction.css.map */

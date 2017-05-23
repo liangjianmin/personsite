@@ -201,7 +201,7 @@
                 });
             },
             onSubmit(){
-
+                this.$router.push({path: '/cart'});
             },
             onSubmitComment(){
                 var self = this;
