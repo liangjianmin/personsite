@@ -204,6 +204,7 @@
 
             },
             onSubmitComment(){
+                var self = this;
                 if(this.desc == ''){
                     this.$message({
                         type: 'error',
@@ -218,6 +219,30 @@
                     });
                 }else{
                     this.visibile=false;
+                    this.$http.post('savecomment', {
+                        desc: this.desc,
+                        evaluate: this.evaluate,
+                        shopid: this.ruleForm.id
+                    }).then(res => {
+                        if (res.data.status) {
+                            this.$message({
+                                type: 'success',
+                                message: '评论成功',
+                                duration: 1000,
+                                onClose: function () {
+                                    self.getDetails(self.ruleForm.id);
+                                }
+                            });
+                        } else {
+                            this.$message({
+                                type: 'error',
+                                message: '评论失败',
+                                duration: 1000
+                            });
+                        }
+                    }, error => {
+                        console.log('请启动node server')
+                    });
                 }
             },
             onSubmitCommentBtn(){

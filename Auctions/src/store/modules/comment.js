@@ -12,13 +12,13 @@ const mutations = {
      * @param payload
      */
     comment(state, payload){
-        state.commentlist = payload.res;
+        state.commentlist = payload.res.comment;
     }
 }
 
 const actions = {
     comment({commit}, payload){
-        axios.get('getcomment?id=' + payload.queryStr).then(res => {
+        axios.get('getshop?id=' + payload.queryStr).then(res => {
             commit({
                 type: 'comment',
                 res: res.data
