@@ -8,8 +8,8 @@ const ShopSave = resolve => require(['./views/shop/ShopSave.vue'], resolve)//ljm
 const Shoplist = resolve => require(['./views/shop/Shoplist.vue'], resolve)//ljm
 const EditShop = resolve => require(['./views/shop/EditShop.vue'], resolve)//ljm
 const Stock = resolve => require(['./views/stock/Stock.vue'], resolve)//ljm
-const BannerAdd = resolve => require(['./views/banner/addimg'], resolve)//gan
-const BannerList = resolve => require(['./views/banner/imglist'], resolve)//gan
+const BannerAdd = resolve => require(['./views/banner/Addpic.vue'], resolve)//gan
+const BannerList = resolve => require(['./views/banner/Piclist.vue'], resolve)//gan
 export  default[
     {
         path: '/home',
