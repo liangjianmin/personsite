@@ -70,8 +70,6 @@ module.exports = function (app) {
         shop_view.getimgs(p,limit,function (data) {
             res.send(data)
         })
-
-
     });
 
     /**

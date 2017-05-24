@@ -52,14 +52,6 @@ module.exports = {
         mysqlDB.getTableAllInfo({sql: sql}, callback);
     },
     /**
-     *查询图片列表
-     *
-     **/
-    getimgs:function (p,limit,callback) {
-        sql="select * from pics limit "+p+","+limit;
-        mysqlDB.getTableAllInfo({sql: sql}, callback);
-    },
-    /**
      * 查询单个商品
      * @param p
      * @param limit
