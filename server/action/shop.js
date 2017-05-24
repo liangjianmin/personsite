@@ -1,4 +1,5 @@
 var shop = require("../models/shop.js");
+var momment=require("../models/comment.js");
 var moment = require('moment'); //时间
 var multiparty = require('multiparty'); //文件操作模块
 var util = require('util');
@@ -89,7 +90,6 @@ module.exports = function (app) {
             res.send(data);
         });
     });
-
     /**
      * 更新商品列表&更新库存表
      */
@@ -120,5 +120,56 @@ module.exports = function (app) {
                 res.send(data);
             }
         });
+    });
+    /**
+     * 获取id商品 && 评论列表
+     */
+    app.get('/getshop', function (req, res) {
+        var p = req.query.id;
+        shop.getshop(p, function (data) {
+            if (data.status) {
+                momment.getComment(p,function (comment) {
+                    if(comment.status){
+                        res.send({data:{shop:data.data,comment:comment.data,status:data.status}});
+                    }
+                })
+            } else {
+                res.send(500);
+            }
+        });
+    });
+    /**
+     * 查询库存数量
+     */
+    app.get('/stock', function (req, res) {
+        shop.getStock(function (data) {
+            if (data.status) {
+                res.send(data);
+            } else {
+                res.send(500);
+            }
+        });
+    });
+    /**
+     * 获取商品列表
+     */
+    app.get('/shoplist', function (req, res) {
+        var p = req.query.p;
+        var limit = 6;
+        var count;
+        var totalPages;
+        shop.getShopCount(function (data) {
+            if (data) {
+                count = data.data[0].count;
+                totalPages = Math.ceil(data.data[0].count / limit);
+            }
+            shop.getshops((p - 1) * limit, limit, function (data) {
+                if (data.status) {
+                    res.send({list: data, maxPage: totalPages, currage: p, count: count, limit: limit});
+                } else {
+                    res.send(500);
+                }
+            });
+        })
     });
 };

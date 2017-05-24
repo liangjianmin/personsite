@@ -19,8 +19,8 @@ module.exports = function (app) {
             sql: "INSERT INTO comment SET ?"
         }, function (data) {
             if (data.status) {
-                comment.updateShopComment(req.body.shopid,{
-                    sql: 'UPDATE shop SET evaluate = (SELECT AVG(evaluate) FROM comment s WHERE s.shopid='+req.body.shopid+') WHERE id='+req.body.shopid
+                comment.updateShopComment(req.body.shopid, {
+                    sql: 'UPDATE shop SET evaluate = (SELECT AVG(evaluate) FROM comment s WHERE s.shopid=' + req.body.shopid + ') WHERE id=' + req.body.shopid
                 }, function (datas) {
                     res.send(datas);
                 })

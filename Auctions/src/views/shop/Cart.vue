@@ -45,7 +45,9 @@
             }
         },
         methods:{
+            getDetails(){
 
+            }
 
         }
     }
