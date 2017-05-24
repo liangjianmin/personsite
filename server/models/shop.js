@@ -34,6 +34,14 @@ module.exports = {
         mysqlDB.getTableAllInfo({sql: sql}, callback);
     },
     /**
+     * 返回分类商品个数
+     * @param callback
+     */
+    getTypeShopCount: function (type,callback) {
+        sql = 'select count(1) count from shop WHERE type ='+type;
+        mysqlDB.getTableAllInfo({sql: sql}, callback);
+    },
+    /**
      * 新增图片
      * @param data
      * @param callback
@@ -47,8 +55,18 @@ module.exports = {
      * @param limit
      * @param callback
      */
-    getshops: function (p, limit, callback) {
+    getShops: function (p, limit, callback) {
         sql = "select  shop.*, pics.url, pics.`from`  from shop, pics WHERE shop.imgid = pics.id limit " + p + "," + limit;
+        mysqlDB.getTableAllInfo({sql: sql}, callback);
+    },
+    /**
+     * 连表查询图片返回type类型商品列表
+     * @param p
+     * @param limit
+     * @param callback
+     */
+    getTypeShops: function (p, limit,type, callback) {
+        sql = "select  shop.*, pics.url, pics.`from`  from shop, pics WHERE shop.imgid = pics.id AND shop.type="+type+" limit " + p + "," + limit;
         mysqlDB.getTableAllInfo({sql: sql}, callback);
     },
     /**

@@ -1,26 +1,7 @@
 <template>
     <div class="home clr">
         <el-col :span="24">
-            <el-col :span="6">
-                <el-form label-position="top" :model="ruleForm" :rules="rules" ref="ruleForm">
-                    <el-form-item label="商品名称:" prop="name">
-                        <el-input v-model="ruleForm.name" placeholder="商品名称"></el-input>
-                    </el-form-item>
-                    <el-form-item label="商品价格:" prop="price">
-                        <el-input v-model="ruleForm.price" placeholder="商品价格"></el-input>
-                    </el-form-item>
-                    <el-form-item label="商品类别:">
-                        <el-select v-model="ruleForm.category" placeholder="请选择商品类别">
-                            <el-option label="区域一" value="shanghai"></el-option>
-                            <el-option label="区域二" value="beijing"></el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button size="large" icon="search" type="primary" @click="submitForm('ruleForm')">搜索</el-button>
-                    </el-form-item>
-                </el-form>
-            </el-col>
-            <el-col :span="18" class="page-home">
+            <el-col :span="24" class="page-home">
                 <el-col :span="24">
                     <el-carousel trigger="click" height="265px">
                         <el-carousel-item v-for="item in 4" :key="item">
@@ -29,7 +10,7 @@
                     </el-carousel>
                 </el-col>
                 <el-col :span="24" class="content">
-                    <el-col :span="8" v-for="(item, index) in pagelist" :key="item" class="list">
+                    <el-col :span="12" v-for="(item, index) in pagelist" :key="item" class="list">
                         <el-card>
                             <router-link :to="'/details/'+item.id">
                                 <div href="javascript:;" class="pic">
@@ -68,16 +49,7 @@
     }
     .home {
         width: 1200px;
-        margin: 20px auto 0;
-    }
-
-    .home .el-form-item .el-select {
-        display: block;
-    }
-
-    .home .el-form-item .el-button {
-        width: 100%;
-        display: block;
+        margin: 0px auto 0;
     }
 
     .home .el-carousel__item h3 {
@@ -95,24 +67,13 @@
     .home .el-carousel__item:nth-child(2n+1) {
         background-color: #d3dce6;
     }
-
     .home .page-home {
-        padding: 25px;
+        padding: 10px;
     }
 
     .home .time {
         font-size: 13px;
         color: #999;
-    }
-
-    .home .bottom {
-        margin-top: 13px;
-        line-height: 12px;
-    }
-
-    .home .button {
-        padding: 0;
-        float: right;
     }
 
     .home .image {
@@ -132,22 +93,31 @@
         color: #F40;
     }
     .home .content {
-        padding: 10px 5px 0 5px;
         box-sizing: border-box;
     }
 
     .home .content .list {
         box-sizing: border-box;
-        padding: 10px;
+        padding: 10px 0;
     }
-
+    .home .content .list:nth-child(2n){
+        padding-left: 10px;
+    }
+    .home .content .list:nth-child(2n+1){
+        padding-right: 10px;
+    }
     .home .content .list .pic {
         display: block;
-        width: 218px;
-        height: 193px;
+        width: 100%;
+        height: 300px;
         overflow: hidden;
     }
-
+    .content .list .image{
+        transition: all 0.5s ease;
+    }
+    .content .list:hover .image{
+        transform: scale(1.03);
+    }
     .home .shop-txt {
         padding: 8px 0 5px 0;
         font-size: 13px;
@@ -169,19 +139,8 @@
         name: 'home',
         data() {
             return {
-                value: 3,
-                ruleForm: {
-                    name: '',
-                    price: '',
-                    category: ''
-                },
-                rules: {
-                    name: [
-                        {required: true, message: '请输入商品名称名称', trigger: 'change'},
-                        {min: 2, max: 10, message: '商品名称长度在 2 到 10 个字符', trigger: 'change'}
-                    ]
-                }
-            };
+                value: 3
+            }
         },
         computed: mapState({
             pagelist (state) {

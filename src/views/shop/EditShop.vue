@@ -82,7 +82,7 @@
                 }]
             }
         },
-        created(){
+        mounted(){
             var path = this.$route.query.id;
             if (path != undefined) {
                 this.getshop(path);
@@ -90,9 +90,9 @@
         },
         watch: {
             $route(to){
-                var path = this.$route.query.id;
-                if (path != undefined) {
-                    this.getshop(path);
+                var param=to.query.id;
+                if(to.path.indexOf('editshop') !=-1){
+                    this.getshop(param);
                 }
             }
         },

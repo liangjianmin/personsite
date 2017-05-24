@@ -3,7 +3,8 @@ import axios from 'axios'
 
 const state = {
     shoplist: {},
-    stock:{}
+    stock: {},
+    typeshop: {}
 }
 
 const mutations = {
@@ -22,6 +23,14 @@ const mutations = {
      */
     stock(state, payload){
         state.stock = payload.res;
+    },
+    /**
+     * 获取分类列表
+     * @param state
+     * @param payload
+     */
+    typeshop(state, payload){
+        state.typeshop = payload.res;
     },
 }
 
@@ -45,7 +54,22 @@ const actions = {
         }, error => {
             console.log('请启动node server')
         });
-    }
+    },
+    typeshop({commit}, payload){
+        axios.get('shoplist', {
+            params: {
+                p: payload.queryStr.p,
+                type:payload.queryStr.type
+            }
+        }).then(res => {
+            commit({
+                type: 'typeshop',
+                res: res.data
+            })
+        }, error => {
+            console.log('请启动node server')
+        });
+    },
 }
 
 const getters = {}
