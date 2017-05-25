@@ -124,13 +124,17 @@ module.exports = function (app) {
     /**
      * 获取id商品 && 评论列表
      */
-    app.get('/getshop', function (req, res) {
+    app.get('/getshop', function (req, res,next) {
         var p = req.query.id;
         shop.getshop(p, function (data) {
             if (data.status) {
-                comment.getComment(p,function (comment) {
-                    if(comment.status){
-                        res.send({data:{shop:data.data,comment:comment.data,status:data.status}});
+                comment.getComment(p,function (commentdata) {
+                    if(commentdata.status){
+                        comment.getCommentNum(p,function (numdata) {
+                            if(numdata.status){
+                                res.send({data:{shop:data.data,comment:commentdata.data,commentnum:numdata.data[0].count,status:data.status}});
+                            }
+                        });
                     }
                 })
             } else {

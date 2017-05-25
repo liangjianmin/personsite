@@ -11,13 +11,12 @@
                         <div class="tb-meta">
                             <p class="text t1"><span class="tx">价格：</span>{{ruleForm.price}} 元</p>
                         </div>
-                        <p class="text t2"><span class="tx">库存：</span>{{ruleForm.stocknum}}个</p>
-                        <p class="text t2"><span class="tx">颜色分类：</span>黄色</p>
+                        <p class="text t2"><span class="tx">库存：</span><span class="txs">{{ruleForm.stocknum}}个</span></p>
                         <p class="text t3">
                             <span class="tx">选择数量：</span>
                             <el-input-number v-model="num"  @change="handleChange" :min="1" :max="ruleForm.stocknum" size="small"></el-input-number>
                         </p>
-                        <p class="text t3"><span class="tx">评论数：</span>55</p>
+                        <p class="text t3"><span class="tx">评论数：</span><span class="txs">{{commentnum | commentFormate}}</span></p>
                         <el-button type="primary" @click="onSubmit" class="detbtn">购买</el-button>
                     </el-col>
                 </div>
@@ -73,6 +72,10 @@
         font-size: 14px;
         line-height: 1.4;
         color: #3F3F3F;
+        vertical-align: middle;
+    }
+    .comment ul li p.txts{
+        vertical-align: middle;
     }
     .detailboxl,detailbox{
         vertical-align: middle;
@@ -167,6 +170,7 @@
                 desc:'',
                 descview:'',
                 evaluate:0,
+                commentnum:0,
                 comment:[
 
                 ],
@@ -194,6 +198,7 @@
             getDetails(path){
                 this.$http.get('getshop?id=' + path).then(res => {
                     this.comment=res.data.data.comment;
+                    this.commentnum=res.data.data.commentnum;
                     this.ruleForm = res.data.data.shop[0];
                     this.ruleForm.url='http://127.0.0.1:3838/static/upload/shop/'+res.data.data.shop[0].url;
                 }, error => {
@@ -201,7 +206,7 @@
                 });
             },
             onSubmit(){
-                this.$router.push({path: '/cart'});
+                this.$router.push({ path: '/cart', query: { id: this.ruleForm.id,num:this.num}});
             },
             onSubmitComment(){
                 var self = this;

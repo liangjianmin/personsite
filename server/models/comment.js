@@ -10,6 +10,14 @@ module.exports = {
         mysqlDB.insertTable(data, callback);
     },
     /**
+     *查询评论数目
+     * @param callback
+     */
+    getCommentNum: function (id,callback) {
+        sql = 'select count(1) count from comment WHERE shopid='+id;
+        mysqlDB.getTableAllInfo({sql: sql}, callback);
+    },
+    /**
      * 查评论列表
      * @param callback
      */
