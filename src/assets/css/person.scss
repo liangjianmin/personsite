@@ -4,8 +4,13 @@ body{
   overflow: hidden;
   background: #FCFCFC;
 }
+.header{
+  background-color: #242f42;
+}
 .page {
   display: flex;
+  width: 100%;
+  height: 100%;
 }
 .section-left{
   background: #eef1f6;
@@ -19,6 +24,10 @@ body{
   left:0;
   right:0;
   margin:0 auto;
+}
+#app{
+  width: 100%;
+  height: 100%;
 }
 .el-breadcrumb{
   padding: 20px 0;

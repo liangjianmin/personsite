@@ -12,7 +12,7 @@ import filters from './filters'
 require('./assets/css/person.css');
 Vue.use(VueRouter);
 Vue.use(ElementUI);
-Object.keys(filters).forEach(key => Vue.filter(key, filters[key]))
+Object.keys(filters).forEach(key => Vue.filter(key, filters[key]));
 
 Vue.prototype.$http = axios;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';

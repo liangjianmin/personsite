@@ -13,3 +13,22 @@ SELECT a.*,b.* FROM shop a JOIN pics b on a.imgid=b.imgid WHERE a.id=21;
 select  shop.*, pics.url, pics.`from`  from shop, pics WHERE shop.imgid = pics.id AND shop.id = 224;
 
 select  shop.*, pics.url, pics.`from` from shop LEFT JOIN pics on shop.imgid = pics.id;
+
+
+根据shop表：
+1：统计出stocknum这个字段的总和更新到stock表的total
+2：根据type=0 type=1 type=2的各字段总和更新到stock表的typecostume,typeelectrical,typedigital
+
+UPDATE stock SET total = (SELECT SUM(stocknum) FROM shop)
+
+UPDATE stock SET typecostume = (SELECT SUM(1) FROM shop s WHERE s.type = 0), 
+				 typeelectrical = (SELECT SUM(1) FROM shop s WHERE s.type = 1), 
+				 typedigital = (SELECT SUM(1) FROM shop s WHERE s.type = 2);
+
+
+UPDATE stock SET total = (SELECT SUM(stocknum) FROM shop), 
+		typecostume = (SELECT SUM(stocknum) FROM shop s WHERE s.type = 0), 
+		typeelectrical = (SELECT SUM(stocknum) FROM shop s WHERE s.type = 1), 
+		typedigital = (SELECT SUM(stocknum) FROM shop s WHERE s.type = 2);
+		
+		
