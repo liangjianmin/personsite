@@ -41,7 +41,7 @@
             this.getImgList()
         },
         getImgList(){
-             this.$http.get('getimglist?p=1').then(res=>{
+             this.$http.get('bannerlist?p=10').then(res=>{
                if(res.status){
                   this.tableData=res.data.data;
                }

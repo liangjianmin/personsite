@@ -4,7 +4,7 @@
       <el-form-item label="上传图片：">
         <el-upload  name="inputFile"
                     ref="upload"
-                    action="shopupload"
+                    action="bannerload"
                     list-type="picture-card"
                     :on-change="handlePictureChange"
                     :on-preview="handlePictureCardPreview"
