@@ -17,6 +17,7 @@
                             <el-input-number v-model="num"  @change="handleChange" :min="1" :max="ruleForm.stocknum" size="small"></el-input-number>
                         </p>
                         <p class="text t3"><span class="tx">评论数：</span><span class="txs">{{commentnum | commentFormate}}</span></p>
+                        <el-button type="primary" @click="onCarsSubmit" class="detbtn">加入购物车</el-button>
                         <el-button type="primary" @click="onSubmit" class="detbtn">购买</el-button>
                     </el-col>
                 </div>
@@ -195,6 +196,13 @@
             }
         },
         methods:{
+            onCarsSubmit(){
+                this.$message({
+                    type: 'error',
+                    duration: 2000,
+                    message: '马拉个币，点毛啊，没做'
+                });
+            },
             getDetails(path){
                 this.$http.get('getshop?id=' + path).then(res => {
                     this.comment=res.data.data.comment;
@@ -217,7 +225,6 @@
                 },error=>{
                     console.log('请启动node server')
                 });
-                //this.$router.push({ path: '/cart', query: { id: this.ruleForm.id,num:this.num}});
             },
             onSubmitComment(){
                 var self = this;

@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <NavHeader></NavHeader>
+        <NavHeader v-if="headShow"></NavHeader>
         <router-view class="view"></router-view>
         <footerCopy></footerCopy>
     </div>
@@ -11,9 +11,34 @@
 <script>
     import NavHeader from './views/common/Nav.vue'
     import footerCopy from './views/common/Footer.vue'
+    import {mapGetters} from 'vuex'
     export default{
         name: 'app',
-        components:{
+        computed: {
+            ...mapGetters([
+                'headShow'
+            ])
+        },
+        mounted(){
+            var path = this.$route.path.substring(1);
+            this.headerChange(path);
+        },
+        watch: {
+            $route(to){
+                var path = to.path.substring(1);
+                this.headerChange(path);
+            }
+        },
+        methods: {
+            headerChange(path){
+                if (path == 'register') {
+                    this.$store.dispatch('hidehead');
+                } else {
+                    this.$store.dispatch('showhead');
+                }
+            },
+        },
+        components: {
             NavHeader,
             footerCopy
         }

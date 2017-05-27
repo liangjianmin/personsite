@@ -8,6 +8,7 @@ const ShopSave = resolve => require(['./views/shop/ShopSave.vue'], resolve)//ljm
 const Shoplist = resolve => require(['./views/shop/Shoplist.vue'], resolve)//ljm
 const EditShop = resolve => require(['./views/shop/EditShop.vue'], resolve)//ljm
 const Stock = resolve => require(['./views/stock/Stock.vue'], resolve)//ljm
+const Order = resolve => require(['./views/order/Order.vue'], resolve)//ljm
 const BannerAdd = resolve => require(['./views/banner/Addpic.vue'], resolve)//gan
 const BannerList = resolve => require(['./views/banner/Piclist.vue'], resolve)//gan
 export  default[
@@ -66,12 +67,16 @@ export  default[
         component: BannerList,
         name: '轮播图片列表'
     },
-
     {
         path: '/login',
         component: Login,
         name: '登录',
         meta: {auth: false}
+    },
+    {
+        path: '/order',
+        component: Order,
+        name: '订单状态',
     },
     {
         path: '/',

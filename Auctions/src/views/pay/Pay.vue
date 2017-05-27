@@ -1,6 +1,6 @@
 <template>
     <div class="pageview clr">
-        <h2>订单剩余支付时间：29分钟</h2>
+        <h2>某某订单剩余支付时间：29分钟</h2>
     </div>
 </template>
 <style scoped lang="scss">
@@ -20,21 +20,15 @@
         },
         computed: mapState({}),
         mounted(){
-            var path = this.$route.query.id;
-            this.getDetails(path);
+
         },
         watch: {
             $route(to){
-                if (to.path.indexOf('cart') != -1) {
-                    var path = this.$route.query.id;
-                    this.getDetails(path);
-                }
+
             }
         },
         methods: {
-            getDetails(path){
 
-            }
         }
     }
 </script>
