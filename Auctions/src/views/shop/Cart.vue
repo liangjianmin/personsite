@@ -8,7 +8,7 @@
                 <span class="cart-th-4">金额</span>
                 <span class="cart-th-5">操作</span>
             </div>
-            <div class="cart-td">
+            <div class="cart-td" v-if="visible">
                 <dl class="lbBox">
                     <dd class="cart-th-1 t1">
                         <img class="va-m" :src="ruleForm.url" width="50" height="50">
@@ -23,7 +23,7 @@
                     <dd class="cart-th-5 t5"><span>删除</span></dd>
                 </dl>
             </div>
-            <div class="total clr">
+            <div class="total clr" v-if="visible">
                 <div class="fr totalbox">
                     <span class="tx">合计：<em class="va-m">￥{{price}}</em></span>
                     <el-button type="primary" @click="onSubmitTotal" class="totalbtn">结算</el-button>
@@ -44,6 +44,7 @@
         name: 'cart',
         data() {
             return {
+                visible:true,
                 num:1,
                 price:'',
                 ruleForm: {
@@ -53,27 +54,36 @@
         },
         computed: mapState({}),
         mounted(){
-            var path = this.$route.query.id;
-            this.num=this.$route.query.num;
+            var path = this.$route.query.r;
             this.getDetails(path);
         },
         watch: {
             $route(to){
                 if (to.path.indexOf('cart') != -1) {
-                    this.num=this.$route.query.num;
-                    var path = this.$route.query.id;
+                    var path = this.$route.query.r;
                     this.getDetails(path);
                 }
             }
         },
         methods: {
             getDetails(path){
-                this.$http.get('getshop?id=' + path).then(res => {
-                    this.ruleForm = res.data.data.shop[0];
-                    this.price=this.ruleForm.price * this.num;
-                    this.ruleForm.url = 'http://127.0.0.1:3838/static/upload/shop/' + res.data.data.shop[0].url;
-                }, error => {
-                    console.log('请启动node server')
+                this.$http.get('getshop?r=' + path).then(res => {
+                    if(res.data.data.status){
+                        this.visible=true;
+                        this.ruleForm = res.data.data.shop[0];
+                        this.num=res.data.data.selnum;
+                        this.price=this.ruleForm.price * this.num;
+                        this.ruleForm.url = 'http://127.0.0.1:3838/static/upload/shop/' + res.data.data.shop[0].url;
+                    }else {
+                        this.visible=false;
+                        this.$message({
+                            type: 'error',
+                            duration: 2000,
+                            message: '亲，该链接已经失效'
+                        });
+                    }
+                }, error =>{
+                        console.log('请启动node server')
                 });
             },
             handleChange(value){

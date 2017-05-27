@@ -206,7 +206,18 @@
                 });
             },
             onSubmit(){
-                this.$router.push({ path: '/cart', query: { id: this.ruleForm.id,num:this.num}});
+                /*点击购买跳转结算页面*/
+                this.$http.post('cars',{
+                    id:this.ruleForm.id,
+                    num:this.num
+                }).then(res=>{
+                    if(res.status == 200){
+                        this.$router.push({ path: '/cart', query: {r:res.data.r}})
+                    }
+                },error=>{
+                    console.log('请启动node server')
+                });
+                //this.$router.push({ path: '/cart', query: { id: this.ruleForm.id,num:this.num}});
             },
             onSubmitComment(){
                 var self = this;
