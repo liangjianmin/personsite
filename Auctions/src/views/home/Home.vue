@@ -9,44 +9,44 @@
                         </el-carousel-item>
                     </el-carousel>
                 </el-col>
-                <el-col :span="24" class="content">
-                    <el-col :span="12" v-for="(item, index) in pagelist" :key="item" class="list">
-                        <el-card>
-                            <router-link :to="'/details/'+item.id">
+                <div style="width: 100%" class="content boxsiz cassify clr">
+                    <ul class="boxsiz">
+                        <li v-for="(item, index) in pagelist" :key="item" class="boxsiz">
+                            <router-link :to="'/details/'+item.id" class="link">
                                 <div href="javascript:;" class="pic">
                                     <img class="image" :src="'http://127.0.0.1:3838/static/upload/shop/'+item.url">
                                 </div>
-                                <div class="shop clr">
+                                <div class="shop">
                                     <div class="clr">
                                         <span class="fl shop-t1">{{item.shopname}}</span>
                                         <span class="fr shop-t2">{{item.price}}元</span>
                                     </div>
                                     <p class="shop-txt">{{item.describes}}</p>
-                                    <div class="bottom clr">
-                                        <el-col>
-                                            <span class="evaulate">好评度：</span>
-                                            <el-rate v-model="item.evaluate" disabled  text-color="#ff9900" text-template="{value}"></el-rate>
-                                        </el-col>
+                                    <div>
+                                        <span class="evaulate">好评度：</span>
+                                        <el-rate v-model="item.evaluate" disabled text-color="#ff9900" text-template="{value}"></el-rate>
                                     </div>
                                 </div>
                             </router-link>
-                        </el-card>
-                    </el-col>
-                </el-col>
+                        </li>
+                    </ul>
+                </div>
             </el-col>
         </el-col>
     </div>
 </template>
 <style scoped>
-    .evaulate{
+    .evaulate {
         font-size: 13px;
         vertical-align: middle;
-        color:#838487;
+        color: #838487;
     }
-    .el-rate{
+
+    .el-rate {
         display: inline-block;
         vertical-align: middle;
     }
+
     .home {
         width: 1200px;
         margin: 0px auto 0;
@@ -67,58 +67,68 @@
     .home .el-carousel__item:nth-child(2n+1) {
         background-color: #d3dce6;
     }
+
     .home .page-home {
         padding: 10px;
     }
-
     .home .time {
         font-size: 13px;
         color: #999;
     }
-
     .home .image {
         width: 100%;
         height: 100%;
         display: block;
     }
-
     .home .shop {
         padding: 15px;
     }
-
-    .home .shop .shop-t1 {
-        color: #303030;
-    }
-    .home .shop .shop-t2 {
-        color: #F40;
-    }
-    .home .content {
+    .content {
         box-sizing: border-box;
+        padding: 10px 0 40px 0px;
     }
-
-    .home .content .list {
-        box-sizing: border-box;
-        padding: 10px 0;
+    .cassify ul {
+        width: 100%;
     }
-    .home .content .list:nth-child(2n){
-        padding-left: 10px;
+    .cassify ul li {
+        display: inline-block;
+        padding: 10px;
+        width: 32.2%;
+        margin-right: 20px;
+        border: 1px solid #d1dbe5;
+        border-radius: 4px;
+        background-color: #fff;
+        overflow: hidden;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .12), 0 0 6px 0 rgba(0, 0, 0, .04);
     }
-    .home .content .list:nth-child(2n+1){
-        padding-right: 10px;
+    .cassify ul li:nth-child(3n) {
+        margin-right: 0;
     }
-    .home .content .list .pic {
+    .cassify ul li a {
+        display: block;
+    }
+    .content .pic {
         display: block;
         width: 100%;
-        height: 300px;
+        height: 230px;
         overflow: hidden;
     }
-    .content .list .image{
-        transition: all 0.5s ease;
+    .content .pic .image {
+        display: block;
+        width: 100%;
+        height: 100%;
     }
-    .content .list:hover .image{
-        transform: scale(1.03);
+    .shop {
+        padding: 15px;
     }
-    .home .shop-txt {
+    .shop-t1 {
+        color: #303030;
+    }
+    .shop-t2 {
+        color: #F40;
+    }
+    .shop-txt {
         padding: 8px 0 5px 0;
         font-size: 13px;
         color: #838487;
@@ -131,6 +141,21 @@
         overflow: hidden;
         margin-bottom: 10px;
         line-height: 22px;
+    }
+    .evaulate {
+        font-size: 13px;
+        vertical-align: middle;
+        color: #838487;
+    }
+    .el-rate {
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .cassify ul li .image {
+        transition: all 0.5s ease;
+    }
+    .cassify ul li:hover .image {
+        transform: scale(1.03);
     }
 </style>
 <script>
@@ -166,18 +191,7 @@
                 this.$store.dispatch({
                     type: 'shop'
                 });
-            },
-            submitForm(formName) {
-                var self = this;
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-
-                    } else {
-                        console.log('error submit!!');
-                        return false;
-                    }
-                });
-            },
+            }
         }
     }
 </script>

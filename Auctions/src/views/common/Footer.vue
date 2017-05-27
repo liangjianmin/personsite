@@ -5,7 +5,6 @@
 </template>
 <style scoped>
     .footer{
-        border-top: #edeef1 solid 1px;
         height: 30px;
         width: 1200px;
         margin: 0 auto;

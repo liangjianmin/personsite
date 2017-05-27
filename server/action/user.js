@@ -64,13 +64,16 @@ module.exports = function (app) {
      */
     app.post('/session', function (req, res, next) {
         user.getUsers(function (data) {
-            for (let i = 0; i < data.data.length; i++) {
-                if (req.session.user == data.data[i].username) {
-                    res.send({session: req.session.user, status: true, role: data.data[i].role});
-                    break;
+            if(req.session.user != undefined){
+                for (let i = 0; i < data.data.length; i++) {
+                    if (req.session.user == data.data[i].username) {
+                        res.send({session: req.session.user, status: true, role: data.data[i].role});
+                        break;
+                    }
                 }
+            }else{
+                res.send({status:false});
             }
-            res.end();
         })
     });
 

@@ -3,9 +3,30 @@
 .nav{
   width: 100%;
   background: #324157;
-  >ul{
+  .navview{
+    position: relative;
     width: 1200px;
     margin: 0 auto 0;
+    >ul{
+      width: 100%;
+    }
+  }
+  .search{
+    position: absolute;
+    top: 14px;
+    right: 94px;
+    margin: 0 auto;
+    width: 20%;
+  }
+  .login{
+    display: block;
+    height: 60px;
+    line-height: 60px;
+    position: absolute;
+    right:16px;
+    top:0;
+    font-size: 14px;
+    color: #bfcbd9;
   }
 }
 
