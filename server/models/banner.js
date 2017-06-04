@@ -8,7 +8,7 @@ module.exports={
     mysqlDB.insertTable(data,callback)
   },
   getbanner:function (p,callback) {
-    sql='select * from pics limit '+p;
+    sql='select * from pics where `desc`="banner table use" ';
     mysqlDB.getTableAllInfo({sql:sql},callback)
   }
 }

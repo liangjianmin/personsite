@@ -20,9 +20,21 @@
       prop="url"
       label="地址">
     </el-table-column>
+    <el-table-column
+      label="删除" align="center" >
+      <template scope="scope">
+        <el-button
+          size="small"
+          type="danger"  
+          @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+      </template>
+    </el-table-column>
+       <div>1213</div>
+    </el-table-column>
   </el-table>
 </template>
 <style scoped>
+.center{text-align:center;}
 </style>
 <script>
   import {mapState} from 'vuex'
@@ -41,11 +53,16 @@
             this.getImgList()
         },
         getImgList(){
-             this.$http.get('bannerlist?p=10').then(res=>{
+             this.$http.get('bannerlist').then(res=>{
                if(res.status){
                   this.tableData=res.data.data;
                }
              })
+        },
+        handleDelete(index,row){
+          console.log(index)
+           console.log(row)
+      
         }
     }
   }
