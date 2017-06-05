@@ -22,7 +22,7 @@
                     </el-col>
                 </div>
                 <div class="clr comment">
-                    <el-button  @click="onSubmitCommentBtn">发表评论</el-button>
+                    <el-button  @click="onSubmitCommentBtn(user)">发表评论</el-button>
                     <div class="comm-textarae" v-if="visibile">
                         <el-input type="textarea" v-model="desc" class="textdesc"></el-input>
                         <el-rate v-model="evaluate" show-text></el-rate>
@@ -181,11 +181,12 @@
             }
         },
         computed: mapState({
-
+            user: state => state.user.sessiondata.session
         }),
         mounted(){
             var path = this.$route.params.id;
             this.getDetails(path);
+            console.log(this.$store.state.user.sessiondata.session)
         },
         watch: {
             $route(to){
@@ -245,7 +246,9 @@
                     this.$http.post('savecomment', {
                         desc: this.desc,
                         evaluate: this.evaluate,
-                        shopid: this.ruleForm.id
+                        shopid: this.ruleForm.id,
+                        userid:this.$store.state.user.sessiondata.session.id,
+                        user:this.$store.state.user.sessiondata.session.name
                     }).then(res => {
                         if (res.data.status) {
                             this.$message({
@@ -268,11 +271,19 @@
                     });
                 }
             },
-            onSubmitCommentBtn(){
-                //重置
-                this.desc='';
-                this.evaluate=0;
-                this.visibile=!this.visibile;
+            onSubmitCommentBtn(data){
+               if(data == null){
+                   this.$message({
+                       type: 'error',
+                       duration: 1000,
+                       message: '亲，没有登录'
+                   });
+               }else{
+                   //重置
+                   this.desc='';
+                   this.evaluate=0;
+                   this.visibile=!this.visibile;
+               }
             },
             handleChange(value){
                if(value == this.ruleForm.stocknum){

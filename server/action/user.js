@@ -267,7 +267,7 @@ module.exports = function (app) {
                 for (let i = 0; i < data.data.length; i++) {
                     if ((req.body.username == data.data[i].username || req.body.username == data.data[i].phone) && req.body.password == data.data[i].password) {
                         //缓存用户信息
-                        client.hmset('user', {name: req.body.username}, function (err) {
+                        client.hmset('user', {name: req.body.username,id:data.data[i].id}, function (err) {
                             if (err) {
                                 return;
                             }
