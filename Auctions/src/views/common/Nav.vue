@@ -1,7 +1,6 @@
 <template>
     <div class="nav clr">
        <div class="navview">
-
            <el-menu theme="dark" :default-active="onRoutes" class="el-menu-demo" mode="horizontal" unique-opened router>
                <el-menu-item index="/home">在线竞拍</el-menu-item>
                <el-menu-item index="/cassify">分类列表</el-menu-item>

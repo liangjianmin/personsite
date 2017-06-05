@@ -114,10 +114,37 @@ body {
     height: 60px;
     line-height: 60px;
     position: absolute;
-    right: 16px;
+    right: 42px;
     top: 0;
     font-size: 14px;
     color: #bfcbd9; }
+
+.cw-icon {
+  position: absolute;
+  display: inline-block;
+  right: 21px;
+  top: 19px;
+  width: 30px;
+  height: 30px;
+  background: url(../images/gwc.png) no-repeat;
+  background-size: contain;
+  z-index: 111; }
+  .cw-icon .iconcars {
+    display: inline-block;
+    position: absolute;
+    right: -3px;
+    top: -9px;
+    width: 15px;
+    height: 15px;
+    line-height: 15px;
+    background: #ff0006;
+    background-size: 30px;
+    z-index: 111;
+    border-radius: 50%;
+    font-size: 10px;
+    text-align: center;
+    color: #fff;
+    padding: 2px; }
 
 .cart {
   margin-bottom: 200px; }

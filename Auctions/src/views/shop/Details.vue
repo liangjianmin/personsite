@@ -40,6 +40,9 @@
                 </div>
             </el-card>
         </el-col>
+        <a class="cw-icon" href="javascript:;">
+            <span class="iconcars">3</span>
+        </a>
     </div>
 </template>
 <style scoped>
@@ -112,6 +115,7 @@
         height: 100%;
     }
     .pageview {
+        position: relative;
         width: 1200px;
         margin: 20px auto 0;
     }
@@ -186,7 +190,6 @@
         mounted(){
             var path = this.$route.params.id;
             this.getDetails(path);
-            console.log(this.$store.state.user.sessiondata.session)
         },
         watch: {
             $route(to){
@@ -198,10 +201,16 @@
         },
         methods:{
             onCarsSubmit(){
+
+
+
                 this.$message({
                     type: 'error',
                     duration: 2000,
-                    message: '马拉个币，点毛啊，没做'
+                    message: '马拉个币，点毛啊，没做',
+                    onClose: function () {
+
+                    }
                 });
             },
             getDetails(path){
