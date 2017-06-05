@@ -4,14 +4,17 @@ import mutations from  './mutations'
 import actions from './actions'
 import shop from './modules/shop'
 import comment from './modules/comment'
+import user from './modules/user'
+
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-    modules:{
+    modules: {
         mutations,
         shop,
-        comment
+        comment,
+        user
     },
     actions
 })
