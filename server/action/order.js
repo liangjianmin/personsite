@@ -68,7 +68,22 @@ module.exports = function (app) {
             }
         });
     });
+
     /**
-     *  上传文件
+     *结算付款
      */
+    app.post('/pay', function (req, res, next) {
+        var id=req.body.orderid;
+        const uuid = orderutil.payNumber(id);
+        order.getOrder(id,function (data) {
+            if(data.status){
+                res.send({
+                    data:data.data,
+                    uuid:uuid,
+                    status:true
+                });
+            }
+        })
+
+    });
 };

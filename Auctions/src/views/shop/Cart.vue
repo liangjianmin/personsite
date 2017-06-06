@@ -137,7 +137,15 @@
                             message: '跳转支付页面',
                             duration: 2000,
                             onClose: function () {
-                                self.$router.push({path: '/pay', query: {id: self.ruleForm.id}});
+                                self.$http.post('pay',{
+                                    orderid:res.data.id
+                                }).then(data=>{
+                                    self.logining = false;
+                                    console.log(data)
+                                    if(data.data.status){
+                                        self.$router.push({path: '/pay', query: {o: data.data.uuid.params}});
+                                    }
+                                });
                             }
                         });
                     } else {

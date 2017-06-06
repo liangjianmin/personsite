@@ -2,7 +2,7 @@
     <div class="pageview clr">
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-position="left" label-width="0px" class="demo-ruleForm login-container">
             <el-form-item prop="username">
-                <el-input type="text" v-model="ruleForm.username" auto-complete="off" placeholder="请输入账号"></el-input>
+                <el-input type="text" v-model="ruleForm.username" auto-complete="off" placeholder="请输入用户名或手机号"></el-input>
             </el-form-item>
             <el-form-item prop="password">
                 <el-input type="password" v-model="ruleForm.password" auto-complete="off" placeholder="请输入密码"></el-input>
