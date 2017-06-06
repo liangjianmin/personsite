@@ -95,5 +95,14 @@ module.exports = {
     getStock: function (callback) {
         sql = "select * from stock";
         mysqlDB.getTableAllInfo({sql: sql}, callback);
+    },
+    /**
+     * 搜索商品
+     * @param like
+     * @param callback
+     */
+    searchshop:function (like,callback) {
+        sql = "SELECT * FROM shop WHERE describes LIKE '%"+like+"%' ";
+        mysqlDB.getTableAllInfo({sql: sql}, callback);
     }
 };

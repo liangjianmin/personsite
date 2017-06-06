@@ -7,7 +7,7 @@
                <el-menu-item index="3">联系我们</el-menu-item>
            </el-menu>
            <div class="search">
-               <el-input placeholder="请输入搜索内容" icon="search" v-model="searchdata" :on-icon-click="handleIconClick"></el-input>
+               <el-input placeholder="请输入搜索内容" icon="search" v-model="searchdata"  :on-icon-click="handleIconClick"></el-input>
            </div>
            <template v-if="user== null">
                <router-link to="/login" class="login">登录</router-link>
@@ -47,8 +47,13 @@
                     type: 'getsession'
                 })
             },
-            handleIconClick(ev){
-
+            handleIconClick(value){
+                if(this.searchdata == '')return false;
+                this.$http.get('search?like='+this.searchdata).then(res=>{
+                    if(res.data.status){
+                        this.$router.push({path: '/cassify',query: {type: 3}});
+                    }
+                });
             }
         }
     }

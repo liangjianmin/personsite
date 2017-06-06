@@ -216,7 +216,8 @@ module.exports = function (app) {
      * p:分页
      * type：分类列表
      * 获取商品列表，分类列表
-     * type 0：全部列表 1：分类列表
+     * type 列表 0,1,2分类
+     * type 3 全部列表
      */
     app.get('/shoplist', function (req, res) {
         var p = req.query.p;
@@ -224,21 +225,36 @@ module.exports = function (app) {
         var limit = 6;
         var count;
         var totalPages;
-
         if (type != undefined) {
-            shop.getTypeShopCount(type, function (data) {
-                if (data) {
-                    count = data.data[0].count;
-                    totalPages = Math.ceil(data.data[0].count / limit);
-                }
-                shop.getTypeShops((p - 1) * limit, limit, type, function (data) {
-                    if (data.status) {
-                        res.send({list: data, maxPage: totalPages, currage: p, count: count, limit: limit});
-                    } else {
-                        res.send(500);
+            if(type == 3){
+                shop.getShopCount(function (data) {
+                    if (data) {
+                        count = data.data[0].count;
+                        totalPages = Math.ceil(data.data[0].count / limit);
                     }
-                });
-            })
+                    shop.getShops((p - 1) * limit, limit, function (data) {
+                        if (data.status) {
+                            res.send({list: data, maxPage: totalPages, currage: p, count: count, limit: limit});
+                        } else {
+                            res.send(500);
+                        }
+                    });
+                })
+            }else{
+                shop.getTypeShopCount(type, function (data) {
+                    if (data) {
+                        count = data.data[0].count;
+                        totalPages = Math.ceil(data.data[0].count / limit);
+                    }
+                    shop.getTypeShops((p - 1) * limit, limit, type, function (data) {
+                        if (data.status) {
+                            res.send({list: data, maxPage: totalPages, currage: p, count: count, limit: limit});
+                        } else {
+                            res.send(500);
+                        }
+                    });
+                })
+            }
         } else {
             shop.getShopCount(function (data) {
                 if (data) {
@@ -274,4 +290,17 @@ module.exports = function (app) {
         res.send({r: cars.params});
     });
 
+    /**
+     *
+     */
+    app.get('/search', function (req, res) {
+        var like=req.query.like;
+        shop.searchshop(like,function (data) {
+            if (data.status) {
+                res.send(data);
+            } else {
+                res.send(500);
+            }
+        });
+    });
 };

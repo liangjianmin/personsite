@@ -2,7 +2,7 @@
     <div class="pageview">
         <dl class="barlist clr">
             <dt>类型：</dt>
-            <dd @click="search(index)" v-for="(item,index) in classifydata" :class="{'curr':active==index}">{{item}}</dd>
+            <dd @click="selsearch(index)" v-for="(item,index) in classifydata" :class="{'curr':active==index}">{{item}}</dd>
         </dl>
         <div style="width: 100%" class="content boxsiz cassify">
             <ul class="boxsiz">
@@ -154,7 +154,7 @@
                 active: 0,
                 type: 0,
                 currage: 1,
-                classifydata:['服饰美妆','家用电器','电脑数码']
+                classifydata:['服饰美妆','家用电器','电脑数码','全部']
             }
         },
         computed: mapState({
@@ -167,13 +167,12 @@
             }
         }),
         mounted(){
-            this.getlist(this.type, this.currage);
-        },
-        watch: {
-            $route(to){
-                if (path == 'cassify') {
-                    this.getlist(this.type, this.currage);
-                }
+            if(this.$route.query.type){
+                this.active=3;
+                this.type=4;
+                this.getlist(this.type, this.currage);
+            }else{
+                this.getlist(this.type, this.currage);
             }
         },
         methods: {
@@ -193,7 +192,7 @@
                     queryStr:{type:this.type,p:this.currage}
                 })
             },
-            search(index){
+            selsearch(index){
                 this.type=index;
                 this.active=index;
                 this.$store.dispatch({
