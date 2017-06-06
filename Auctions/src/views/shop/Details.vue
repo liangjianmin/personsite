@@ -41,11 +41,16 @@
             </el-card>
         </el-col>
         <a class="cw-icon" href="javascript:;">
-            <span class="iconcars">3</span>
+            <el-badge :value="carnum" :max="99" class="item"></el-badge>
         </a>
     </div>
 </template>
 <style scoped>
+    .el-badge{
+        position: relative;
+        top: -10px;
+        right: -11px;
+    }
     .textdesc{
         margin-bottom: 10px;
     }
@@ -170,6 +175,7 @@
         name: 'details',
         data() {
             return {
+                carnum:1000,
                 visibile:false,
                 num:1,
                 desc:'',
@@ -201,9 +207,6 @@
         },
         methods:{
             onCarsSubmit(){
-
-
-
                 this.$message({
                     type: 'error',
                     duration: 2000,
