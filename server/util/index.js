@@ -15,10 +15,12 @@ module.exports={
     /**
      * 解析购买时候的地址 r
      */
-    carsNumber:function (id,num) {
+    carsNumber:function (id,num,userid,user) {
         var cars={
             id:id,
             num:num,
+            userid:userid,
+            user:user,
             params:'0.'+new Date().getTime()
         }
         return cars;

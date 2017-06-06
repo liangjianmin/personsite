@@ -137,7 +137,7 @@ module.exports = function (app) {
             client.hgetall('cars', function (err, object) {
                 if (err) {
                     console.log(err);
-                }else{
+                } else {
                     if (r === object.params) {
                         p = object.id;
                         shop.getshop(p, function (data) {
@@ -152,8 +152,10 @@ module.exports = function (app) {
                                                         comment: commentdata.data,
                                                         commentnum: numdata.data[0].count,
                                                         status: data.status,
-                                                        selnum:object.num,
-                                                        uuid:object.params
+                                                        selnum: object.num,
+                                                        user: object.user,
+                                                        userid: object.userid,
+                                                        uuid: object.params
                                                     }
                                                 });
                                             }
@@ -164,10 +166,12 @@ module.exports = function (app) {
                                 res.send(500);
                             }
                         });
-                    }else{
-                        res.send({data:{
-                            status:false
-                        }})
+                    } else {
+                        res.send({
+                            data: {
+                                status: false
+                            }
+                        })
                     }
                 }
             })
@@ -221,7 +225,6 @@ module.exports = function (app) {
         var count;
         var totalPages;
 
-
         if (type != undefined) {
             shop.getTypeShopCount(type, function (data) {
                 if (data) {
@@ -259,7 +262,9 @@ module.exports = function (app) {
     app.post('/cars', function (req, res) {
         var shopid = req.body.id;//保存商品id
         var num = req.body.num;//保存用户选择的商品个数
-        var cars = carsutil.carsNumber(shopid, num);
+        var userid = req.body.userid;//保存用户id
+        var user = req.body.user;//保存用户名字
+        var cars = carsutil.carsNumber(shopid, num, userid, user);
         //缓存用户的选择信息
         client.hmset('cars', cars, function (err) {
             if (err) {

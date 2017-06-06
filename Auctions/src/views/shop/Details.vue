@@ -18,7 +18,7 @@
                         </p>
                         <p class="text t3"><span class="tx">评论数：</span><span class="txs">{{commentnum | commentFormate}}</span></p>
                         <el-button type="primary" @click="onCarsSubmit" class="detbtn">加入购物车</el-button>
-                        <el-button type="primary" @click="onSubmit" class="detbtn">购买</el-button>
+                        <el-button type="primary" @click="onSubmit(user)" class="detbtn">购买</el-button>
                     </el-col>
                 </div>
                 <div class="clr comment">
@@ -206,6 +206,7 @@
             }
         },
         methods:{
+            /**加入购物车 无需判断用户是否登录，记录个人购买信息*/
             onCarsSubmit(){
                 this.$message({
                     type: 'error',
@@ -226,19 +227,35 @@
                     console.log('请启动node server')
                 });
             },
-            onSubmit(){
-                /*点击购买跳转结算页面*/
-                this.$http.post('cars',{
-                    id:this.ruleForm.id,
-                    num:this.num
-                }).then(res=>{
-                    if(res.status == 200){
-                        this.$router.push({ path: '/cart', query: {r:res.data.r}})
-                    }
-                },error=>{
-                    console.log('请启动node server')
-                });
+            /*购买必须判断用户是否登录*/
+            onSubmit(data){
+                var self=this;
+                if(data == null){
+                    this.$message({
+                        type: 'error',
+                        duration: 2000,
+                        message: '亲，请登录',
+                        onClose: function () {
+                            self.$router.push({path: '/login'});
+                        }
+                    });
+                }else{
+                    /*点击购买跳转结算页面*/
+                    this.$http.post('cars',{
+                        id:this.ruleForm.id,
+                        num:this.num,
+                        userid:this.$store.state.user.sessiondata.session.id,
+                        user:this.$store.state.user.sessiondata.session.name
+                    }).then(res=>{
+                        if(res.status == 200){
+                            this.$router.push({ path: '/cart', query: {r:res.data.r}})
+                        }
+                    },error=>{
+                        console.log('请启动node server')
+                    });
+                }
             },
+            /*评论*/
             onSubmitComment(){
                 var self = this;
                 if(this.desc == ''){
