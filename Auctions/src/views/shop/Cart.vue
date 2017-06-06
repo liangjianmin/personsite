@@ -135,13 +135,12 @@
                         this.$message({
                             type: 'success',
                             message: '跳转支付页面',
-                            duration: 2000,
+                            duration: 1000,
                             onClose: function () {
                                 self.$http.post('pay',{
                                     orderid:res.data.id
                                 }).then(data=>{
                                     self.logining = false;
-                                    console.log(data)
                                     if(data.data.status){
                                         self.$router.push({path: '/pay', query: {o: data.data.uuid.params}});
                                     }

@@ -4,8 +4,9 @@ var order = require("../models/order.js");
 var moment = require('moment'); //时间
 var multiparty = require('multiparty'); //文件操作模块
 var util = require('util');
-var fs = require('fs');
+var client = require("../util/redis.js");//缓存操作模块
 var orderutil = require("../util/index.js");
+
 module.exports = function (app) {
     /**
      * 保存用户订单信息
@@ -19,7 +20,7 @@ module.exports = function (app) {
                 total: req.body.total,
                 shopnum: req.body.shopnum,
                 username: req.body.username,
-                userid:req.body.userid,
+                userid: req.body.userid,
                 orderuid: orderuid,
                 status: 0,
                 shopid: req.body.id,
@@ -70,20 +71,54 @@ module.exports = function (app) {
     });
 
     /**
-     *结算付款
+     * 结算付款
      */
     app.post('/pay', function (req, res, next) {
-        var id=req.body.orderid;
+        var id = req.body.orderid;
         const uuid = orderutil.payNumber(id);
-        order.getOrder(id,function (data) {
-            if(data.status){
+        order.getOrder(id, function (data) {
+            if (data.status) {
+                client.hmset('orderid', {id: id,time:orderutil.time()}, function (err) {
+                    if (err) {
+                        return;
+                    }
+                })
                 res.send({
-                    data:data.data,
-                    uuid:uuid,
-                    status:true
+                    uuid: uuid,
+                    status: true
                 });
             }
         })
-
+    });
+    /**
+     *  支付
+     */
+    app.post('/dopay', function (req, res, next) {
+        var id = req.body.orderid;
+        if (id) {
+            client.hgetall('orderid', function (err, object) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    if (id == object.id) {
+                        order.getOrder(id, function (data) {
+                            if (data.status) {
+                                res.send({
+                                    data: data.data,
+                                    end:object.time,
+                                    status: true
+                                });
+                            }
+                        })
+                    } else {
+                        res.send({
+                            data: {
+                                status: false
+                            }
+                        })
+                    }
+                }
+            })
+        }
     });
 };
