@@ -13,5 +13,12 @@ export default {
     },
     hidefooter: ({commit}) => {
         commit(types.FOOTER_HIDE);
-    }
+    },
+    /*flag*/
+    flagesuccess: ({commit}) => {
+        commit(types.FLAG_SUCCESS);
+    },
+    flagfail: ({commit}) => {
+        commit(types.FLAG_FAIL);
+    },
 }

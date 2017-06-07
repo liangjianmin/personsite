@@ -27,7 +27,8 @@
         name: 'nav',
         data(){
             return {
-                searchdata:''
+                searchdata:'',
+                currage: 1,
             }
         },
         computed: {
@@ -49,11 +50,15 @@
             },
             handleIconClick(value){
                 if(this.searchdata == '')return false;
-                this.$http.get('search?like='+this.searchdata).then(res=>{
-                    if(res.data.status){
-                        this.$router.push({path: '/cassify',query: {type: 3}});
-                    }
-                });
+                this.$router.push({path: '/cassify', query: {type: 4}});
+                this.$store.dispatch({
+                    type: 'search',
+                    queryStr:{like:this.searchdata,type:4}
+                })
+                this.$store.dispatch({
+                    type: 'searchshop',
+                    queryStr:{p:this.currage,like:this.searchdata}
+                })
             }
         }
     }

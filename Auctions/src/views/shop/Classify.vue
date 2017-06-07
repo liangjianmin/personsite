@@ -167,10 +167,10 @@
             }
         }),
         mounted(){
-            if(this.$route.query.type){
-                this.active=3;
-                this.type=4;
-                this.getlist(this.type, this.currage);
+            if(this.$route.query.type == 4){
+                this.classifydata.push('搜索数据');
+                this.active=this.$store.state.shop.searchdata.type;
+                this.type =4;
             }else{
                 this.getlist(this.type, this.currage);
             }
@@ -181,10 +181,17 @@
             },
             handleCurrentChange(val) {
                 this.currage=val;
-                this.$store.dispatch({
-                    type: 'typeshop',
-                    queryStr:{type:this.type,p:this.currage}
-                })
+                if(this.type == 4){
+                    this.$store.dispatch({
+                        type: 'searchshop',
+                        queryStr:{p:this.currage,like:this.$store.state.shop.searchdata.like}
+                    })
+                }else{
+                    this.$store.dispatch({
+                        type: 'typeshop',
+                        queryStr:{type:this.type,p:this.currage}
+                    })
+                }
             },
             getlist(){
                 this.$store.dispatch({

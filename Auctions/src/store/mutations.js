@@ -2,7 +2,8 @@ import * as types from './type'
 
 const state = {
     headShow: true,
-    footerShow: true
+    footerShow: true,
+    flag: true
 }
 
 const mutations = {
@@ -19,6 +20,13 @@ const mutations = {
     },
     [types.FOOTER_HIDE](state){
         state.footerShow = false;
+    },
+    /*flag*/
+    [types.FLAG_SUCCESS](state){
+        state.flag = true;
+    },
+    [types.FLAG_FAIL](state){
+        state.flag = false;
     }
 }
 

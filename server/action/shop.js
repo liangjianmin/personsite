@@ -226,7 +226,7 @@ module.exports = function (app) {
         var count;
         var totalPages;
         if (type != undefined) {
-            if(type == 3){
+            if (type == 3) {
                 shop.getShopCount(function (data) {
                     if (data) {
                         count = data.data[0].count;
@@ -240,7 +240,7 @@ module.exports = function (app) {
                         }
                     });
                 })
-            }else{
+            } else {
                 shop.getTypeShopCount(type, function (data) {
                     if (data) {
                         count = data.data[0].count;
@@ -291,16 +291,27 @@ module.exports = function (app) {
     });
 
     /**
-     *
+     *搜索商品数据
      */
     app.get('/search', function (req, res) {
-        var like=req.query.like;
-        shop.searchshop(like,function (data) {
-            if (data.status) {
-                res.send(data);
-            } else {
-                res.send(500);
+        var p = req.query.p;
+        var like = req.query.like;
+        var limit = 4;
+        var count;
+        var totalPages;
+
+        shop.searchCount(like,function (data) {
+            if (data) {
+                count = data.data[0].count;
+                totalPages = Math.ceil(data.data[0].count / limit);
             }
+            shop.searchshop((p - 1) * limit, limit, like, function (data) {
+                if (data.status) {
+                    res.send({list: data, maxPage: totalPages, currage: p, count: count, limit: limit});
+                } else {
+                    res.send(500);
+                }
+            });
         });
     });
 };
