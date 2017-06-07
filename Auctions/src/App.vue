@@ -31,7 +31,7 @@
         },
         methods: {
             headerChange(path){
-                if (path == 'register') {
+                if (path == 'register' || path.indexOf('pay')!= -1) {
                     this.$store.dispatch('hidehead');
                 } else {
                     this.$store.dispatch('showhead');

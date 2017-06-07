@@ -33,5 +33,5 @@ module.exports = {
     getOrder: function (id,callback) {
         sql = "select * from `order` WHERE id="+id;
         mysqlDB.getTableAllInfo({sql: sql}, callback);
-    },
+    }
 };

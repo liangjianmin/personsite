@@ -112,5 +112,9 @@ module.exports = {
     searchshop: function (p, limit, like, callback) {
         sql = "SELECT shop.*, pics.url, pics.`from` FROM shop, pics WHERE shop.imgid = pics.id AND shop.describes LIKE '%" + like + "%' limit " + p + "," + limit;
         mysqlDB.getTableAllInfo({sql: sql}, callback);
+    },
+    getstocknum:function (id,callback) {
+      sql = "select stocknum from shop WHERE id = "+id;
+      mysqlDB.getTableAllInfo({sql: sql}, callback);
     }
 };

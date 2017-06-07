@@ -93,13 +93,14 @@
         computed: {},
         mounted(){
             var path = this.$route.query.o;
-            this.getOrder(path);
+            var orderid= path.split('.')[0];
+            this.getOrder(orderid);
         },
         methods: {
             getOrder(path){
                 var self = this;
                 this.$http.post('dopay', {
-                    orderid: path.split('.')[0]
+                    orderid: path
                 }).then(res => {
                     if (res.data.status) {
                         this.orderdata = res.data.data;
@@ -109,16 +110,19 @@
                             this.freshTime(res.data.end,new Date().getTime())
                         }, 1000)
                     } else {
-
                         this.$message({
                             type: 'error',
                             message: '该链接已经失效',
-                            duration: 1000
+                            duration: 1000,
+                            onClose: function () {
+                              self.$router.push({path: '/home'});
+                            }
                         });
                     }
                 });
             },
             freshTime(endtime, nowtime){
+                var self=this;
                 var lefttime = parseInt((endtime - nowtime) / 1000);
                 var d = parseInt(lefttime / 3600 / 24);
                 var h = parseInt((lefttime / 3600) % 24);
@@ -132,7 +136,20 @@
                     this.$message({
                         type: 'error',
                         message: '该订单已经失效',
-                        duration: 1000
+                        duration: 1000,
+                        onClose: function () {
+                          self.$http.post('orderinvalid', {
+                            shopid: self.orderdata[0].shopid,
+                            shopnum:self.orderdata[0].shopnum,
+                            orderid:self.orderdata[0].orderuid
+                          }).then(res=>{
+                            if (res.data.status) {
+                              self.$router.push({path: '/pay', query: {o: res.data.time}});
+                            }
+                          },error=>{
+                              console.log('请启动node server')
+                          })
+                        }
                     });
                 }
             }

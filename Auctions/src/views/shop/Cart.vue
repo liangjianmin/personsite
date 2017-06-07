@@ -142,7 +142,7 @@
                                 }).then(data=>{
                                     self.logining = false;
                                     if(data.data.status){
-                                        self.$router.push({path: '/pay', query: {o: data.data.uuid.params}});
+                                        self.$router.replace({path: '/pay', query: {o: data.data.uuid.params}});
                                     }
                                 });
                             }
