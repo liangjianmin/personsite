@@ -1,21 +1,6 @@
-# vuedola
 
-> A Vue.js project
-
-## Build Setup
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-node server/app.js
-
+1：启动 redis-server.exe   缓存组件
+2:cd server  supervisor app 
+3:cd static  node app 
+4:cd Auctions  npm run dev 
+5:npm start 
