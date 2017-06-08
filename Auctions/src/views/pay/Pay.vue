@@ -139,6 +139,7 @@
                         duration: 1000,
                         onClose: function () {
                           self.$http.post('orderinvalid', {
+                              id:self.orderdata[0].id,
                             shopid: self.orderdata[0].shopid,
                             shopnum:self.orderdata[0].shopnum,
                             orderid:self.orderdata[0].orderuid

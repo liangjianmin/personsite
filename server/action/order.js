@@ -147,8 +147,15 @@ module.exports = function (app) {
                       typeelectrical = (SELECT SUM(stocknum) FROM shop s WHERE s.type = 1),
                       typedigital = (SELECT SUM(stocknum) FROM shop s WHERE s.type = 2)`
                         }, function (data) {
+                            if(data.status){
+                                order.deleteOrder({
+                                    sql: "DELETE FROM `order`  WHERE id = " + req.body.id
+                                }, function (data) {
+                                    console.log(data)
+                                });
+                                res.send({status: true, time: orderutil.time()});
+                            }
                         })
-                        res.send({status: true, time: orderutil.time()});
                     }
                 });
             }

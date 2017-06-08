@@ -5,8 +5,11 @@
                 <ul class="tab">
                     <li @click="selstatus(index)" v-for="(item,index) in status" :class="{'curr':active==index}">{{item}}</li>
                 </ul>
+                <div class="search fr">
+                    <el-input placeholder="请输入订单号" icon="search" v-model="searchdata"  :on-icon-click="handleIconClick"></el-input>
+                </div>
             </div>
-            <div class="order-list cart">
+            <div class="order-list cart clr">
                 <div class="cart-th lbBox">
                     <span class="cart-th-1">商品信息</span>
                     <span class="cart-th-2">单价</span>
@@ -61,10 +64,10 @@
     .order-box{
         position: relative;
         margin: 0 0 40px 0;
+        border-bottom: 1px solid #e8e8e8;
     }
     .order .tab{
-        width: 100%;
-        border-bottom: 1px solid #e8e8e8;
+        display: inline-block;
         box-shadow: 0 0 0 0 #D5D5D5;
         cursor: pointer;
     }
@@ -196,6 +199,10 @@
     .nodate a{
         color: #ff6000;
     }
+    .search{
+        position: relative;
+        top: -6px;
+    }
 </style>
 <script>
     import {mapState} from 'vuex'
@@ -203,6 +210,7 @@
         name: 'order',
         data() {
             return {
+                searchdata:'',
                 active: 0,
                 type: 0,
                 currage: 1,
@@ -231,6 +239,7 @@
             selstatus(index){
                 this.type=index;
                 this.active=index;
+                this.currage=1;
                 this.$store.dispatch({
                     type: 'order',
                     queryStr:{userid:this.$store.state.user.sessiondata.session.id,type:this.type,p:this.currage}
@@ -245,6 +254,9 @@
                     type: 'order',
                     queryStr:{userid:this.$store.state.user.sessiondata.session.id,type:this.type,p:this.currage}
                 })
+            },
+            handleIconClick(value){
+
             },
             del(){
 

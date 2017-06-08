@@ -40,7 +40,7 @@ module.exports = {
      * @param callback
      */
     getOrders: function (p, limit, id, callback) {
-        sql = "SELECT  `order`.* ,shop.id,shop.imgid, shop.describes, pics.url FROM `order`,shop,pics WHERE `order`.shopid=shop.id AND pics.id=shop.imgid AND `order`.userid=" + id + " limit " + p + "," + limit;
+        sql = "SELECT  `order`.* ,shop.id,shop.imgid, shop.describes, pics.url FROM `order`,shop,pics WHERE `order`.shopid=shop.id AND pics.id=shop.imgid AND `order`.userid=" + id + " ORDER BY `order`.id desc limit " + p + "," + limit;
         mysqlDB.getTableAllInfo({sql: sql}, callback);
     },
     /**
@@ -49,7 +49,7 @@ module.exports = {
      * @param callback
      */
     getOrderstatus: function (p, limit, type, id, callback) {
-        sql = "SELECT  `order`.* ,shop.id,shop.imgid, shop.describes, pics.url FROM `order`,shop,pics WHERE  `order`.shopid=shop.id AND pics.id=shop.imgid AND `status`=" + type + " AND userid=" + id + " limit " + p + "," + limit;
+        sql = "SELECT  `order`.* ,shop.id,shop.imgid, shop.describes, pics.url FROM `order`,shop,pics WHERE  `order`.shopid=shop.id AND pics.id=shop.imgid AND `status`=" + type + " AND userid=" + id + " ORDER BY `order`.id desc limit " + p + "," + limit;
         mysqlDB.getTableAllInfo({sql: sql}, callback);
     },
     /**
@@ -69,5 +69,13 @@ module.exports = {
     getOrderStatusCount: function (type, id, callback) {
         sql = "select count(1) count from `order` WHERE `status` =" + type + " AND userid =" + id;
         mysqlDB.getTableAllInfo({sql: sql}, callback);
+    },
+    /**
+     * 删除id订单
+     * @param data
+     * @param callback
+     */
+    deleteOrder: function (data, callback) {
+        mysqlDB.deleteTable(data, callback);
     }
 };
