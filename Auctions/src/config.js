@@ -5,6 +5,8 @@ const Classify = resolve => require(['./views/shop/Classify.vue'], resolve)
 const Pay = resolve => require(['./views/pay/Pay.vue'], resolve)
 const Login = resolve => require(['./views/user/Login.vue'], resolve)
 const Register = resolve => require(['./views/user/Register.vue'], resolve)
+const Order = resolve => require(['./views/order/Order.vue'], resolve)
+const Setting = resolve => require(['./views/user/Setting.vue'], resolve)
 export  default[
     {
         path: '/home',
@@ -40,6 +42,16 @@ export  default[
         path: '/pay',
         component: Pay,
         name: '支付页面'
+    },
+    {
+        path: '/order',
+        component: Order,
+        name: '订单页面'
+    },
+    {
+        path: '/setting',
+        component: Setting,
+        name: '个人设置页面'
     },
     {
         path: '/',

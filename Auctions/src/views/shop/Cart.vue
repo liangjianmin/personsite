@@ -17,7 +17,7 @@
                     <dd class="cart-th-2 t2">￥{{ruleForm.price}}</dd>
                     <dd class="cart-th-3 t3">
                         <el-input-number v-model="num" @change="handleChange" :min="1" :max="ruleForm.stocknum" size="small"></el-input-number>
-                        <p>库存容量：{{ruleForm.stocknum}}</p>
+                        <p>库存总容量：{{ruleForm.stocknum}}</p>
                     </dd>
                     <dd class="cart-th-4 t4">￥{{price}}</dd>
                     <dd class="cart-th-5 t5"><span @click="del">删除</span></dd>
@@ -158,6 +158,7 @@
                     console.log('请启动node server')
                 });
             },
+            /*删除商品*/
             del(){
                 var self = this;
                 this.$confirm('确定删除该商品嘛', '提示', {

@@ -69,7 +69,7 @@
     }
 
     .home .page-home {
-        padding: 10px;
+        padding: 0 10px 10px 10px;
     }
     .home .time {
         font-size: 13px;
