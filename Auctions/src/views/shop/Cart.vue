@@ -52,6 +52,7 @@
         background: #e74649;
         color: #ffffff;
     }
+
 </style>
 <script>
     import {mapState} from 'vuex'

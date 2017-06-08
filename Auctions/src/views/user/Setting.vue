@@ -1,7 +1,7 @@
 <template>
     <div class="pageview clr">
         <div class="order">
-                    setting
+            个人设置页面
         </div>
     </div>
 </template>

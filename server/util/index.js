@@ -7,9 +7,9 @@ module.exports = {
      * @param number
      * @returns {string}
      */
-    orederNumber: function (number) {
-        var time = moment(new Date()).format("YYYYMMDDHHmmss");
-        return 'E' + time + number;
+    orederNumber: function () {
+        var time = moment(new Date()).format("YYYYMMDDHHmmss")+new Date().getTime();
+        return 'E' + time;
     },
     /**
      *  解析购买时候的地址 r

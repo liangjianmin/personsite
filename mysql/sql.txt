@@ -32,3 +32,7 @@ UPDATE stock SET total = (SELECT SUM(stocknum) FROM shop),
 		typedigital = (SELECT SUM(stocknum) FROM shop s WHERE s.type = 2);
 		
 		
+SELECT `order`.* ,shop.id,shop.imgid, shop.describes, pics.url FROM `order`,shop,pics 
+		WHERE `order`.shopid=shop.id 
+		AND pics.id=shop.imgid 
+		AND `order`.userid=30;

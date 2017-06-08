@@ -113,6 +113,11 @@ module.exports = {
         sql = "SELECT shop.*, pics.url, pics.`from` FROM shop, pics WHERE shop.imgid = pics.id AND shop.describes LIKE '%" + like + "%' limit " + p + "," + limit;
         mysqlDB.getTableAllInfo({sql: sql}, callback);
     },
+    /**
+     * 查询shop id的库存量
+     * @param id
+     * @param callback
+     */
     getstocknum:function (id,callback) {
       sql = "select stocknum from shop WHERE id = "+id;
       mysqlDB.getTableAllInfo({sql: sql}, callback);

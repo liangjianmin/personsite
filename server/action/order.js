@@ -11,10 +11,10 @@ var shop = require("../models/shop.js");
 module.exports = function (app) {
     /**
      * 保存用户订单信息
-     * 字段status初始状态表示未付款
+     * 字段status 1:初始状态表示未付款
      */
     app.post('/ordersave', function (req, res, next) {
-        const orderuid = orderutil.orederNumber(req.body.shopnumber);
+        const orderuid = orderutil.orederNumber();
         order.savaoreder({
             data: {
                 shopname: req.body.shopname,
@@ -24,7 +24,7 @@ module.exports = function (app) {
                 username: req.body.username,
                 userid: req.body.userid,
                 orderuid: orderuid,
-                status: 0,
+                status: 1,
                 shopid: req.body.id,
                 ordertime: moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
             },
@@ -59,9 +59,9 @@ module.exports = function (app) {
                         if (shopdata.status) {
                             shop.updateStock({
                                 sql: `UPDATE stock SET total = (SELECT SUM(stocknum) FROM shop), 
-                      typecostume = (SELECT SUM(stocknum) FROM shop s WHERE s.type = 0),
-                      typeelectrical = (SELECT SUM(stocknum) FROM shop s WHERE s.type = 1),
-                      typedigital = (SELECT SUM(stocknum) FROM shop s WHERE s.type = 2)`
+                                      typecostume = (SELECT SUM(stocknum) FROM shop s WHERE s.type = 0),
+                                      typeelectrical = (SELECT SUM(stocknum) FROM shop s WHERE s.type = 1),
+                                      typedigital = (SELECT SUM(stocknum) FROM shop s WHERE s.type = 2)`
                             }, function (data) {
                             })
                             res.send(data);
@@ -130,7 +130,6 @@ module.exports = function (app) {
     app.post('/orderinvalid', function (req, res, next) {
         var shopid = req.body.shopid;
         var shopnum = req.body.shopnum;
-
         shop.getstocknum(shopid, function (data) {
             if (data.status) {
                 var tempstocknum = parseInt(data.data[0].stocknum + shopnum);
@@ -154,5 +153,47 @@ module.exports = function (app) {
                 });
             }
         });
+    });
+
+    /**
+     * 显示用户的订单
+     */
+    app.get('/order', function (req, res, next) {
+        var p = req.query.p;
+        var userid = req.query.userid;
+        var status = req.query.type; //status 默认0
+        var limit = 4;
+        var count;
+        var totalPages;
+        if(status == 0){
+            order.getOrderCount(userid,function (data) {
+                if (data.status) {
+                    count = data.data[0].count;
+                    totalPages = Math.ceil(data.data[0].count / limit);
+                }
+                order.getOrders((p - 1) * limit, limit,userid,function (data) {
+                    if (data.status) {
+                        res.send({list: data, maxPage: totalPages, currage: p, count: count, limit: limit});
+                    } else {
+                        res.send(500);
+                    }
+                });
+
+            });
+        }else{
+            order.getOrderStatusCount(status,userid,function (data) {
+                if(data.status){
+                    count = data.data[0].count;
+                    totalPages = Math.ceil(data.data[0].count / limit);
+                }
+                order.getOrderstatus((p - 1) * limit, limit,status,userid,function (data) {
+                    if (data.status) {
+                        res.send({list: data, maxPage: totalPages, currage: p, count: count, limit: limit});
+                    } else {
+                        res.send(500);
+                    }
+                })
+            })
+        }
     });
 };

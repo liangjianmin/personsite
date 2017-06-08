@@ -228,7 +228,7 @@ module.exports = function (app) {
         if (type != undefined) {
             if (type == 3) {
                 shop.getShopCount(function (data) {
-                    if (data) {
+                    if (data.status) {
                         count = data.data[0].count;
                         totalPages = Math.ceil(data.data[0].count / limit);
                     }
