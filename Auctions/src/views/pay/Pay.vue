@@ -5,14 +5,18 @@
             <p class="t1">亲，您需要支付金额：<em>￥{{item.total}}</em></p>
             <p class="t2"><span>还剩下<em>{{time.minute}}</em>分<em>{{time.second}}</em>秒，加油，亚麻得！！</span></p>
             <div class="btn">
-                <el-button type="success">支付宝支付</el-button>
-                <el-button type="success">微信支付</el-button>
+                <el-button type="success" @click="pay(0)">支付宝支付</el-button>
+                <el-button type="success" @click="pay(1)">微信支付</el-button>
             </div>
         </div>
         <div class="paytext" v-if="!visibility">
             <p class="t3"><em>该订单已经失效</em></p>
             <router-link to="/home" class="login">返回重新购物</router-link>
         </div>
+        <el-dialog title=""  size="tiny" :visible.sync="dialogTableVisible">
+            <img src="../../assets/images/pay.jpg" alt="" class="im" v-if="flag">
+            <img src="../../assets/images/pay-1.jpg" alt="" class="im" v-if="!flag">
+        </el-dialog>
     </div>
 </template>
 <style scoped lang="scss">
@@ -74,6 +78,11 @@
         background: #e74649;
         color: #ffffff;
     }
+    .im{
+        width: 40%;
+        display: block;
+        margin: 0 auto;
+    }
 </style>
 <script>
     import {mapState} from 'vuex'
@@ -81,6 +90,8 @@
         name: 'pay',
         data() {
             return {
+                flag:true,
+                dialogTableVisible: false,
                 timeclear:null,
                 orderdata: null,
                 visibility: true,
@@ -152,6 +163,15 @@
                         }
                     });
                 }
+            },
+            pay(value){
+                this.dialogTableVisible=true;
+                if(value == 0){
+                    this.flag=true;
+                }else{
+                    this.flag=false;
+                }
+
             }
         }
     }
