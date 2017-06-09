@@ -7,6 +7,8 @@ var util = require('util');
 var client = require("../util/redis.js");//缓存操作模块
 var orderutil = require("../util/index.js");
 var shop = require("../models/shop.js");
+var crypto = require('crypto');//加密
+
 
 module.exports = function (app) {
     /**
@@ -77,50 +79,43 @@ module.exports = function (app) {
      */
     app.post('/pay', function (req, res, next) {
         var id = req.body.orderid;
-        const uuid = orderutil.payNumber(id);
-        order.getOrder(id, function (data) {
-            if (data.status) {
-                client.hmset('orderid', {id: id, time: orderutil.time()}, function (err) {
-                    if (err) {
-                        return;
-                    }
-                })
-                res.send({
-                    uuid: uuid,
-                    status: true
-                });
+        var uuid = orderutil.payNumber();
+        var md5 = crypto.createHash('md5');
+        md5.update(id.toString());
+        var sign = md5.digest('hex');//生成的sign
+        var timestamp = orderutil.time();//记录当前订单的付款结束时间
+        //记录sign字段
+        order.updateOrderSign({
+            sql: "update `order` SET sign=?,timestamp=? WHERE id = ?",
+            params: [
+                sign,
+                timestamp,
+                id
+            ]
+        }, function (signdata) {
+            if (signdata.status) {
+                res.send({sign: sign, status: true, uuid: uuid})
             }
-        })
+        });
     });
     /**
-     *  支付
+     *  支付匹配sign
      */
     app.post('/dopay', function (req, res, next) {
         var id = req.body.orderid;
         if (id) {
-            client.hgetall('orderid', function (err, object) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    if (id == object.id) {
-                        order.getOrder(id, function (data) {
-                            if (data.status) {
-                                res.send({
-                                    data: data.data,
-                                    end: object.time,
-                                    status: true
-                                });
-                            }
-                        })
-                    } else {
-                        res.send({
-                            data: {
-                                status: false
-                            }
-                        })
-                    }
+            order.getOrder(id, function (data) {
+                if (data.status) {
+                    res.send({
+                        data: data.data,
+                        status: true
+                    });
                 }
             })
+        } else {
+            res.send({
+                status: false
+            });
         }
     });
 
@@ -147,7 +142,7 @@ module.exports = function (app) {
                       typeelectrical = (SELECT SUM(stocknum) FROM shop s WHERE s.type = 1),
                       typedigital = (SELECT SUM(stocknum) FROM shop s WHERE s.type = 2)`
                         }, function (data) {
-                            if(data.status){
+                            if (data.status) {
                                 order.deleteOrder({
                                     sql: "DELETE FROM `order`  WHERE id = " + req.body.id
                                 }, function (data) {
@@ -172,13 +167,13 @@ module.exports = function (app) {
         var limit = 4;
         var count;
         var totalPages;
-        if(status == 0){
-            order.getOrderCount(userid,function (data) {
+        if (status == 0) {
+            order.getOrderCount(userid, function (data) {
                 if (data.status) {
                     count = data.data[0].count;
                     totalPages = Math.ceil(data.data[0].count / limit);
                 }
-                order.getOrders((p - 1) * limit, limit,userid,function (data) {
+                order.getOrders((p - 1) * limit, limit, userid, function (data) {
                     if (data.status) {
                         res.send({list: data, maxPage: totalPages, currage: p, count: count, limit: limit});
                     } else {
@@ -187,13 +182,13 @@ module.exports = function (app) {
                 });
 
             });
-        }else{
-            order.getOrderStatusCount(status,userid,function (data) {
-                if(data.status){
+        } else {
+            order.getOrderStatusCount(status, userid, function (data) {
+                if (data.status) {
                     count = data.data[0].count;
                     totalPages = Math.ceil(data.data[0].count / limit);
                 }
-                order.getOrderstatus((p - 1) * limit, limit,status,userid,function (data) {
+                order.getOrderstatus((p - 1) * limit, limit, status, userid, function (data) {
                     if (data.status) {
                         res.send({list: data, maxPage: totalPages, currage: p, count: count, limit: limit});
                     } else {

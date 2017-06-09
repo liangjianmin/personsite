@@ -27,10 +27,10 @@
                             </span>
                         </dt>
                         <dd class="cart-th-1 t1">
-                            <a href="javascript:;">
+                            <router-link :to="'/pay?sign='+item.sign">
                                 <img class="va-m" :src="'http://127.0.0.1:3838/static/upload/shop/'+item.url" width="50" height="50">
                                 <p class="lineBlock">{{item.describes}}</p>
-                            </a>
+                            </router-link>
                         </dd>
                         <dd class="cart-th-2 t2">￥{{item.price}}</dd>
                         <dd class="cart-th-3 t2">{{item.shopnum}}</dd>

@@ -92,9 +92,8 @@
         },
         computed: {},
         mounted(){
-            var path = this.$route.query.o;
-            var orderid= path.split('.')[0];
-            this.getOrder(orderid);
+            var path = this.$route.query.sign;
+            this.getOrder(path);
         },
         methods: {
             getOrder(path){
@@ -104,10 +103,9 @@
                 }).then(res => {
                     if (res.data.status) {
                         this.orderdata = res.data.data;
-                        this.timestamp=res.data.end;
-                        this.freshTime(res.data.end,new Date().getTime());
+                        this.freshTime(res.data.data[0].timestamp,new Date().getTime());
                         this.timeclear = setInterval(() => {
-                            this.freshTime(res.data.end,new Date().getTime())
+                            this.freshTime(res.data.data[0].timestamp,new Date().getTime())
                         }, 1000)
                     } else {
                         this.$message({
@@ -118,6 +116,7 @@
                               self.$router.push({path: '/home'});
                             }
                         });
+
                     }
                 });
             },

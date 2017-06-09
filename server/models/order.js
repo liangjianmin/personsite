@@ -26,12 +26,20 @@ module.exports = {
         mysqlDB.updateTable(data, callback)
     },
     /**
+     * 更新订单的sign
+     * @param data
+     * @param callback
+     */
+    updateOrderSign: function (data, callback) {
+        mysqlDB.updateTable(data, callback)
+    },
+    /**
      * 查询用户的唯一订单
      * @param id
      * @param callback
      */
     getOrder: function (id, callback) {
-        sql = "select * from `order` WHERE id=" + id;
+        sql = "select * from `order` WHERE sign= '" + id + "' ";
         mysqlDB.getTableAllInfo({sql: sql}, callback);
     },
     /**

@@ -34,16 +34,15 @@ module.exports = {
      * @param id
      * @returns {{id: *, params: string}}
      */
-    payNumber: function (id) {
+    payNumber: function () {
         var pay = {
-            id: id,
-            params: id+'.' + new Date().getTime()+id
+            params:+ new Date().getTime()
         }
         return pay;
     },
     /**
      * 付款时间 半个小时
-     * @returns {number}
+     *
      */
     time:function () {
         var now = new Date().getTime() +1000*60*30;
