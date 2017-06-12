@@ -12,7 +12,7 @@ module.exports={
     mysqlDB.getTableAllInfo({sql:sql},callback)
   },
   getbanner:function (p,callback) {
-    sql='select * from pics where `desc`="banner table use" ';
+      sql='select * from pics where `desc`="banner table use" ';
     mysqlDB.getTableAllInfo({sql:sql},callback)
   },
   removebanner:function (data, callback) {

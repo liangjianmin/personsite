@@ -66,8 +66,8 @@ module.exports=function (app) {
   * 获取图片列表
   * */
   app.get('/bannerlist',function (req, res) {
-        var p=req.query.p;
-        banner.getbanner(p,function (data) {
+      //  var p=req.query.p;
+        banner.getbannername(function (data) {
             res.send(data)
         })
   })
@@ -80,6 +80,23 @@ module.exports=function (app) {
     },function (data) {
       res.send(data)
     })
+  })
+  /*
+  * 更新
+  * */
+  app.post('/bannerupdate',function (req, res) {
+    fs.unlinkSync('../dist/static/banner/'+req.body.del);
+    banner.addPic({
+      sql:"UPDATE pics SET url=?,`from`=?,`time`=? WHERE id=322",
+      params: [
+        req.body.imgid,
+        req.session.user,
+        moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
+      ]
+    },function (data) {
+      res.send(data)
+    })
+
   })
 }
 

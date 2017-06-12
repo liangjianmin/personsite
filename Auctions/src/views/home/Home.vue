@@ -4,8 +4,8 @@
             <el-col :span="24" class="page-home">
                 <el-col :span="24">
                     <el-carousel trigger="click" height="265px">
-                        <el-carousel-item v-for="item in 4" :key="item">
-                            <h3>{{ item }}</h3>
+                        <el-carousel-item v-for="item in bannerItem"  >
+                          <div class="back-cover" :style="'background-image: url(http://127.0.0.1:3838/static/banner/'+item+')'"></div>
                         </el-carousel-item>
                     </el-carousel>
                 </el-col>
@@ -42,6 +42,13 @@
         color: #838487;
     }
 
+    .back-cover {
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      width: 100%;
+      height: 100%
+    }
     .el-rate {
         display: inline-block;
         vertical-align: middle;
@@ -164,7 +171,8 @@
         name: 'home',
         data() {
             return {
-                value: 3
+                value: 3,
+                bannerItem:[],
             }
         },
         computed: mapState({
@@ -177,6 +185,7 @@
         }),
         mounted(){
             this.getlist();
+            this.getBanner();
         },
         watch: {
             $route(to){
@@ -191,7 +200,12 @@
                 this.$store.dispatch({
                     type: 'shop'
                 });
-            }
+            },
+          getBanner(){
+            this.$http.get('/bannerlist').then(res=>{
+              this.bannerItem=res.data.data[0].url.split(',');
+            })
+          }
         }
     }
 </script>

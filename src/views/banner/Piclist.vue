@@ -1,27 +1,23 @@
 <template>
+  <div>
   <el-table
     :data="tableData"
     style="width: 100%">
     <el-table-column
-      prop="id"
-      label="id"
-      width="180">
+      prop="name"
+      align="center"
+      label="名字">
     </el-table-column>
     <el-table-column
-      prop="from"
-      label="姓名"
-      width="180">
+      prop="name"
+      align="center"
+      label="图片">
+      <template scope="scope">
+        <img class="ban-list-img" :src="'http://127.0.0.1:3838/static/banner/'+scope.row.name"  width="50" height="50" />
+      </template>
     </el-table-column>
     <el-table-column
-      prop="time"
-      label="时间">
-    </el-table-column>
-    <el-table-column
-      prop="url"
-      label="地址">
-    </el-table-column>
-    <el-table-column
-      label="删除" align="center" >
+      label="操作" align="center" >
       <template scope="scope">
         <el-button
           size="small"
@@ -30,12 +26,13 @@
       </template>
     </el-table-column>
   </el-table>
+  </div>
 </template>
 <style scoped>
-.center{text-align:center;}
+.ban-list-img{padding: 5px;display: block;margin: 0 auto}
 </style>
 <script>
-  import {mapState} from 'vuex'
+  import {mapState} from 'vuex';
   export default {
     name: 'shopsave',
     data(){
@@ -51,34 +48,47 @@
           this.getImgList()
         },
         getImgList(){
+            var _this=this;
              this.$http.get('bannerlist').then(res=>{
                if(res.status){
-                  this.tableData=res.data.data;
+                   let item=res.data.data[0].url.split(',');
+                   item.forEach(function (o) {
+                     _this.tableData.push({name:o});
+                   });
                }
              })
         },
 
-        handleDelete(index,row){
-          var _this=this;
-          this.$http.post('bannerremove',{
-              id:row.id
-          }).then(res=>{
-            if(res.status){
-              this.$message({
-                type: 'success',
-                message: '删除成功',
-                duration: 1000,
-                showClose:true,
-                onClose: function () {
-                  _this.$http.get('bannerlist').then(res=>{
-                    if(res.status){
-                      _this.tableData=res.data.data;
-                    }
-                  })
-                }
-              });
-            }
-          })
+      handleDelete(index,row){
+           let _this=this;
+           let imgid=[];
+            _this.tableData.splice(index,1);
+            _this.tableData.forEach(function (e) {
+               imgid.push(e.name)
+            });
+            this.$http.post('/bannerupdate',{'imgid':imgid.join(','),'del':row.name}).then(res=>{
+              if(res.status){
+                this.$message({
+                  type: 'success',
+                  message: '删除成功',
+                  duration: 1000,
+                  showClose:true,
+                  onClose: function () {
+                    _this.$http.get('bannerlist').then(res=>{
+                      if(res.status){
+                        _this.tableData=[];
+                        console.log(res);
+                        let item=res.data.data[0].url.split(',');
+                        item.forEach(function (o) {
+                          _this.tableData.push({name:o});
+                          console.log(_this.tableData)
+                        });
+                      }
+                    })
+                  }
+                });
+              }
+            })
 
         }
     }
