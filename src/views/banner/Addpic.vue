@@ -10,6 +10,7 @@
                     :on-preview="handlePictureCardPreview"
                     :on-progress="handlePreview"
                     :on-remove="handleRemove"
+                    :before-upload="handlePictureBefore"
                     :auto-upload="false"
                     :multiple="true"
                     :on-success="handleAvatarSuccess">
@@ -52,7 +53,6 @@
     methods: {
       submitForm(formName) {
         var self = this;
-
         this.$refs[formName].validate((valid) => {
           if (valid) {
             if(this.$store.state.user.sessiondata !=''){
@@ -97,9 +97,22 @@
           duration: 1000
         });
       },
+      handlePictureBefore(file){
+        if (this.uploadFlag) {
+          return false;
+        }
+      },
       handlePictureChange(file, fileList){
+        if (fileList.length > 1) {
+          this.uploadFlag = true;
+          this.$message({
+            type: 'error',
+            message: '亲，只能上传一张图片',
+            duration: 1000
+          });
+        }
           this.fileList=fileList.length;
-        this.uploadFlag = true;
+
       }
     }
   }

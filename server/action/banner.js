@@ -14,44 +14,46 @@ module.exports=function (app) {
   app.post('/bannerload',function (req, res) {
     //具体看shop.js
     let form=new multiparty.Form({uploadDir:'../dist/static/banner/'});
+
+    var longurl=[],turl=[];
+    console.log('触发')
     form.parse(req,function (err, fields, files) {
      // 分别返回body，文件属性，以及文件存放地址
    //   let filesTmp=JSON.stringify(files,null,2);
       if(err){
         console.log('parse error:'+err)
       }else {
-
         let inputFile=files.inputFile[0];
         let uploadedPath=inputFile.path;
-        let dstPath='../dist/static/banner/'+inputFile.originalFilename
+        let dstPath='../dist/static/banner/'+inputFile.originalFilename;
         fs.rename(uploadedPath,dstPath,function (err) {
           if(err){
             console.log('rename error'+err)
           }else {
              //判断是否登录
             if(req.session.user){
-              /*
-              * req.session
-              Session {
-                cookie:
-                { path: '/',
-                  _expires: null,
-                  originalMaxAge: null,
-                  httpOnly: true },
-                user: 'admin' }
-                *
-                */
-              banner.addPic({
-                data:{
-                  url:inputFile.originalFilename,
-                  from:req.session.user,
-                  desc:"banner table use",
-                  time:moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
-                },
-                sql:"INSERT INTO pics SET ?"
-              },function (data) {
-                res.send(data)
+              banner.getbannername(function (data) {
+               longurl=data.data[0].url.toString().split(',');
+               turl=longurl.slice(0);
+                longurl.forEach(function (e,index) {
+                  if(e==inputFile.originalFilename){
+                    turl.splice(index,1);
+                  }
+                });
+                turl.push(inputFile.originalFilename);
+                banner.addPic({
+                  sql:"UPDATE pics SET url=?,`from`=?,`time`=? WHERE id=322",
+                  params: [
+                    turl.join(','),
+                    req.session.user,
+                    moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
+                  ]
+                },function (data) {
+                  res.send(data)
+                })
+
               })
+
             }else {
               res.send({staus:false,msg:'请登录'})
             }
@@ -60,12 +62,24 @@ module.exports=function (app) {
       }
     })
   })
+  /*
+  * 获取图片列表
+  * */
   app.get('/bannerlist',function (req, res) {
-    console.log(req.body)
         var p=req.query.p;
         banner.getbanner(p,function (data) {
             res.send(data)
         })
+  })
+  /*
+  * 删除图片
+  * */
+  app.post('/bannerremove',function (req, res) {
+    banner.removebanner({
+      sql:'DELETE FROM pics WHERE id = '+req.body.id+''
+    },function (data) {
+      res.send(data)
+    })
   })
 }
 

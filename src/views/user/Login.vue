@@ -24,8 +24,8 @@
         data() {
             return {
                 ruleForm: {
-                    name: '',
-                    pass: '',
+                    name: 'lg',
+                    pass: '123456'
                 },
                 rules: {
                     name: [
@@ -38,7 +38,13 @@
                 }
             }
         },
+        mounted:function () {
+          this.init()
+        },
         methods: {
+            init:function () {
+
+            },
             submitForm(formName) {
                 var self = this;
                 this.$http.post('login', {

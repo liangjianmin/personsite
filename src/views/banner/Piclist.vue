@@ -25,11 +25,9 @@
       <template scope="scope">
         <el-button
           size="small"
-          type="danger"  
+          type="danger"
           @click="handleDelete(scope.$index, scope.row)">删除</el-button>
       </template>
-    </el-table-column>
-       <div>1213</div>
     </el-table-column>
   </el-table>
 </template>
@@ -49,8 +47,8 @@
       this.init();
     },
     methods: {
-        init(){
-            this.getImgList()
+        init:function () {
+          this.getImgList()
         },
         getImgList(){
              this.$http.get('bannerlist').then(res=>{
@@ -59,10 +57,29 @@
                }
              })
         },
+
         handleDelete(index,row){
-          console.log(index)
-           console.log(row)
-      
+          var _this=this;
+          this.$http.post('bannerremove',{
+              id:row.id
+          }).then(res=>{
+            if(res.status){
+              this.$message({
+                type: 'success',
+                message: '删除成功',
+                duration: 1000,
+                showClose:true,
+                onClose: function () {
+                  _this.$http.get('bannerlist').then(res=>{
+                    if(res.status){
+                      _this.tableData=res.data.data;
+                    }
+                  })
+                }
+              });
+            }
+          })
+
         }
     }
   }
