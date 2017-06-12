@@ -3,12 +3,60 @@
 .nav{
   width: 100%;
   background: #324157;
-  >ul{
+  .navview{
+    position: relative;
     width: 1200px;
     margin: 0 auto 0;
+    >ul{
+      width: 100%;
+    }
+  }
+  .search{
+    position: absolute;
+    top: 14px;
+    right: 94px;
+    margin: 0 auto;
+    width: 20%;
+  }
+  .login{
+    display: block;
+    height: 60px;
+    line-height: 60px;
+    position: absolute;
+    right:14px;
+    top:0;
+    font-size: 14px;
+    color: #bfcbd9;
   }
 }
-
+.cw-icon{
+  position: absolute;
+  display: inline-block;
+  right: 21px;
+  top: 19px;
+  width: 30px;
+  height: 30px;
+  background: url(../images/gwc.png) no-repeat;
+  background-size: contain;
+  z-index: 111;
+  .iconcars{
+    display: inline-block;
+    position: absolute;
+    right: -3px;
+    top: -9px;
+    width: 15px;
+    height: 15px;
+    line-height: 15px;
+    background: #ff0006;
+    background-size: 30px;
+    z-index: 111;
+    border-radius: 50%;
+    font-size: 10px;
+    text-align: center;
+    color: #fff;
+    padding:2px;
+  }
+}
 .cart{
   margin-bottom: 200px;
   .cart-th-1{

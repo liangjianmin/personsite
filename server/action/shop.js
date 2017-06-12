@@ -1,9 +1,12 @@
 var shop = require("../models/shop.js");
-var comment=require("../models/comment.js");
+var comment = require("../models/comment.js");
+var carsutil = require("../util/index.js");
 var moment = require('moment'); //时间
 var multiparty = require('multiparty'); //文件操作模块
 var util = require('util');
 var fs = require('fs');
+var client = require("../util/redis.js");//缓存操作模块
+
 
 module.exports = function (app) {
     /**
@@ -122,25 +125,80 @@ module.exports = function (app) {
         });
     });
     /**
-     * 获取id商品 && 评论列表
+     * 获取id商品详情 && 评论列表
      */
-    app.get('/getshop', function (req, res,next) {
+    app.get('/getshop', function (req, res) {
+        //获取详情页面id
         var p = req.query.id;
-        shop.getshop(p, function (data) {
-            if (data.status) {
-                comment.getComment(p,function (commentdata) {
-                    if(commentdata.status){
-                        comment.getCommentNum(p,function (numdata) {
-                            if(numdata.status){
-                                res.send({data:{shop:data.data,comment:commentdata.data,commentnum:numdata.data[0].count,status:data.status}});
+        //获取点击结算的参数
+        var r = req.query.r;
+        //解析缓存中用户存储的数据
+        if (r != undefined) {
+            client.hgetall('cars', function (err, object) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    if (r === object.params) {
+                        p = object.id;
+                        shop.getshop(p, function (data) {
+                            if (data.status) {
+                                comment.getComment(p, function (commentdata) {
+                                    if (commentdata.status) {
+                                        comment.getCommentNum(p, function (numdata) {
+                                            if (numdata.status) {
+                                                res.send({
+                                                    data: {
+                                                        shop: data.data,
+                                                        comment: commentdata.data,
+                                                        commentnum: numdata.data[0].count,
+                                                        status: data.status,
+                                                        selnum: object.num,
+                                                        user: object.user,
+                                                        userid: object.userid,
+                                                        uuid: object.params
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+                                })
+                            } else {
+                                res.send(500);
                             }
                         });
+                    } else {
+                        res.send({
+                            data: {
+                                status: false
+                            }
+                        })
                     }
-                })
-            } else {
-                res.send(500);
-            }
-        });
+                }
+            })
+        } else {
+            shop.getshop(p, function (data) {
+                if (data.status) {
+                    comment.getComment(p, function (commentdata) {
+                        if (commentdata.status) {
+                            comment.getCommentNum(p, function (numdata) {
+                                if (numdata.status) {
+                                    res.send({
+                                        data: {
+                                            shop: data.data,
+                                            comment: commentdata.data,
+                                            commentnum: numdata.data[0].count,
+                                            status: data.status
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    })
+                } else {
+                    res.send(500);
+                }
+            });
+        }
     });
     /**
      * 查询库存数量
@@ -158,30 +216,46 @@ module.exports = function (app) {
      * p:分页
      * type：分类列表
      * 获取商品列表，分类列表
-     * type 0：全部列表 1：分类列表
+     * type 列表 0,1,2分类
+     * type 3 全部列表
      */
     app.get('/shoplist', function (req, res) {
         var p = req.query.p;
-        var type=req.query.type;
+        var type = req.query.type;
         var limit = 6;
         var count;
         var totalPages;
-
-        if(type != undefined){
-            shop.getTypeShopCount(type,function (data) {
-                if (data) {
-                    count = data.data[0].count;
-                    totalPages = Math.ceil(data.data[0].count / limit);
-                }
-                shop.getTypeShops((p - 1) * limit, limit,type, function (data) {
+        if (type != undefined) {
+            if (type == 3) {
+                shop.getShopCount(function (data) {
                     if (data.status) {
-                        res.send({list: data, maxPage: totalPages, currage: p, count: count, limit: limit});
-                    } else {
-                        res.send(500);
+                        count = data.data[0].count;
+                        totalPages = Math.ceil(data.data[0].count / limit);
                     }
-                });
-            })
-        }else{
+                    shop.getShops((p - 1) * limit, limit, function (data) {
+                        if (data.status) {
+                            res.send({list: data, maxPage: totalPages, currage: p, count: count, limit: limit});
+                        } else {
+                            res.send(500);
+                        }
+                    });
+                })
+            } else {
+                shop.getTypeShopCount(type, function (data) {
+                    if (data) {
+                        count = data.data[0].count;
+                        totalPages = Math.ceil(data.data[0].count / limit);
+                    }
+                    shop.getTypeShops((p - 1) * limit, limit, type, function (data) {
+                        if (data.status) {
+                            res.send({list: data, maxPage: totalPages, currage: p, count: count, limit: limit});
+                        } else {
+                            res.send(500);
+                        }
+                    });
+                })
+            }
+        } else {
             shop.getShopCount(function (data) {
                 if (data) {
                     count = data.data[0].count;
@@ -196,5 +270,48 @@ module.exports = function (app) {
                 });
             })
         }
+    });
+
+    /**
+     *解析购买结算信息
+     */
+    app.post('/cars', function (req, res) {
+        var shopid = req.body.id;//保存商品id
+        var num = req.body.num;//保存用户选择的商品个数
+        var userid = req.body.userid;//保存用户id
+        var user = req.body.user;//保存用户名字
+        var cars = carsutil.carsNumber(shopid, num, userid, user);
+        //缓存用户的选择信息
+        client.hmset('cars', cars, function (err) {
+            if (err) {
+                return;
+            }
+        })
+        res.send({r: cars.params});
+    });
+
+    /**
+     *搜索商品数据
+     */
+    app.get('/search', function (req, res) {
+        var p = req.query.p;
+        var like = req.query.like;
+        var limit = 4;
+        var count;
+        var totalPages;
+
+        shop.searchCount(like,function (data) {
+            if (data) {
+                count = data.data[0].count;
+                totalPages = Math.ceil(data.data[0].count / limit);
+            }
+            shop.searchshop((p - 1) * limit, limit, like, function (data) {
+                if (data.status) {
+                    res.send({list: data, maxPage: totalPages, currage: p, count: count, limit: limit});
+                } else {
+                    res.send(500);
+                }
+            });
+        });
     });
 };

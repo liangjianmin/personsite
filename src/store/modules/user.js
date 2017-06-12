@@ -4,7 +4,7 @@ import axios from 'axios'
 const state = {
     userlist: {},
     userid: [],
-    sessiondata: {}
+    sessiondata:''
 }
 
 const mutations = {

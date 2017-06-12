@@ -4,7 +4,8 @@ import axios from 'axios'
 const state = {
     shoplist: {},
     stock: {},
-    typeshop: {}
+    typeshop: {},
+    searchdata:{}
 }
 
 const mutations = {
@@ -32,6 +33,22 @@ const mutations = {
     typeshop(state, payload){
         state.typeshop = payload.res;
     },
+    /**
+     * 搜索数据
+     * @param state
+     * @param payload
+     */
+    searchshop(state, payload){
+        state.typeshop = payload.res;
+    },
+    /**
+     * 临时保存搜索数据
+     * @param state
+     * @param payload
+     */
+    search(state, payload){
+        state.searchdata = payload.res;
+    }
 }
 
 const actions = {
@@ -59,7 +76,7 @@ const actions = {
         axios.get('shoplist', {
             params: {
                 p: payload.queryStr.p,
-                type:payload.queryStr.type
+                type: payload.queryStr.type
             }
         }).then(res => {
             commit({
@@ -70,6 +87,27 @@ const actions = {
             console.log('请启动node server')
         });
     },
+    searchshop({commit}, payload){
+        axios.get('search', {
+            params: {
+                p: payload.queryStr.p,
+                like: payload.queryStr.like
+            }
+        }).then(res => {
+            commit({
+                type: 'searchshop',
+                res: res.data
+            })
+        }, error => {
+            console.log('请启动node server')
+        });
+    },
+    search({commit}, payload){
+        commit({
+            type: 'search',
+            res: payload.queryStr
+        })
+    }
 }
 
 const getters = {}

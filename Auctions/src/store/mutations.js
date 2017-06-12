@@ -3,8 +3,7 @@ import * as types from './type'
 const state = {
     headShow: true,
     footerShow: true,
-    loading: false,
-    user: JSON.parse(sessionStorage.getItem('user')) || {},
+    flag: true
 }
 
 const mutations = {
@@ -15,13 +14,6 @@ const mutations = {
     [types.HEAD_SHOW_FAIL](state){
         state.headShow = false;
     },
-    /*loading*/
-    [types.HIDE_LOADING](state) {
-        state.loading = false;
-    },
-    [types.SHOW_LOADING](state) {
-        state.loading = true;
-    },
     /*footer*/
     [types.FOOTER_SHOW](state){
         state.footerShow = true;
@@ -29,23 +21,18 @@ const mutations = {
     [types.FOOTER_HIDE](state){
         state.footerShow = false;
     },
-    /*user*/
-    [types.USER_SIGNIN](state, user) {
-        sessionStorage.setItem('user', JSON.stringify(user));
-        state.user=JSON.parse(sessionStorage.getItem('user'));
+    /*flag*/
+    [types.FLAG_SUCCESS](state){
+        state.flag = true;
     },
-    [types.USER_SIGNOUT](state) {
-        sessionStorage.removeItem('user');
-        state.user='';
+    [types.FLAG_FAIL](state){
+        state.flag = false;
     }
 }
 
 const getters = {
     headShow(state){
         return state.headShow
-    },
-    loading(state) {
-        return state.loading;
     },
     footerShow(state){
         return state.footerShow;

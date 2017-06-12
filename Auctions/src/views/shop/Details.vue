@@ -17,11 +17,12 @@
                             <el-input-number v-model="num"  @change="handleChange" :min="1" :max="ruleForm.stocknum" size="small"></el-input-number>
                         </p>
                         <p class="text t3"><span class="tx">评论数：</span><span class="txs">{{commentnum | commentFormate}}</span></p>
-                        <el-button type="primary" @click="onSubmit" class="detbtn">购买</el-button>
+                        <el-button type="primary" @click="onCarsSubmit" class="detbtn">加入购物车</el-button>
+                        <el-button type="primary" @click="onSubmit(user)" class="detbtn">购买</el-button>
                     </el-col>
                 </div>
                 <div class="clr comment">
-                    <el-button  @click="onSubmitCommentBtn">发表评论</el-button>
+                    <el-button  @click="onSubmitCommentBtn(user)">发表评论</el-button>
                     <div class="comm-textarae" v-if="visibile">
                         <el-input type="textarea" v-model="desc" class="textdesc"></el-input>
                         <el-rate v-model="evaluate" show-text></el-rate>
@@ -39,9 +40,17 @@
                 </div>
             </el-card>
         </el-col>
+        <a class="cw-icon" href="javascript:;">
+            <el-badge :value="carnum" :max="99" class="item"></el-badge>
+        </a>
     </div>
 </template>
 <style scoped>
+    .el-badge{
+        position: relative;
+        top: -10px;
+        right: -11px;
+    }
     .textdesc{
         margin-bottom: 10px;
     }
@@ -111,6 +120,7 @@
         height: 100%;
     }
     .pageview {
+        position: relative;
         width: 1200px;
         margin: 20px auto 0;
     }
@@ -165,6 +175,7 @@
         name: 'details',
         data() {
             return {
+                carnum:1000,
                 visibile:false,
                 num:1,
                 desc:'',
@@ -180,7 +191,7 @@
             }
         },
         computed: mapState({
-
+            user: state => state.user.sessiondata.session
         }),
         mounted(){
             var path = this.$route.params.id;
@@ -195,6 +206,17 @@
             }
         },
         methods:{
+            /**加入购物车 无需判断用户是否登录，记录个人购买信息*/
+            onCarsSubmit(){
+                this.$message({
+                    type: 'error',
+                    duration: 2000,
+                    message: '马拉个币，点毛啊，没做',
+                    onClose: function () {
+
+                    }
+                });
+            },
             getDetails(path){
                 this.$http.get('getshop?id=' + path).then(res => {
                     this.comment=res.data.data.comment;
@@ -205,9 +227,35 @@
                     console.log('请启动node server')
                 });
             },
-            onSubmit(){
-                this.$router.push({ path: '/cart', query: { id: this.ruleForm.id,num:this.num}});
+            /*购买必须判断用户是否登录*/
+            onSubmit(data){
+                var self=this;
+                if(data == null){
+                    this.$message({
+                        type: 'error',
+                        duration: 2000,
+                        message: '亲，请登录',
+                        onClose: function () {
+                            self.$router.push({path: '/login'});
+                        }
+                    });
+                }else{
+                    /*点击购买跳转结算页面*/
+                    this.$http.post('cars',{
+                        id:this.ruleForm.id,
+                        num:this.num,
+                        userid:this.$store.state.user.sessiondata.session.id,
+                        user:this.$store.state.user.sessiondata.session.name
+                    }).then(res=>{
+                        if(res.status == 200){
+                            this.$router.push({ path: '/cart', query: {r:res.data.r}})
+                        }
+                    },error=>{
+                        console.log('请启动node server')
+                    });
+                }
             },
+            /*评论*/
             onSubmitComment(){
                 var self = this;
                 if(this.desc == ''){
@@ -227,7 +275,9 @@
                     this.$http.post('savecomment', {
                         desc: this.desc,
                         evaluate: this.evaluate,
-                        shopid: this.ruleForm.id
+                        shopid: this.ruleForm.id,
+                        userid:this.$store.state.user.sessiondata.session.id,
+                        user:this.$store.state.user.sessiondata.session.name
                     }).then(res => {
                         if (res.data.status) {
                             this.$message({
@@ -250,11 +300,19 @@
                     });
                 }
             },
-            onSubmitCommentBtn(){
-                //重置
-                this.desc='';
-                this.evaluate=0;
-                this.visibile=!this.visibile;
+            onSubmitCommentBtn(data){
+               if(data == null){
+                   this.$message({
+                       type: 'error',
+                       duration: 1000,
+                       message: '亲，没有登录'
+                   });
+               }else{
+                   //重置
+                   this.desc='';
+                   this.evaluate=0;
+                   this.visibile=!this.visibile;
+               }
             },
             handleChange(value){
                if(value == this.ruleForm.stocknum){

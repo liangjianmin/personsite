@@ -7,13 +7,6 @@ export default {
     hidehead: ({commit}) => {
         commit(types.HEAD_SHOW_FAIL);
     },
-    /*loading*/
-    hideLoading: ({commit}) => {
-        commit(types.HIDE_LOADING)
-    },
-    showLoading: ({commit}) => {
-        commit(types.SHOW_LOADING)
-    },
     /*footer*/
     showfooter: ({commit}) => {
         commit(types.FOOTER_SHOW);
@@ -21,11 +14,11 @@ export default {
     hidefooter: ({commit}) => {
         commit(types.FOOTER_HIDE);
     },
-    /*User*/
-    [types.USER_SIGNIN]({commit}, user) {
-        commit(types.USER_SIGNIN, user)
+    /*flag*/
+    flagesuccess: ({commit}) => {
+        commit(types.FLAG_SUCCESS);
     },
-    [types.USER_SIGNOUT]({commit}) {
-        commit(types.USER_SIGNOUT)
-    }
+    flagfail: ({commit}) => {
+        commit(types.FLAG_FAIL);
+    },
 }

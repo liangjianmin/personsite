@@ -13,7 +13,8 @@ module.exports = function (app) {
                 desc: req.body.desc,
                 time: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
                 evaluate: req.body.evaluate,
-                user: '××某',
+                user: req.body.user,
+                userid:req.body.userid,
                 shopid: req.body.shopid
             },
             sql: "INSERT INTO comment SET ?"

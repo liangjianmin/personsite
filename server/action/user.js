@@ -3,6 +3,7 @@ var moment = require('moment'); //时间
 var multiparty = require('multiparty'); //文件操作模块
 var util = require('util');
 var fs = require('fs');
+var client = require("../util/redis.js");//缓存操作模块
 
 module.exports = function (app) {
     /**
@@ -64,13 +65,16 @@ module.exports = function (app) {
      */
     app.post('/session', function (req, res, next) {
         user.getUsers(function (data) {
-            for (let i = 0; i < data.data.length; i++) {
-                if (req.session.user == data.data[i].username) {
-                    res.send({session: req.session.user, status: true, role: data.data[i].role});
-                    break;
+            if (req.session.user != undefined) {
+                for (let i = 0; i < data.data.length; i++) {
+                    if (req.session.user == data.data[i].username) {
+                        res.send({session: req.session.user, status: true, role: data.data[i].role});
+                        break;
+                    }
                 }
+            } else {
+                res.send({status: false});
             }
-            res.end();
         })
     });
 
@@ -217,4 +221,81 @@ module.exports = function (app) {
         });
 
     });
+
+    /**
+     * 客户端注册
+     */
+    app.post('/register', function (req, res, next) {
+        var userfalg = true;
+        user.getUsers(function (data) {
+            if (data.status) {
+                for (let i = 0; i < data.data.length; i++) {
+                    if (req.body.phone == data.data[i].phone || req.body.username == data.data[i].username) {
+                        res.send({data: req.body.username, phone: req.body.phone, isOwn: true});
+                        userfalg = false;
+                        break;
+                    }
+                }
+            }
+            if (userfalg) {
+                user.addUsers({
+                    data: {
+                        username: req.body.username,
+                        password: req.body.password,
+                        phone: req.body.phone,
+                        info: 'client',
+                        sex: 0,
+                        role: 2,
+                        from: 1,
+                        time: moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
+                    },
+                    sql: "INSERT INTO user SET ?"
+                }, function (data) {
+                    res.send(data);
+                });
+            }
+        })
+    });
+
+    /**
+     * 客户端登录 用户名或者手机登录
+     */
+    app.post('/logins', function (req, res, next) {
+        var loginflag = true;
+        user.getUserCli(function (data) {
+            if (data.status) {
+                for (let i = 0; i < data.data.length; i++) {
+                    if ((req.body.username == data.data[i].username || req.body.username == data.data[i].phone) && req.body.password == data.data[i].password) {
+                        //缓存用户信息
+                        client.hmset('user', {name: data.data[i].username,id:data.data[i].id}, function (err) {
+                            if (err) {
+                                return;
+                            }
+                        })
+                        res.send({status: true});
+                        loginflag = false;
+                        break;
+                    }
+                }
+                if (loginflag) {
+                    res.send({status: false});
+                }
+            }
+            res.end();
+        })
+    });
+    /**
+     * 客户端获取登录信息
+     */
+    app.post('/sessions', function (req, res) {
+        client.hgetall('user', function (err, object) {
+            if (err) {
+                console.log(err);
+            } else {
+                res.send({session: object})
+            }
+        })
+    });
+
+
 };
