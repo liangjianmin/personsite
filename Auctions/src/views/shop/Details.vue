@@ -41,11 +41,33 @@
             </el-card>
         </el-col>
         <a class="cw-icon" href="javascript:;">
+            <span class="add-one" ref="addone">1</span>
             <el-badge :value="carnum" :max="99" class="item"></el-badge>
         </a>
     </div>
 </template>
 <style scoped>
+  .add-one {
+    position: absolute;
+    top: -30px;
+    left: 5px;
+    background-color: #ff4949;
+    border-radius: 10px;
+    color: #fff;
+    opacity: 0;
+    display: inline-block;
+    font-size: 12px;
+    height: 18px;
+    line-height: 18px;
+    padding: 0 6px;
+    text-align: center;
+    border: 1px solid #fff;
+  }
+  .add-one-anima{ animation: add-one 0.3s ease-out;}
+  @keyframes add-one {
+      0%{top: 0;opacity: 1}
+      100%{top: -30px;opacity: 0}
+  }
     .el-badge{
         position: relative;
         top: -10px;
@@ -175,7 +197,7 @@
         name: 'details',
         data() {
             return {
-                carnum:1000,
+                carnum:0,
                 visibile:false,
                 num:1,
                 desc:'',
@@ -191,7 +213,7 @@
             }
         },
         computed: mapState({
-            user: state => state.user.sessiondata.session
+            user: state => state.user.sessiondata.session,
         }),
         mounted(){
             var path = this.$route.params.id;
@@ -208,14 +230,15 @@
         methods:{
             /**加入购物车 无需判断用户是否登录，记录个人购买信息*/
             onCarsSubmit(){
-                this.$message({
+              this.$store.commit({type:'shopNubAdd',amount:1});
+              this.carnum=this.$store.state.shop.shopdata.num
+               /* this.$message({
                     type: 'error',
                     duration: 2000,
                     message: '马拉个币，点毛啊，没做',
                     onClose: function () {
-
                     }
-                });
+                });*/
             },
             getDetails(path){
                 this.$http.get('getshop?id=' + path).then(res => {

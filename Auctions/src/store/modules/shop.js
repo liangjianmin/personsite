@@ -5,10 +5,24 @@ const state = {
     shoplist: {},
     stock: {},
     typeshop: {},
-    searchdata:{}
-}
+    searchdata:{},
+    shopdata:{
+      id:'',
+      num:0,
+      price:0
+    }
+};
 
 const mutations = {
+    /**
+    * 购物车商品数量
+    *
+    *
+    */
+    shopNubAdd(state,payload ){
+      state.shopdata.num+=payload.amount
+    },
+
     /**
      * 获取商品列表
      * @param state
