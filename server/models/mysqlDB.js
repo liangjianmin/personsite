@@ -67,6 +67,7 @@ module.exports = {
                     data.status = true;
                     callback && callback(data);
                 } else {
+                  console.log(options.sql)
                     console.log('Error while performing Query.');
                 }
             });

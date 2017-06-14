@@ -58,38 +58,8 @@
                }
              })
         },
-
-      handleDelete(index,row){
-           let _this=this;
-           let imgid=[];
-            _this.tableData.splice(index,1);
-            _this.tableData.forEach(function (e) {
-               imgid.push(e.name)
-            });
-            this.$http.post('/bannerupdate',{'imgid':imgid.join(','),'del':row.name}).then(res=>{
-              if(res.status){
-                this.$message({
-                  type: 'success',
-                  message: '删除成功',
-                  duration: 1000,
-                  showClose:true,
-                  onClose: function () {
-                    _this.$http.get('bannerlist').then(res=>{
-                      if(res.status){
-                        _this.tableData=[];
-                        console.log(res);
-                        let item=res.data.data[0].url.split(',');
-                        item.forEach(function (o) {
-                          _this.tableData.push({name:o});
-                          console.log(_this.tableData)
-                        });
-                      }
-                    })
-                  }
-                });
-              }
-            })
-
+        handleDelete(index,row){
+          let _this=this;
         }
     }
   }

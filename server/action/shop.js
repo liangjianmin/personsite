@@ -68,8 +68,9 @@ module.exports = function (app) {
                                 data: {
                                     url: inputFile.originalFilename,
                                     from: req.session.user,
-                                    desc: "shop table use",
-                                    time: moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
+                                  time: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+                                    desc: 'shop table use'
+
                                 },
                                 sql: "INSERT INTO pics SET ?"
                             }, function (data) {

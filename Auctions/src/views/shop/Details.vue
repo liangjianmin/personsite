@@ -41,7 +41,7 @@
             </el-card>
         </el-col>
         <a class="cw-icon" href="javascript:;">
-            <span class="add-one" ref="addone">1</span>
+            <span class="add-one" v-bind:class="{addoneAn : isAnima}" >1</span>
             <el-badge :value="carnum" :max="99" class="item"></el-badge>
         </a>
     </div>
@@ -62,10 +62,12 @@
     padding: 0 6px;
     text-align: center;
     border: 1px solid #fff;
+    z-index: 5;
   }
-  .add-one-anima{ animation: add-one 0.3s ease-out;}
-  @keyframes add-one {
+  .addoneAn{ animation: addone 0.4s linear;}
+  @keyframes addone {
       0%{top: 0;opacity: 1}
+      80%{top: -18px;opacity: 0.8}
       100%{top: -30px;opacity: 0}
   }
     .el-badge{
@@ -199,7 +201,7 @@
             return {
                 carnum:0,
                 visibile:false,
-                num:1,
+                num:1,  //商品数量
                 desc:'',
                 descview:'',
                 evaluate:0,
@@ -209,13 +211,16 @@
                 ],
                 ruleForm:{
                     url:''
-                }
+                },
+                isAnima:false, //动画控制
+                comdata:[]   //购物车数据
             }
         },
         computed: mapState({
             user: state => state.user.sessiondata.session,
         }),
         mounted(){
+            this.carnum=this.$store.state.shop.shopdata.num;
             var path = this.$route.params.id;
             this.getDetails(path);
         },
@@ -230,15 +235,18 @@
         methods:{
             /**加入购物车 无需判断用户是否登录，记录个人购买信息*/
             onCarsSubmit(){
-              this.$store.commit({type:'shopNubAdd',amount:1});
-              this.carnum=this.$store.state.shop.shopdata.num
-               /* this.$message({
-                    type: 'error',
-                    duration: 2000,
-                    message: '马拉个币，点毛啊，没做',
-                    onClose: function () {
-                    }
-                });*/
+              var _this=this;
+              this._animate(_this);//
+              var imgids=[];
+              console.log(this.$store.state.shop.shopdata)
+              imgids.forEach(function (e) {
+                imgids.push(e.imgid);
+              });
+              _this.$store.commit({type:'shopNubAdd',amount:{imgid:_this.ruleForm.imgid,price:_this.ruleForm.price,num:1}});
+              _this.carnum=this.$store.state.shop.shopdata.num;
+              let commodity=this.$store.state.shop.shopdata;
+              _this.comdata.push(commodity);
+              console.log(imgids)
             },
             getDetails(path){
                 this.$http.get('getshop?id=' + path).then(res => {
@@ -249,6 +257,15 @@
                 }, error => {
                     console.log('请启动node server')
                 });
+            },
+            /*
+            * 购物车动画
+            * */
+            _animate(_this){
+              _this.isAnima=true;
+              setTimeout(function () {
+                _this.isAnima=false;
+              },300);
             },
             /*购买必须判断用户是否登录*/
             onSubmit(data){
