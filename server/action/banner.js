@@ -5,12 +5,16 @@ var banner=require("../models/banner.js");
 var multiparty = require('multiparty'); //connect-multiparty:上传文件的中间件
 var moment = require('moment'); //时间
 var fs = require('fs'); //nodejs的fs（文件系统）
+var path=require('path')
 module.exports=function (app) {
+
+
+
   /**
    * 接收图片  返回图片地址
    * **/
   app.post('/bannerreceive',function (req, res) {
-    let bannerDir=new multiparty.Form({uploadDir:'../dist/static/banner/'});
+    let bannerDir=new multiparty.Form({uploadDir:'../imgservice/banner/'});
 
     bannerDir.parse(req,function (err, fields, files) {
       if(err){
@@ -18,7 +22,7 @@ module.exports=function (app) {
       }else {
         var inputFile = files.inputFile[0];
         var uploadedPath = inputFile.path;
-        var dstPath = '../dist/static/banner/' + inputFile.originalFilename;
+        var dstPath = '../imgservice/banner/' + inputFile.originalFilename;
         fs.rename(uploadedPath, dstPath, function (err) {
                 if (err) {
                 console.log('rename error: ' + err);

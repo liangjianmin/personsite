@@ -67,8 +67,8 @@
                       _this.$router.push({path: '/bannerlist'});
                     }
                   });
-                }
-            })
+            } })
+
       },
       resetForm(formName) {
           console.log('asd')
@@ -91,10 +91,15 @@
       handleAvatarSuccess(res, file, fileList) {
           var _this=this;
           if(res.staus){
-            _this.imgdata=res.imgurl[0].url.split(',');//把数据库的url取出;
+              if(res.imgurl[0].url==''){
+                _this.imgdata=[]
+              }else {
+                _this.imgdata=res.imgurl[0].url.split(',');//把数据库的url取出;
+              }
             //将图片加入到imgdata
             fileList.forEach(function (e) {
               _this.imgdata.push(e.name)
+
             })
 
           };

@@ -13,7 +13,7 @@
       align="center"
       label="图片">
       <template scope="scope">
-        <img class="ban-list-img" :src="'http://127.0.0.1:3838/static/banner/'+scope.row.name"  width="50" height="50" />
+        <img class="ban-list-img" :src="'http://127.0.0.1:3838/imgservice/banner/'+scope.row.name"  width="50" height="50" />
       </template>
     </el-table-column>
     <el-table-column
