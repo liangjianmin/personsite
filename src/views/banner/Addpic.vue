@@ -41,7 +41,14 @@
         ruleForm: {
           imgid: 0
         },
-        imgdata:[]
+        imgdata:[],
+        banner:{
+          data:[],
+          imgListDate:[],
+          nowdata:[],
+          delOldData:false
+        }
+
       };
     },
     computed: mapState({
@@ -53,33 +60,86 @@
     methods: {
       submitForm(){
             var _this=this;
+            _this.banner.nowdata=_this.banner.imgListDate.concat(_this.banner.data);
+            if(_this.fileList<3 || _this.fileList>5){
+              _this.$message({
+                type: 'error',
+                message: '请选择上传3至5图片',
+                duration: 1000,
+              })
+            }else {
+                _this.delDate()
 
-            let data={
-                url:_this.imgdata
             }
-            this.$http.post('/bannerload',{data},function (res) {
-                if(res.status){
-                  _this.$message({
-                    type: 'success',
-                    message: '上传成功',
-                    duration: 1000,
-                    onClose:function () {
-                      _this.$router.push({path: '/bannerlist'});
-                    }
-                  });
-            } })
+      },
+      delDate() {
+        var _this=this;
+        _this.$confirm('是否覆盖之前图片?', '提示', {
+          confirmButtonText: '覆盖',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          _this.banner.nowdata=_this.banner.imgListDate;
+          _this.$message({
+            type: 'success',
+            message: '点击上传覆盖!',
+            duration: 1000,
+            onClose:function () {
+              _this.uploadImg()
+            }
+          });
 
+        }).catch(() => {
+          _this.$message({
+            type: 'info',
+            message: '已取消删除,',
+            duration: 1000,
+            onClose:function () {
+                /**
+                 * 列表数据加上数据库数据
+                 * */
+              _this.banner.nowdata=_this.banner.imgListDate.concat(_this.banner.data);
+              _this.uploadImg()
+            }
+          });
+        });
+      },
+      uploadImg(){
+          var _this=this;
+        _this.$confirm('是否上传','提示',{
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(()=>{
+            _this.addData()
+        }).catch(()=>{
+          _this.banner.nowdata=[]
+        })
+      },
+      addData(){
+        var _this=this;
+        let data=_this.banner.nowdata.join(',');
+                 _this.$http.post('bannerload',{url:data,delurl:_this.banner.data}).then(res=>{
+                    if(res.status){
+                      _this.$message({
+                        type: 'success',
+                        message: '上传成功',
+                        duration: 1000,
+                        onClose:function () {
+                          _this.$router.push({path: '/bannerlist'});
+                        }
+                      })
+                    }
+                });
       },
       resetForm(formName) {
-          console.log('asd')
-
       },
       handlePreview(file){
 
       },
       handleRemove(file,fileList){
         var _this=this;
-        _this.imgdata=[]
+        _this.imgdata=[];
         fileList.forEach(function (e) {
           _this.imgdata.push(e.name)
         })
@@ -90,18 +150,14 @@
       },
       handleAvatarSuccess(res, file, fileList) {
           var _this=this;
+          _this.fileList=fileList.length;
+         _this.banner.imgListDate=[];
           if(res.staus){
-              if(res.imgurl[0].url==''){
-                _this.imgdata=[]
-              }else {
-                _this.imgdata=res.imgurl[0].url.split(',');//把数据库的url取出;
-              }
-            //将图片加入到imgdata
-            fileList.forEach(function (e) {
-              _this.imgdata.push(e.name)
+              _this.banner.data=res.imgurl[0].url.split(',');
+              fileList.forEach(function (e) {
+                _this.banner.imgListDate.push(e.name)
 
-            })
-
+              });
           };
       },
       handlePictureBefore(file){
@@ -110,16 +166,7 @@
         }
       },
       handlePictureChange(file, fileList){
-        /*if (fileList.length > 1) {
-          this.uploadFlag = true;
-          this.$message({
-            type: 'error',
-            message: '亲，只能上传一张图片',
-            duration: 1000
-          });
-        }
-          this.fileList=fileList.length;
-*/
+
       }
     }
   }
