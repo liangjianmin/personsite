@@ -1,6 +1,5 @@
 .DS_Store
 node_modules/
-dist
 src/upload
 .idea
 .settings
@@ -8,4 +7,3 @@ server/node_modules
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-dist/
