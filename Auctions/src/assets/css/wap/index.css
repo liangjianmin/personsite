@@ -1,0 +1,208 @@
+html {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%; }
+
+html * {
+  outline: 0;
+  -webkit-text-size-adjust: none;
+  -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  font-family: sans-serif; }
+
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, textarea, p, blockquote, th, td, hr, button, article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+  margin: 0;
+  padding: 0; }
+
+button, input, select, textarea {
+  font-size: 100%;
+  border: none; }
+
+input[type=button], input[type=file], input[type=submit] {
+  cursor: pointer; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+ol, ul, dl {
+  list-style: none; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-size: 100%;
+  font-weight: 500; }
+
+a {
+  text-decoration: none; }
+
+img {
+  border: none; }
+
+.clr {
+  *zoom: 1;
+  clear: both; }
+
+.clr:after {
+  content: ".";
+  clear: both;
+  height: 0;
+  visibility: hidden;
+  display: block; }
+
+.fl {
+  float: left;
+  _display: inline; }
+
+.fr {
+  float: right;
+  _display: inline; }
+
+.va-t {
+  vertical-align: top; }
+
+.va-m {
+  vertical-align: middle; }
+
+.va-b {
+  vertical-align: bottom; }
+
+.i-hide {
+  display: none; }
+
+.i-show {
+  display: block; }
+
+.lineBlock {
+  display: inline-block;
+  *display: inline;
+  zoom: 1;
+  letter-spacing: normal;
+  word-spacing: normal; }
+
+.lbBox {
+  font-size: 0 !important;
+  *word-spacing: -1px !important; }
+
+.boxsiz {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box; }
+
+html, body {
+  width: 100%;
+  height: 100%; }
+
+body {
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: #f1f1f1; }
+
+.weshop-emptys {
+  margin-left: -1px;
+  width: 1px;
+  height: 100%;
+  font-size: 0;
+  vertical-align: middle; }
+
+@media (min-width: 1400px) {
+  html {
+    background: #666; }
+
+  body {
+    max-width: 550px;
+    margin: 0 auto;
+    min-height: 1000px;
+    position: relative;
+    background: #fff; } }
+.edm-menu {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  padding: 4px 0;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  background: rgba(249, 250, 252, 0.9);
+  box-shadow: 0 0 0 0 #B2B2B2;
+  border-top: 1px solid #B2B2B2; }
+  .edm-menu > a {
+    -webkit-box-flex: 1;
+    display: block;
+    text-align: center; }
+    .edm-menu > a i {
+      width: 24px;
+      height: 24px;
+      display: inline-block; }
+    .edm-menu > a i.ico-1 {
+      background: url("../../images/home.png") no-repeat;
+      background-size: cover; }
+    .edm-menu > a i.ico-2 {
+      background: url("../../images/kaidian.png") no-repeat;
+      background-size: cover; }
+    .edm-menu > a i.ico-3 {
+      background: url("../../images/my.png") no-repeat;
+      background-size: cover; }
+    .edm-menu > a p {
+      font-size: 10px;
+      color: #838487;
+      letter-spacing: 0.02px;
+      line-height: 12px; }
+  .edm-menu > a.curr p {
+    color: #F75F00; }
+  .edm-menu > a.curr i.ico-1 {
+    background: url("../../images/home_h.png") no-repeat;
+    background-size: cover; }
+  .edm-menu > a.curr i.ico-2 {
+    background: url("../../images/kaidian_h.png") no-repeat;
+    background-size: cover; }
+  .edm-menu > a.curr i.ico-3 {
+    background: url("../../images/my_h.png") no-repeat;
+    background-size: cover; }
+
+.imgs {
+  width: 100%; }
+
+.wap-home .list {
+  padding: 30px 0;
+  width: 100%;
+  overflow: hidden;
+  background: #fff; }
+  .wap-home .list > li {
+    float: left;
+    background: #fff;
+    width: 49%;
+    margin-right: 2%;
+    margin-bottom: 10px; }
+    .wap-home .list > li > a {
+      display: block;
+      width: 100%;
+      height: 100%; }
+      .wap-home .list > li > a .pic {
+        width: 100%;
+        height: 180px;
+        margin-bottom: 10px; }
+        .wap-home .list > li > a .pic img {
+          width: 100%;
+          height: 100%; }
+      .wap-home .list > li > a .t1 {
+        line-height: 22px;
+        font-size: 14px;
+        color: #000;
+        height: 44px;
+        white-space: normal;
+        display: -webkit-box;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        padding: 0 5%; }
+      .wap-home .list > li > a .t2 {
+        font-size: 16px;
+        color: #f00;
+        font-weight: 600;
+        padding: 0 5%; }
+  .wap-home .list > li:nth-of-type(2n) {
+    margin-right: 0; }
+
+/*# sourceMappingURL=index.css.map */

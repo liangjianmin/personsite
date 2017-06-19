@@ -7,6 +7,7 @@ const Login = resolve => require(['./views/user/Login.vue'], resolve)
 const Register = resolve => require(['./views/user/Register.vue'], resolve)
 const Order = resolve => require(['./views/order/Order.vue'], resolve)
 const Setting = resolve => require(['./views/user/Setting.vue'], resolve)
+const WapHome = resolve => require(['./wap/Home.vue'], resolve)
 export  default[
     {
         path: '/home',
@@ -52,6 +53,13 @@ export  default[
         path: '/setting',
         component: Setting,
         name: '个人设置页面'
+    },
+    {
+        path: '/wap',
+        components: {
+            wap:WapHome
+        },
+        name: '首页'
     },
     {
         path: '/',
