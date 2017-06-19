@@ -6,6 +6,7 @@ import shop from './modules/shop'
 import order from './modules/order'
 import comment from './modules/comment'
 import user from './modules/user'
+import wapshop from './modules/wap/wap-shop'
 
 
 Vue.use(Vuex);
@@ -16,7 +17,8 @@ export default new Vuex.Store({
         order,
         shop,
         comment,
-        user
+        user,
+        wapshop
     },
     actions
 })
