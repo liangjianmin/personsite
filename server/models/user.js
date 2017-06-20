@@ -10,7 +10,7 @@ module.exports = {
         mysqlDB.getTableAllInfo({sql: sql}, callback);
     },
     getTableCount:function (callback) {
-        sql='select count(1) count from user';
+        sql='select count(1) count from user where `from`=0';
         mysqlDB.getTableAllInfo({sql:sql},callback);
     },
     getUserpage: function (p,limit,callback) {

@@ -24,8 +24,8 @@
         data() {
             return {
                 ruleForm: {
-                    name: 'lg',
-                    pass: '123456'
+                    name: '',
+                    pass: ''
                 },
                 rules: {
                     name: [

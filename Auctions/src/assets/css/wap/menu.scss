@@ -1,0 +1,59 @@
+.edm-menu {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  padding: 4px 0;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  background: rgba(249, 250, 252, 0.90);
+  box-shadow: 0 0 0 0 #B2B2B2;
+  border-top: 1px solid #B2B2B2;
+  > a {
+    -webkit-box-flex: 1;
+    display: block;
+    text-align: center;
+    i {
+      width: 24px;
+      height: 24px;
+      display: inline-block;
+    }
+    i.ico-1 {
+      background: url("../../images/home.png") no-repeat;
+      background-size: cover;
+    }
+    i.ico-2 {
+      background: url("../../images/kaidian.png") no-repeat;
+      background-size: cover;
+    }
+    i.ico-3 {
+      background: url("../../images/my.png") no-repeat;
+      background-size: cover;
+    }
+    p {
+      font-size: 10px;
+      color: #838487;
+      letter-spacing: 0.02px;
+      line-height: 12px;
+    }
+  }
+  > a.curr {
+    p {
+      color: #F75F00;
+    }
+    i.ico-1 {
+      background: url("../../images/home_h.png") no-repeat;
+      background-size: cover;
+    }
+    i.ico-2 {
+      background: url("../../images/kaidian_h.png") no-repeat;
+      background-size: cover;
+    }
+    i.ico-3 {
+      background: url("../../images/my_h.png") no-repeat;
+      background-size: cover;
+    }
+  }
+}
