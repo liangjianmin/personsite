@@ -12,7 +12,6 @@ module.exports=function (app) {
    * **/
   app.post('/bannerreceive',function (req, res) {
     let bannerDir=new multiparty.Form({uploadDir:'../dist/static/banner/'});
-
     bannerDir.parse(req,function (err, fields, files) {
       if(err){
         console.log('parse error:'+err)
@@ -30,7 +29,6 @@ module.exports=function (app) {
               }
         })
       }
-
     });
 
   });
@@ -39,50 +37,71 @@ module.exports=function (app) {
    * **/
   app.post('/bannerload',function (req, res) {
       let imgurl=req.body.url;//  图片的地址
-      banner.getbannerOrder(function (data) {
-         var arr= data.data[0].url.split(',');
-          arr.forEach(function (e) {
-            fs.unlink('../dist/static/banner/'+e);
-          })
-      });
       banner.insertbaner({
         data:{
-          url:imgurl,
+          url:imgurl.join(','),
           from:req.session.user,
           time:moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
           desc:'banner table use'
         },
         sql:"INSERT INTO pics SET ?"
       },function (data) {
-
         res.send(data)
       })
   });
   /**
-  * 获取图片列表
+  * 获取最新显示图片
   * */
   app.get('/bannerlist',function (req, res) {
         banner.getbannerOrder(function (data) {
             res.send(data)
         })
   });
-  /**
-  * 删除图片
-  * */
-  app.post('/delbanner',function (req, res) {
-      let url=req.body.url;
-       banner.getbannerOrder(function (data) {
-         banner.updatebanner({
-           sql:'UPDATE pics SET	url=("'+url+'") where id="'+data.data[0].id+'"'
-         },function (data) {
-           /**
-            * 删除服务器的图片
-            * */
-           fs.unlink('../dist/static/banner/'+req.body.delurl);
-           res.send({status:true,data:'删除成功'})
-         })
-       })
 
+  /**
+   * 获取图片列表
+   * */
+  app.get('/bannerall',function (req, res) {
+      let imgData={};
+      banner.getbannerAll({pindex:req.query.pindex,pagesize:req.query.pagesize},function (data) {
+        imgData=data;
+        banner.getBannerCount(function (mes) {
+          imgData.count=mes.data[0].count;
+          res.send(imgData)
+        });
+      });
   })
-}
+  /**
+  * 上线
+  * */
+  app.get('/updatabanner',function (req, res) {
+    banner.getBanner(function (pid) {
+      if(pid.data!=''){
+        banner.updataBanner({id:pid.data[0].id},function (mes) {
+          banner.updataBannerNow({id:req.query.id},function (data) {
+            res.send(data)
+          });
+        });
+      }else {
+        banner.updataBannerNow({id:req.query.id},function (data) {
+          res.send(data)
+        });
+      }
+    });
+  });
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

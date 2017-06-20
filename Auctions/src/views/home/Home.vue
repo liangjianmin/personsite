@@ -4,7 +4,7 @@
             <el-col :span="24" class="page-home">
                 <el-col :span="24">
                     <el-carousel trigger="click" height="265px">
-                        <el-carousel-item v-for="item in bannerItem"  >
+                        <el-carousel-item v-for="item in bannerItem" :key="item" >
                           <div class="back-cover" :style="'background-image: url(http://127.0.0.1:3838/static/banner/'+item+')'"></div>
                         </el-carousel-item>
                     </el-carousel>
