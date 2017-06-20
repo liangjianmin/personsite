@@ -62,7 +62,7 @@
                 if(this.checked){
                     util.setCookie('userinfo', JSON.stringify(self.ruleForm),30);
                 }else{
-                    util.setCookie('userinfo', '',1);
+                    util.setCookie('userinfo', '',0);
                 }
                 this.$http.post('login', {
                     username: this.ruleForm.name,
