@@ -7,9 +7,9 @@ const state = {
     typeshop: {},
     searchdata:{},
     shopdata:{
-      id:'',
+      imgid:'',
       num:0,
-      price:0
+      price:0,
     }
 };
 
@@ -20,9 +20,17 @@ const mutations = {
     *
     */
     shopNubAdd(state,payload ){
-      state.shopdata.num+=payload.amount
+      state.shopdata.num+=payload.amount.num;
+      state.shopdata.imgid=payload.amount.imgid;
+      state.shopdata.price=payload.amount.price;
     },
 
+    /**
+     * 购物车已有商品id
+     * **/
+    shopNubAdd(state,payload){
+      state.shopdata.num+=payload.amount.num;
+    },
     /**
      * 获取商品列表
      * @param state
