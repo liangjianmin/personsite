@@ -4,6 +4,7 @@ var multiparty = require('multiparty'); //文件操作模块
 var util = require('util');
 var fs = require('fs');
 var client = require("../util/redis.js");//缓存操作模块
+var crypto = require('crypto');//加密
 
 module.exports = function (app) {
     /**
@@ -43,8 +44,11 @@ module.exports = function (app) {
         var loginflag = true;
         user.getUsers(function (data) {
             if (data.status) {
+                var md5 = crypto.createHash('md5');
+                md5.update(req.body.password.toString());
+                var ispwd = md5.digest('hex');
                 for (let i = 0; i < data.data.length; i++) {
-                    if (req.body.username == data.data[i].username && req.body.password == data.data[i].password) {
+                    if (req.body.username == data.data[i].username && ispwd == data.data[i].password) {
                         /*发送session*/
                         req.session.user = req.body.username;
                         res.send({status: true});
@@ -103,13 +107,18 @@ module.exports = function (app) {
                 }
             }
             if (userfalg) {
+                /*加密密码*/
+                var md5 = crypto.createHash('md5');
+                md5.update(req.body.password.toString());
+                var pwd = md5.digest('hex');
                 user.addUsers({
                     data: {
                         username: req.body.username,
-                        password: req.body.password,
+                        password: pwd,
                         info: req.body.info,
                         sex: req.body.sex,
                         role: req.body.role,
+                        from: 0,
                         time: moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
                     },
                     sql: "INSERT INTO user SET ?"
@@ -238,10 +247,14 @@ module.exports = function (app) {
                 }
             }
             if (userfalg) {
+                /*加密密码*/
+                var md5 = crypto.createHash('md5');
+                md5.update(req.body.password.toString());
+                var pwd = md5.digest('hex');
                 user.addUsers({
                     data: {
                         username: req.body.username,
-                        password: req.body.password,
+                        password: pwd,
                         phone: req.body.phone,
                         info: 'client',
                         sex: 0,
@@ -264,10 +277,13 @@ module.exports = function (app) {
         var loginflag = true;
         user.getUserCli(function (data) {
             if (data.status) {
+                var md5 = crypto.createHash('md5');
+                md5.update(req.body.password.toString());
+                var ispwd = md5.digest('hex');
                 for (let i = 0; i < data.data.length; i++) {
-                    if ((req.body.username == data.data[i].username || req.body.username == data.data[i].phone) && req.body.password == data.data[i].password) {
+                    if ((req.body.username == data.data[i].username || req.body.username == data.data[i].phone) && ispwd == data.data[i].password) {
                         //缓存用户信息
-                        client.hmset('user', {name: data.data[i].username,id:data.data[i].id}, function (err) {
+                        client.hmset('user', {name: data.data[i].username, id: data.data[i].id}, function (err) {
                             if (err) {
                                 return;
                             }

@@ -57,9 +57,9 @@ export  default[
     {
         path: '/wap',
         components: {
-            wap:WapHome
+            wap: WapHome
         },
-        name: '首页'
+        name: 'wap首页'
     },
     {
         path: '/',

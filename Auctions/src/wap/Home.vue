@@ -38,9 +38,10 @@
     </div>
 </template>
 <style scoped>
-    .mint-loadmore{
+    .mint-loadmore {
         margin-bottom: 100px;
     }
+
     .page-loadmore .mint-spinner {
         display: inline-block;
         vertical-align: middle;
@@ -59,9 +60,11 @@
     .page-loadmore-listitem {
         background: #ffffff;
     }
+
     .page-loadmore-wrapper {
         overflow: scroll;
     }
+
     .mint-loadmore-bottom span {
         display: inline-block;
         -webkit-transition: .2s linear;
@@ -82,39 +85,46 @@
         data(){
             return {
                 list: [],
-                page:null,
                 allLoaded: false,
                 bottomStatus: '',
                 wrapperHeight: 0,
                 currage: 1,
-                type:3
+                type: 3
             }
         },
-
+        created() {
+           // this.getlist();
+        },
         mounted(){
             this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
         },
         methods: {
+            getlist(){
+                this.$http.get('shoplist', {
+                    params: {
+                        p: this.currage,
+                        type: this.type
+                    }
+                }).then(res => {
+                    this.list = res.data.list.data;
+                }, error => {
+                    console.log('请启动node server')
+                });
+            },
             handleBottomChange(status) {
                 this.bottomStatus = status;
             },
             loadBottom() {
-                this.currage=2;
-                this.allLoaded = true;
-                this.$refs.loadmore.onBottomLoaded();
+                setTimeout(() => {
+                    if (this.currage == 2) {
+                        this.allLoaded = true;
+                    } else {
+                        this.getlist();
+                        this.currage = this.currage + 1;
+                    }
+                    this.$refs.loadmore.onBottomLoaded();
+                }, 1500);
             }
-        },
-        created() {
-            this.$http.get('shoplist', {
-                params: {
-                    p: this.currage,
-                    type: this.type
-                }
-            }).then(res => {
-                this.list=res.data.list.data;
-            }, error => {
-                console.log('请启动node server')
-            });
         }
     }
 </script>
