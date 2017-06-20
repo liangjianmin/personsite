@@ -7,6 +7,7 @@
             <el-form-item label="密码" prop="pass">
                 <el-input v-model="ruleForm.pass" placeholder="请填写密码" type="password"></el-input>
             </el-form-item>
+            <el-checkbox v-model="checked" checked class="remember">记住密码</el-checkbox>
             <el-form-item>
                 <el-button type="primary" @click="submitForm('ruleForm')">确定</el-button>
                 <el-button @click="resetForm('ruleForm')">重置</el-button>
@@ -15,14 +16,20 @@
     </el-col>
 </template>
 <style scoped>
-
+    .remember{
+        color: #fff;
+        margin-left: 100px;
+        margin-bottom: 16px;
+    }
 </style>
 <script>
     import {mapState} from 'vuex'
+    import util from '../../util/cookie'
     export default {
         name: 'login',
         data() {
             return {
+                checked:true,
                 ruleForm: {
                     name: '',
                     pass: ''
@@ -43,10 +50,20 @@
         },
         methods: {
             init:function () {
-
+                /*获取保存的密码*/
+                var ruleformdata=util.getCookie('userinfo');
+                if(ruleformdata){
+                    this.ruleForm=JSON.parse(ruleformdata);
+                }
             },
             submitForm(formName) {
                 var self = this;
+                /*保存密码*/
+                if(this.checked){
+                    util.setCookie('userinfo', JSON.stringify(self.ruleForm),30);
+                }else{
+                    util.setCookie('userinfo', '',1);
+                }
                 this.$http.post('login', {
                     username: this.ruleForm.name,
                     password: this.ruleForm.pass,
