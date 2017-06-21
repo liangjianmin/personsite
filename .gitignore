@@ -1,6 +1,8 @@
 .DS_Store
 node_modules/
 src/upload
+dist
+dist/
 .idea
 .settings
 server/node_modules
