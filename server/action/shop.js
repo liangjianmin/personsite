@@ -290,7 +290,36 @@ module.exports = function (app) {
         })
         res.send({r: cars.params});
     });
-
+    /**
+     * 取redis购物车中数据
+     * shopcars
+     * */
+    app.get('/getshopdata',function (req, res) {
+      client.hgetall('shopcars',function (err,obj) {
+        if (err) {
+          return;
+        }else {
+          res.send({cars: obj});
+        }
+      })
+    });
+    /**
+    * 把数据存入redis
+     * shopcars
+    * */
+    app.post('/shopcars',function (req, res) {
+      let cars={
+        list: req.body.id,
+        userid: req.body.userid,
+        user: req.body.user,
+        params: '0.' + new Date().getTime()
+      };
+      client.hmset('shopcars',cars,function (err) {
+        if (err) {
+          return;
+        }
+      })
+    })
     /**
      *搜索商品数据
      */
