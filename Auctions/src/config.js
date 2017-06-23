@@ -1,6 +1,7 @@
 const Home = resolve => require(['./views/home/Home.vue'], resolve)
 const Details = resolve => require(['./views/shop/Details.vue'], resolve)
 const Cart = resolve => require(['./views/shop/Cart.vue'], resolve)
+const CartS = resolve => require(['./views/shop/Cars.vue'], resolve)
 const Classify = resolve => require(['./views/shop/Classify.vue'], resolve)
 const Pay = resolve => require(['./views/pay/Pay.vue'], resolve)
 const Login = resolve => require(['./views/user/Login.vue'], resolve)
@@ -37,6 +38,11 @@ export  default[
     {
         path: '/cart',
         component: Cart,
+        name: '购物车'
+    },
+    {
+        path: '/carts',
+        component: CartS,
         name: '购物车'
     },
     {

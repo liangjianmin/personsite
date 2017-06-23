@@ -6,11 +6,6 @@ const state = {
     stock: {},
     typeshop: {},
     searchdata:{},
-    shopdata:{
-      imgid:'',
-      num:0,
-      price:0,
-    },
     shoplistdata:[]
   /* 数据格式
   * shoplistdata:[
@@ -23,14 +18,7 @@ const state = {
 };
 
 const mutations = {
-    /**
-    * 购物车商品数量
-    *
-    *
-    */
-    shopNubAdd(state,payload ){
-      state.shopdata=payload.res
-    },
+
     /**
      *存购物车数据
      * */
@@ -80,14 +68,6 @@ const mutations = {
 }
 
 const actions = {
-  shopNubAdd({commit}, payload){
-    axios.post('getshopdata').then(res=>{
-      commit({
-        type:'shopNubAdd',
-        res:res.data
-      })
-    })
-  },
   shoplistdata({commit},payload){
 
   },

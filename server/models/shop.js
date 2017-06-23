@@ -80,6 +80,14 @@ module.exports = {
         mysqlDB.getTableAllInfo({sql: sql}, callback);
     },
     /**
+     * 查询多个商品
+     * */
+    getshops: function (id, callback) {
+      sql = "select  shop.*, pics.url, pics.`from`  from shop, pics WHERE shop.imgid = pics.id AND shop.id in ("+(id)+") "  ;
+      console.log(sql)
+      mysqlDB.getTableAllInfo({sql: sql}, callback);
+    },
+    /**
      * 删除商品id
      * @param data
      * @param callback

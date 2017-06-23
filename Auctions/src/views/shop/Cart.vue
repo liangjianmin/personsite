@@ -91,6 +91,7 @@
         methods: {
             getDetails(path){
                 this.$http.get('getshop?r=' + path).then(res => {
+                    console.log(res)
                     if (res.data.data.status) {
                         this.visible = true;
                         this.ruleForm = res.data.data.shop[0];

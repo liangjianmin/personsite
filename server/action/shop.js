@@ -299,17 +299,73 @@ module.exports = function (app) {
         if (err) {
           return;
         }else {
-          res.send({cars: obj});
+          res.send({cars: obj,status: true});
         }
       })
     });
-    /**
+  /**
+   * list页面取redis购物车中数据
+   * shopcars
+   * */
+  app.get('/shopcar', function (req, res) {
+    //解析缓存中用户存储的数据
+    let id=[];
+    let num=[];
+    client.hgetall('shopcars', function (err, object) {
+      /**
+       * 获取id
+       * */
+      JSON.parse(object.list).forEach(function (e) {
+        id.push(e.id)
+      });
+      /**
+       * 获取数量
+       * */
+      JSON.parse(object.list).forEach(function (e) {
+        num.push(e.num)
+      });
+      shop.getshops(id.join(','), function (data) {
+        if (data.status) {
+          data.data.forEach(function (e,ind) {
+              e.num=num[ind]
+          });
+            res.send({
+              data:{
+                shop:data.data,
+                user: object.user,
+                userid: object.userid,
+                uuid: object.params,
+                status:true
+              }
+            })
+        } else {
+          res.send(500);
+        }
+      });
+    })
+  });
+
+  /***
+   *清空购物车
+   */
+  app.get('/delcars',function (req, res) {
+  //  res.send({status: true,data:'清除成功'});
+    client.del('shopcars',function (err) {
+      if (err) {
+        return;
+      }
+      res.send({status: true,data:'清除成功'});
+    })
+  });
+
+  /**
     * 把数据存入redis
      * shopcars
     * */
     app.post('/shopcars',function (req, res) {
+      console.log(req.body.list)
       let cars={
-        list: req.body.id,
+        list: req.body.list,
         userid: req.body.userid,
         user: req.body.user,
         params: '0.' + new Date().getTime()

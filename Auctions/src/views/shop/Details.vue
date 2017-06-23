@@ -40,7 +40,7 @@
                 </div>
             </el-card>
         </el-col>
-        <a class="cw-icon" href="javascript:;">
+        <a class="cw-icon" @click="goCar()">
             <span class="add-one" v-bind:class="{addoneAn : isAnima}" >1</span>
             <el-badge :value="carnum" :max="99" class="item"></el-badge>
         </a>
@@ -211,14 +211,15 @@
                     url:''
                 },
                 isAnima:false, //动画控制
+                one:true
             }
         },
         computed: mapState({
             user: state => state.user.sessiondata.session,
         }),
         mounted(){
-            this.carnum=this.$store.state.shop.shopdata.num;
-            var path = this.$route.params.id;
+         /* this.carnum=this.$store.state.shop.shopdata*/
+          var path = this.$route.params.id;
             this.getDetails(path);
         },
         watch: {
@@ -233,7 +234,12 @@
             /**加入购物车 无需判断用户是否登录，记录个人购买信息*/
             onCarsSubmit(){
               let _this=this;
+              _this.one=true;
               this._animate(_this);
+              let localdata={
+                id:this.ruleForm.id,
+                num:this.num
+              };
               let getShopDate=function (url) {
                 let promise=new Promise(function (resolve, reject) {
                   _this.$http.get(url).then(res=>{
@@ -250,21 +256,54 @@
                * 获取redis中的购物车数据
                */
               getShopDate('getshopdata').then(function (res) {
-                  let list=res.data.cars.list[0];
+                var  listData=[];
+                  if(res.data.cars!=null){
+                    var list=JSON.parse(res.data.cars.list);//redis中数据
+
+                    listData=list;
+                        if(list==''){
+                          listData.push({
+                            id:localdata.id,
+                            num:localdata.num
+                          })
+                        }else {
+                          listData.forEach(function (e,index) {
+                            if(e.id==localdata.id){
+                              listData[index]=({
+                                id:e.id,
+                                num:e.num+localdata.num
+                              });
+                              _this.one=false;
+                            }
+                          });
+                            if(_this.one){
+                            listData.push({
+                              id:localdata.id,
+                              num:localdata.num
+                            });
+                            }
+
+                          console.log(listData)
+                        }
+                  }else {
+                    listData.push({
+                      id:localdata.id,
+                      num:localdata.num
+                    })
+                  }
                   /*
                   * 思路  :
                   * 1:将redis中的购物车数据取出来
-                  * 2:将取出来的数据中的list中做判断，是加一个商品还是数量。
+                  * 2:将取出来的数据中的list与加入的购物车的数据中做判断，是加一个商品还是数量。
                   * 3:将数据存进redis
-                  * 
+                  *
                   * */
-
-
                   /**
                    * 把数据存进redis
                    * */
-                /*_this.$http.post('shopcars',{
-                  list:_this.$store.state.shop.shoplistdata,
+                 _this.carnum=list.length;
+                _this.$http.post('shopcars',{
+                  list:JSON.stringify(listData),
                   userid:_this.$store.state.user.sessiondata.session.id,
                   user:_this.$store.state.user.sessiondata.session.name
                 }).then(res=>{
@@ -273,8 +312,8 @@
                   }
                 },error=>{
                   console.log('请启动node server')
-                });*/
-              })
+                });
+              });
 
 
 
@@ -285,6 +324,10 @@
                * */
 
             },
+            goCar(){
+                this.$router.push({path:'/cart', query: {r:res.data.r}})
+            },
+
             getDetails(path){
                 this.$http.get('getshop?id=' + path).then(res => {
                     this.comment=res.data.data.comment;

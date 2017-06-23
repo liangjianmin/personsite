@@ -9,6 +9,7 @@ module.exports = {
     addComment: function (data, callback) {
         mysqlDB.insertTable(data, callback);
     },
+
     /**
      *查询评论数目
      * @param callback
