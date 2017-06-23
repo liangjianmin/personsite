@@ -6,7 +6,17 @@ const state = {
     stock: {},
     typeshop: {},
     searchdata:{},
-    shoplistdata:[]
+    shoplistdata:[],
+    testshop:{
+      test:'哈哈哈我是测试',
+      jso:[  { id: 1, text:' hah ', done: true },
+        { id: 2, text: 'aishdiah', done: false }
+        ]
+    },
+  todos: [
+    { id: 1, text: '132', done: true },
+    { id: 2, text: '321', done: false }
+  ]
   /* 数据格式
   * shoplistdata:[
   *     {
@@ -18,7 +28,12 @@ const state = {
 };
 
 const mutations = {
+     /**
+      * test shop
+      * */
+     testshop(state,payload){
 
+     },
     /**
      *存购物车数据
      * */
@@ -129,7 +144,19 @@ const actions = {
     }
 }
 
-const getters = {}
+const getters = {
+  testshop1:state=>{
+    let ol=[];
+    let arr=state.testshop.jso;
+    arr.forEach(function (e) {
+      ol.push(e.text)
+    })
+    return  ol
+  },
+  doneTodos: state => {
+    return state.todos.filter(todo => todo.done)
+  }
+}
 
 export default {
     state,
