@@ -1,8 +1,5 @@
 <template>
     <div class="pageview clr">
-        <h1>{{test}}</h1>
-        <h1>{{test2}}</h1>
-        <h1>{{test5}}</h1>
         <div class="cart">
             <div class="cart-th lbBox">
                 <span class="cart-th-1">商品信息</span>
@@ -32,7 +29,7 @@
                 </dd>
                 <dd class="cart-th-2 t2">￥{{item.price}}</dd>
                 <dd class="cart-th-3 t3">
-                  <el-input-number ref="iptNum" :data-price="item.price" :data-ind="index" v-model="item.num" @change="handleChangeS" :min="1" :max="item.stocknum" size="small"></el-input-number>
+                  <el-input-number ref="iptNum" :data="item.stocknum" :data-ind="index" v-model="item.num" @change="handleChanges(item.num+1,item.stocknum)"   :min="1" :max="item.stocknum" size="small"></el-input-number>
                   <p>库存总容量：{{item.stocknum}}</p>
                 </dd>
                 <dd class="cart-th-4 t4" ref="total">￥{{item.price*item.num}}</dd>
@@ -73,7 +70,6 @@
 </style>
 <script>
     import {mapState} from 'vuex'
-    import { mapGetters } from 'vuex'
     export default{
         name: 'cart',
         data() {
@@ -91,24 +87,12 @@
 
                 },
               cars:false,
-              totalprice:0,
-              test5:0
+              totalprice:0
 
             }
         },
-        computed:{
-          ...mapState({
-                     test:state=>state.shop.testshop.test,
-                    // test1:'shop.testshop.test'
-                    test2:function (state) {
-                    return state.shop.testshop.test+'---我是加的啊'
-                  }
-                  }),
-          ...mapGetters(['doneTodos'])
-        }
-      ,
+        computed: mapState({}),
         mounted(){
-            this.test5=this.$store.getters.testshop1
             this.totalprice=0
             var path = this.$route.query.r;
             var cars = this.$route.query.cars;
@@ -134,7 +118,6 @@
         methods: {
           getDetails(path){
                 this.$http.get('getshop?r=' + path).then(res => {
-                    console.log(res)
                     if (res.data.data.status) {
                         this.visible = true;
                         this.ruleForm = res.data.data.shop[0];
@@ -178,10 +161,8 @@
               let pir=0;
               this.$refs.total.forEach(function (e) {
                 var te=parseInt(e.innerHTML.toString().replace('￥',''));
-                console.log(te)
                 pir+=te
               });
-              console.log(pir)
               this.totalprice=pir
             },
             handleChange(value){
@@ -194,16 +175,9 @@
                     });
                 }
             },
-          handleChangeS(index,oldval){
-                console.log(index)
-            console.log(oldval)
-            this.$nextTick(()=>{
-              console.log(this.$refs.iptNum[0].value)
-
-            })
-
-             //   console.log(index)
-         //   this.totalT()
+            handleChanges(val,total){
+                console.log(val,total)
+            this.totalT()
            /* if (value == max) {
               this.$message({
                 type: 'error',
