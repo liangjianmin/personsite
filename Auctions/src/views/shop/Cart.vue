@@ -29,7 +29,7 @@
                 </dd>
                 <dd class="cart-th-2 t2">￥{{item.price}}</dd>
                 <dd class="cart-th-3 t3">
-                  <el-input-number ref="iptNum" :data="item.stocknum" :data-ind="index" v-model="item.num" @change="handleChanges(item.num+1,item.stocknum)"   :min="1" :max="item.stocknum" size="small"></el-input-number>
+                  <el-input-number ref="iptNum" :data="item.stocknum"  :data-ind="index" v-model="item.num" @change="handleChanges($event,item.price)"   :min="1" :max="item.stocknum" size="small"></el-input-number>
                   <p>库存总容量：{{item.stocknum}}</p>
                 </dd>
                 <dd class="cart-th-4 t4" ref="total">￥{{item.price*item.num}}</dd>
@@ -175,8 +175,9 @@
                     });
                 }
             },
-            handleChanges(val,total){
-                console.log(val,total)
+            handleChanges(ind,teo){
+                console.log(ind)
+                console.log(teo)
             this.totalT()
            /* if (value == max) {
               this.$message({
