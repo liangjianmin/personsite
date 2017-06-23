@@ -259,7 +259,6 @@
                 var  listData=[];
                   if(res.data.cars!=null){
                     var list=JSON.parse(res.data.cars.list);//redis中数据
-
                     listData=list;
                         if(list==''){
                           listData.push({
@@ -285,11 +284,14 @@
 
                           console.log(listData)
                         }
+                    _this.carnum=list.length
                   }else {
                     listData.push({
                       id:localdata.id,
                       num:localdata.num
-                    })
+                    });
+                    _this.carnum=1;
+                    console.log(listData)
                   }
                   /*
                   * 思路  :
@@ -301,7 +303,7 @@
                   /**
                    * 把数据存进redis
                    * */
-                 _this.carnum=list.length;
+
                 _this.$http.post('shopcars',{
                   list:JSON.stringify(listData),
                   userid:_this.$store.state.user.sessiondata.session.id,
