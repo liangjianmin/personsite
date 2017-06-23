@@ -327,7 +327,7 @@
 
             },
             goCar(){
-                this.$router.push({path:'/cart', query: {r:res.data.r}})
+                this.$router.push({path:'/carts'})
             },
 
             getDetails(path){
