@@ -29,7 +29,7 @@
                 </dd>
                 <dd class="cart-th-2 t2">￥{{item.price}}</dd>
                 <dd class="cart-th-3 t3">
-                  <el-input-number ref="iptNum" :data-ind="index" v-model="item.num" @change="handleChangeS"   :min="1" :max="item.stocknum" size="small"></el-input-number>
+                  <el-input-number ref="iptNum" :data="item.stocknum" :data-ind="index" v-model="item.num" @change="handleChanges(item.num+1,item.stocknum)"   :min="1" :max="item.stocknum" size="small"></el-input-number>
                   <p>库存总容量：{{item.stocknum}}</p>
                 </dd>
                 <dd class="cart-th-4 t4" ref="total">￥{{item.price*item.num}}</dd>
@@ -118,7 +118,6 @@
         methods: {
           getDetails(path){
                 this.$http.get('getshop?r=' + path).then(res => {
-                    console.log(res)
                     if (res.data.data.status) {
                         this.visible = true;
                         this.ruleForm = res.data.data.shop[0];
@@ -162,10 +161,8 @@
               let pir=0;
               this.$refs.total.forEach(function (e) {
                 var te=parseInt(e.innerHTML.toString().replace('￥',''));
-                console.log(te)
                 pir+=te
               });
-              console.log(pir)
               this.totalprice=pir
             },
             handleChange(value){
@@ -178,8 +175,8 @@
                     });
                 }
             },
-          handleChangeS(index,val){
-                console.log(index)
+            handleChanges(val,total){
+                console.log(val,total)
             this.totalT()
            /* if (value == max) {
               this.$message({
