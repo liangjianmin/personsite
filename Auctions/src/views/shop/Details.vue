@@ -64,6 +64,7 @@
     border: 1px solid #fff;
     z-index: 5;
   }
+  .cw-icon{cursor: pointer}
   .addoneAn{ animation: addone 0.4s linear;}
   @keyframes addone {
       0%{top: 0;opacity: 1}
@@ -327,7 +328,8 @@
 
             },
             goCar(){
-                this.$router.push({path:'/carts'})
+                var time=new Date().getTime()
+                this.$router.push({path:'/cart',query:{cars:time}})
             },
 
             getDetails(path){

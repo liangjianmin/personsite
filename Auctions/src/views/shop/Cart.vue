@@ -9,7 +9,7 @@
                 <span class="cart-th-5">操作</span>
             </div>
             <div class="cart-td" v-if="visible">
-                <dl class="lbBox">
+                <dl class="lbBox" v-if="cars==false">
                     <dd class="cart-th-1 t1">
                         <img class="va-m" :src="ruleForm.url" width="50" height="50">
                         <p class="lineBlock">{{ruleForm.describes}}</p>
@@ -22,10 +22,24 @@
                     <dd class="cart-th-4 t4">￥{{price}}</dd>
                     <dd class="cart-th-5 t5"><span @click="del">删除</span></dd>
                 </dl>
+              <dl class="lbBox" v-for="(item,index) in ruleForm" :key="item" v-else>
+                <dd class="cart-th-1 t1">
+                  <img class="va-m" :src="'http://127.0.0.1:3838/static/upload/shop/'+item.url" width="50" height="50">
+                  <p class="lineBlock">{{item.describes}}</p>
+                </dd>
+                <dd class="cart-th-2 t2">￥{{item.price}}</dd>
+                <dd class="cart-th-3 t3">
+                  <el-input-number ref="iptNum" :data-ind="index" v-model="item.num" @change="handleChangeS"   :min="1" :max="item.stocknum" size="small"></el-input-number>
+                  <p>库存总容量：{{item.stocknum}}</p>
+                </dd>
+                <dd class="cart-th-4 t4" ref="total">￥{{item.price*item.num}}</dd>
+                <dd class="cart-th-5 t5"><span @click="del">删除</span></dd>
+              </dl>
             </div>
             <div class="total clr" v-if="visible">
                 <div class="fr totalbox">
-                    <span class="tx">合计：<em class="va-m">￥{{price}}</em></span>
+                    <span class="tx" v-if="cars==false">合计：<em class="va-m">￥{{price}}</em></span>
+                    <span class="tx" v-else>合计：<em class="va-m">￥{{totalprice}}</em></span>
                     <el-button type="primary" :loading="logining" @click="onSubmitTotal" class="totalbtn">结算</el-button>
                 </div>
             </div>
@@ -71,25 +85,38 @@
                 },
                 car:{
 
-                }
+                },
+              cars:false,
+              totalprice:0
 
             }
         },
         computed: mapState({}),
         mounted(){
+            this.totalprice=0
             var path = this.$route.query.r;
-            this.getDetails(path);
+            var cars = this.$route.query.cars;
+            if(path==undefined && cars!=undefined){
+                this.cars=true;
+                this.getDetailT();
+
+               /* for(var e of this.ruleForm){
+                  pri+=(e.price*e.num)
+                }*/
+            }else {
+              this.getDetails(path);
+            }
         },
         watch: {
             $route(to){
-                if (to.path.indexOf('cart') != -1) {
+                if (to.path.indexOf('cart') != -1&& to.path.indexOf('cars') == -1) {
                     var path = this.$route.query.r;
                     this.getDetails(path);
                 }
             }
         },
         methods: {
-            getDetails(path){
+          getDetails(path){
                 this.$http.get('getshop?r=' + path).then(res => {
                     console.log(res)
                     if (res.data.data.status) {
@@ -112,6 +139,35 @@
                     console.log('请启动node server')
                 });
             },
+          getDetailT(path){
+            var time=new Date().getTime();
+            this.$http.get('getshop?cars='+time).then(res => {
+              if(res.data.data.status){
+                this.visible = true;
+                this.ruleForm=res.data.data.shop;
+                this.total()
+              }
+            }, error => {
+              console.log('请启动node server')
+            });
+          },
+            total(){
+              let pir=0;
+              this.ruleForm.forEach(function (e) {
+                pir+=(e.num*e.price)
+              });
+              this.totalprice=pir
+            },
+            totalT(){
+              let pir=0;
+              this.$refs.total.forEach(function (e) {
+                var te=parseInt(e.innerHTML.toString().replace('￥',''));
+                console.log(te)
+                pir+=te
+              });
+              console.log(pir)
+              this.totalprice=pir
+            },
             handleChange(value){
                 this.price = this.ruleForm.price * value;
                 if (value == this.ruleForm.stocknum) {
@@ -122,6 +178,17 @@
                     });
                 }
             },
+          handleChangeS(index,val){
+                console.log(index)
+            this.totalT()
+           /* if (value == max) {
+              this.$message({
+                type: 'error',
+                duration: 1000,
+                message: '亲，库存容量不足'
+              });
+            }*/
+          },
             /*结算处理*/
             onSubmitTotal(){
                 var self = this;

@@ -129,77 +129,126 @@ module.exports = function (app) {
      * 获取id商品详情 && 评论列表
      */
     app.get('/getshop', function (req, res) {
-        //获取详情页面id
-        var p = req.query.id;
-        //获取点击结算的参数
-        var r = req.query.r;
-        //解析缓存中用户存储的数据
-        if (r != undefined) {
-            client.hgetall('cars', function (err, object) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    if (r === object.params) {
-                        p = object.id;
-                        shop.getshop(p, function (data) {
-                            if (data.status) {
-                                comment.getComment(p, function (commentdata) {
-                                    if (commentdata.status) {
-                                        comment.getCommentNum(p, function (numdata) {
-                                            if (numdata.status) {
-                                                res.send({
-                                                    data: {
-                                                        shop: data.data,
-                                                        comment: commentdata.data,
-                                                        commentnum: numdata.data[0].count,
-                                                        status: data.status,
-                                                        selnum: object.num,
-                                                        user: object.user,
-                                                        userid: object.userid,
-                                                        uuid: object.params
-                                                    }
-                                                });
-                                            }
-                                        });
-                                    }
-                                })
-                            } else {
-                                res.send(500);
-                            }
-                        });
-                    } else {
-                        res.send({
-                            data: {
-                                status: false
-                            }
-                        })
-                    }
-                }
-            })
-        } else {
-            shop.getshop(p, function (data) {
-                if (data.status) {
-                    comment.getComment(p, function (commentdata) {
-                        if (commentdata.status) {
-                            comment.getCommentNum(p, function (numdata) {
-                                if (numdata.status) {
-                                    res.send({
-                                        data: {
-                                            shop: data.data,
-                                            comment: commentdata.data,
-                                            commentnum: numdata.data[0].count,
-                                            status: data.status
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    })
-                } else {
-                    res.send(500);
-                }
+        var cars=req.query.cars;
+      console.log(req.query)
+        if(cars!=undefined){
+          //解析缓存中用户存储的数据
+          console.log('123123123123')
+          let id=[];
+          let num=[];
+          client.hgetall('shopcars', function (err, object) {
+            /**
+             * 获取id
+             * */
+            JSON.parse(object.list).forEach(function (e) {
+              id.push(e.id)
             });
+            /**
+             * 获取数量
+             * */
+            JSON.parse(object.list).forEach(function (e) {
+              num.push(e.num)
+            });
+            shop.getshops(id.join(','), function (data) {
+              if (data.status) {
+                data.data.forEach(function (e,ind) {
+                  e.num=num[ind]
+                  e.totalprice=num[ind]*e.price
+                });
+                res.send({
+                  data:{
+                    shop:data.data,
+                    user: object.user,
+                    userid: object.userid,
+                    uuid: object.params,
+                    status:true
+                  }
+                })
+              } else {
+                res.send(500);
+              }
+            });
+          })
+        }else {
+          //获取详情页面id
+          var p = req.query.id;
+          //获取点击结算的参数
+          var r = req.query.r;
+          //解析缓存中用户存储的数据
+          if (r != undefined) {
+            client.hgetall('cars', function (err, object) {
+              if (err) {
+                console.log(err);
+              } else {
+                if (r === object.params) {
+                  p = object.id;
+                  shop.getshop(p, function (data) {
+                    if (data.status) {
+                      comment.getComment(p, function (commentdata) {
+                        if (commentdata.status) {
+                          comment.getCommentNum(p, function (numdata) {
+                            if (numdata.status) {
+                              res.send({
+                                data: {
+                                  shop: data.data,
+                                  comment: commentdata.data,
+                                  commentnum: numdata.data[0].count,
+                                  status: data.status,
+                                  selnum: object.num,
+                                  user: object.user,
+                                  userid: object.userid,
+                                  uuid: object.params
+                                }
+                              });
+                            }
+                          });
+                        }
+                      })
+                    } else {
+                      res.send(500);
+                    }
+                  });
+                } else {
+                  res.send({
+                    data: {
+                      status: false
+                    }
+                  })
+                }
+              }
+            })
+          } else {
+            shop.getshop(p, function (data) {
+              if (data.status) {
+                comment.getComment(p, function (commentdata) {
+                  if (commentdata.status) {
+                    comment.getCommentNum(p, function (numdata) {
+                      if (numdata.status) {
+                        res.send({
+                          data: {
+                            shop: data.data,
+                            comment: commentdata.data,
+                            commentnum: numdata.data[0].count,
+                            status: data.status
+                          }
+                        });
+                      }
+                    });
+                  }
+                })
+              } else {
+                res.send(500);
+              }
+            });
+          }
+
         }
+
+
+
+
+
+
     });
     /**
      * 查询库存数量

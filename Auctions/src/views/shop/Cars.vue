@@ -90,12 +90,11 @@
     },
     methods: {
       getDetails(path){
-        this.$http.get('shopcar').then(res => {
+        var time=new Date().getTime();
+        this.$http.get('getshop?cars='+time).then(res => {
             if(res.data.data.status){
               this.visible = true;
               this.ruleForm=res.data.data.shop;
-
-
             }
         }, error => {
           console.log('请启动node server')
