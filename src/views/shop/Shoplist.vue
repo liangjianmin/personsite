@@ -1,10 +1,10 @@
 <template>
     <el-col :span="24">
-        <el-table :data="pagelist" border v-loading="pagelist == undefined " element-loading-text="拼命加载中" style="width: 100%">
+        <el-table :data="pagelist" border v-loading="pagelist == undefined" element-loading-text="拼命加载中"  @sort-change="tableSortChange($event,flag)" style="width: 100%">
             <el-table-column property="id" label="ID" width="80"></el-table-column>
             <el-table-column prop="shopname" label="商品名称"></el-table-column>
             <el-table-column prop="shopnumber" label="商品编号" width="100"></el-table-column>
-            <el-table-column prop="price"  label="价格" width="70"></el-table-column>
+            <el-table-column prop="price"  :sortable='custom' label="价格" width="120"></el-table-column>
             <el-table-column property="stocknum" label="库存" width="70"></el-table-column>
             <el-table-column prop="evaluate" label="评分" width="70"></el-table-column>
             <el-table-column prop="type" label="商品类别" width="100">
@@ -68,7 +68,9 @@
         name: 'shoplist',
         data() {
             return {
-                currentPage: 1
+                currentPage: 1,
+                custom:'',
+                flag:true
             }
         },
         computed: mapState({
@@ -133,6 +135,14 @@
                     type: 'shop',
                     queryStr: this.currentPage
                 });
+            },
+            sort(value){
+
+            },
+            tableSortChange(column, prop){
+                console.log(column)
+               this.flag=!this.flag;
+                console.log(prop);
             }
         }
     }
