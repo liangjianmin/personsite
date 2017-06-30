@@ -1,8 +1,8 @@
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
-var logger = require('morgan');
-var bodyParser = require('body-parser');
+var logger = require('morgan'); //日志输出到终端
+var bodyParser = require('body-parser');  //用来解析http请求体
 
 
 var app = express();
@@ -17,6 +17,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 
 app.use(express.static(path.join(__dirname, '../dist')));
+
 
 
 app.get('/', function (req, res) {

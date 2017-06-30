@@ -1,10 +1,10 @@
 var express = require('express');
 var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var session = require('express-session');
+var favicon = require('serve-favicon'); //用于请求网页的logo
+var logger = require('morgan');  //日志输出到终端
+var session = require('express-session');  //session
 var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+var bodyParser = require('body-parser'); //解析http请求
 var mysql = require("mysql");
 var jade = require('jade');
 var routes = require('./routes/index');
@@ -68,3 +68,5 @@ app.listen(3000, function () {
   console.log('listen 3000')
 });
 
+
+module.exports = app;
